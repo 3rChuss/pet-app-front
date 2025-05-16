@@ -1,0 +1,62 @@
+{
+  "name": "zooki",
+  "version": "1.0.0",
+  "scripts": {
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "start": "expo start -c",
+    "prebuild": "expo prebuild",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
+    "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
+    "@react-native-async-storage/async-storage": "^2.1.2",
+    "axios": "^1.9.0",
+    "expo": "^53.0.9",
+    "expo-av": "^15.1.4",
+    "expo-font": "^13.3.1",
+    "expo-image": "^2.1.7",
+    "expo-linking": "^7.1.5",
+    "expo-localization": "~16.1.5",
+    "expo-location": "~18.1.4",
+    "expo-router": "^5.0.6",
+    "expo-splash-screen": "~0.30.8",
+    "expo-status-bar": "~2.2.3",
+    "expo-video": "^2.1.9",
+    "i18next": "^25.1.2",
+    "nativewind": "latest",
+    "react": "19.0.0",
+    "react-hook-form": "^7.56.3",
+    "react-i18next": "^15.5.1",
+    "react-native": "0.79.2",
+    "react-native-app-intro-slider": "^4.0.4",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-mmkv": "^3.2.0",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-svg-transformer": "^1.5.1",
+    "zustand": "^5.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@types/react": "~19.0.10",
+    "eslint": "^9.25.1",
+    "eslint-config-expo": "^9.2.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwindcss": "^3.4.0",
+    "typescript": "~5.8.3"
+  },
+  "main": "expo-router/entry",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3rChuss/zooki.git"
+  }
+}

@@ -1,0 +1,47 @@
+{
+    "app": {
+        "title": "Zooki",
+        "description": "Donde las mascotas encuentran su match perfecto.",
+        "welcome": "¡Bienvenido a Zooki!",
+        "welcome_message": "Donde las mascotas encuentran su match perfecto."
+    },
+    "onboarding": {
+        "skip": "Saltar",
+        "done": "Hecho",
+        "next": "Siguiente",
+        "welcome1": "¡Bienvenido a Zooki!",
+        "text1": "Tu comunidad para encontrar el match perfecto para tu mascota.",
+        "welcome2": "Descubre Conexiones",
+        "text2": "Explora perfiles y encuentra amigos peludos cercanos.",
+        "welcome3": "Comparte Momentos",
+        "text3": "Publica fotos y comparte historias con tu comunidad.",
+        "welcome4": "¡Comienza la Aventura!",
+        "text4": "Únete a Zooki, descrube lugares y haz amigos."
+    },
+    "settings": {
+        "title": "Configuración",
+        "language": "Idioma",
+        "theme": "Tema",
+        "dark_mode": "Modo oscuro",
+        "light_mode": "Modo claro"
+    },
+    "bookmarks": {
+        "title": "Marcadores",
+        "add_bookmark": "Añadir marcador",
+        "edit_bookmark": "Editar marcador",
+        "delete_bookmark": "Eliminar marcador",
+        "search_bookmark": "Buscar marcador"
+    },
+    "folders": {
+        "title": "Carpetas",
+        "add_folder": "Añadir carpeta",
+        "edit_folder": "Editar carpeta",
+        "delete_folder": "Eliminar carpeta"
+    },
+    "errors": {
+        "not_found": "No encontrado",
+        "unauthorized": "No autorizado",
+        "forbidden": "Prohibido",
+        "internal_server_error": "Error interno del servidor"
+    }
+}

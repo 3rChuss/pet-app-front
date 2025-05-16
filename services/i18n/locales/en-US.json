@@ -1,0 +1,34 @@
+{
+    "app": {
+        "title": "Zooki",
+        "description": "A simple and powerful tool for managing your bookmarks.",
+        "welcome": "Welcome to Zooki!",
+        "welcome_message": "Zooki is a simple and powerful tool for managing your bookmarks. You can easily add, edit, and delete bookmarks, and organize them into folders."
+    },
+    "settings": {
+        "title": "Settings",
+        "language": "Language",
+        "theme": "Theme",
+        "dark_mode": "Dark Mode",
+        "light_mode": "Light Mode"
+    },
+    "bookmarks": {
+        "title": "Bookmarks",
+        "add_bookmark": "Add Bookmark",
+        "edit_bookmark": "Edit Bookmark",
+        "delete_bookmark": "Delete Bookmark",
+        "search_bookmark": "Search Bookmark"
+    },
+    "folders": {
+        "title": "Folders",
+        "add_folder": "Add Folder",
+        "edit_folder": "Edit Folder",
+        "delete_folder": "Delete Folder"
+    },
+    "errors": {
+        "not_found": "Not Found",
+        "unauthorized": "Unauthorized",
+        "forbidden": "Forbidden",
+        "internal_server_error": "Internal Server Error"
+    }
+}
