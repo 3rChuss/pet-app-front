@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { Stack } from 'expo-router'
+import { Slot, Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -13,8 +13,10 @@ import OnboardingScreen from '@/components/Onboarding/Onboarding'
 import { useAuth, hydrateAuth } from '@/lib/auth'
 import { ONBOARDING_KEY } from '@/lib/const/onBoarding'
 import { useThemeConfig } from '@/lib/hooks/use-theme-config'
+
 import 'react-native-reanimated'
 import '@/services/i18n'
+import Login from './(auth)/login'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -87,34 +89,17 @@ export default function RootLayout() {
     return <OnboardingScreen />
   }
 
-  // Onboarding is completed, proceed with existing auth logic and app rendering
-  // If the user is not authenticated, redirect to the login screen
-  console.log('Auth status (after onboarding check):', status) // Modified log
-  if (status === 'signOut') {
-    // When onboarding is done and user is signed out, show the login screen within the main stack navigator.
-    // The (auth) group should handle this. We ensure Providers wrap it.
-    return (
-      <Providers>
-        <Stack>
-          <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
-          {/* Ensure other auth screens like register are also available if needed here */}
-          {/* Or rely on the (auth) group layout to define these */}
-        </Stack>
-      </Providers>
-    )
-  }
-
   // Apply base styling according to the branding guide.
-  // Default background: Blanco Roto (#FDFDFD) -> mapped to 'base-neutral-off-white' in Tailwind config.
+  // Default background: Blanco Roto (#FDFDFD) -> mapped to 'neutral-off-white' in Tailwind config.
   // NativeWind applies Tailwind classes directly to standard React Native components.
   return (
     <Providers>
       <Stack
         screenOptions={{
           headerStyle: {
-            backgroundColor: 'base-neutral-off-white',
+            backgroundColor: 'neutral-off-white',
           },
-          headerTintColor: 'base-neutral-dark-gray',
+          headerTintColor: 'neutral-dark-gray',
           headerTitleStyle: {
             fontFamily: 'NunitoSans-Variable',
             fontWeight: '600',
@@ -122,7 +107,13 @@ export default function RootLayout() {
         }}
       >
         {/* Define your main app screens here, they will only be accessible if onboarding is done and user is authenticated */}
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        {status === 'signOut' ? (
+          // Auth screens are part of the main stack
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        ) : (
+          // App screens are part of the main stack
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        )}
         {/* <Stack.Screen name="home" options={{ headerShown: false }} /> */}
         {/* Add other top-level screens/groups like (protected) if they are direct children of this Stack */}
       </Stack>

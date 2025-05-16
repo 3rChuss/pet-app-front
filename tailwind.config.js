@@ -1,26 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 const themes = require('./theme/colors')
 
-const allThemedColors = {}
-const generateThemedColors = () => {
-  for (const themeName in themes) {
-    // e.g., 'base', 'summer', 'xmas'
-    for (const colorKey in themes[themeName]) {
-      // e.g., 'primary', 'secondary_coral'
-      const twColorName = colorKey.replace(/_/g, '-') // e.g., 'secondary-coral'
-      allThemedColors[`${themeName}-${twColorName}`] = themes[themeName][colorKey]
-    }
-  }
-  return allThemedColors
-}
+const activeTheme = process.env.ACTIVE_THEME || 'base'
 
+const generateThemeColors = themeName => {
+  const themedColors = {}
+  for (const colorKey in themes[themeName]) {
+    const twColorName = colorKey.replace(/_/g, '-')
+    themedColors[twColorName] = themes[themeName][colorKey]
+  }
+  return themedColors
+}
 module.exports = {
   content: ['./app/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'class',
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
-      colors: generateThemedColors(),
+      colors: {
+        ...generateThemeColors(activeTheme),
+      },
       fontFamily: {
         quicksand: ['Quicksand', 'sans-serif'],
         nunito: ['Nunito Sans', 'sans-serif'],

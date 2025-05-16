@@ -43,5 +43,27 @@
         "unauthorized": "No autorizado",
         "forbidden": "Prohibido",
         "internal_server_error": "Error interno del servidor"
+    },
+    "auth": {
+        "login": "Iniciar sesión",
+        "register": "Registrarse",
+        "logout": "Cerrar sesión",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "confirm_password": "Confirmar contraseña",
+        "forgot_password": "¿Olvidaste tu contraseña?",
+        "reset_password": "Restablecer contraseña",
+        "send_reset_link": "Enviar enlace de restablecimiento"
+    },
+    "login": {
+        "disclaimer": "Al hacer click en 'Iniciar Sesión', aceptas nuestros <Bold>Términos y Condiciones</Bold>. Obtén más información sobre cómo procesamos tus datos en nuestra <LinkPrivacy>Política de Privacidad</LinkPrivacy> y <LinkCookies>Política de Cookies</LinkCookies>.",
+        "google_signin": "Iniciar sesión con Google",
+        "facebook_signin": "Iniciar sesión con Facebook",
+        "email_placeholder": "Correo electrónico",
+        "password_placeholder": "Contraseña",
+        "login_button": "Iniciar sesión",
+        "register_button": "Registrarse",
+        "forgot_password_button": "¿Olvidaste tu contraseña?",
+        "no_account": "¿No tienes una cuenta?"
     }
 }

@@ -2,6 +2,7 @@
 const { defineConfig } = require('eslint/config')
 const expoConfig = require('eslint-config-expo/flat')
 const importPlugin = require('eslint-plugin-import')
+const unusedImports = require('eslint-plugin-unused-imports')
 
 module.exports = defineConfig([
   expoConfig,
@@ -9,9 +10,23 @@ module.exports = defineConfig([
   {
     ignores: ['dist/*'],
   },
+
   {
+    plugins: {
+      'unused-imports': unusedImports,
+    },
     rules: {
       'react/display-name': 'off',
+      'unused-imports/no-unused-imports': 'warn',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
       'import/order': [
         // Add the import/order rule
         'warn', // or 'error' to fail on unsorted imports

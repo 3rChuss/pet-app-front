@@ -29,11 +29,11 @@ export default function OnboardingScreen() {
         <SafeAreaView style={{ flex: 1 }}>
           <View style={[styles.contentOverlay]} className="flex-1 relative">
             <StatusBar style="light" />
-            <Text style={styles.title} className="font-quicksand text-base-neutral-off-white">
+            <Text style={styles.title} className="font-quicksand text-neutral-off-white">
               {t(`onboarding.${item.title}`)}
             </Text>
 
-            <Text style={styles.text} className="font-nunito text-base-neutral-off-white">
+            <Text style={styles.text} className="font-nunito text-neutral-off-white">
               {t(`onboarding.${item.text}`)}
             </Text>
           </View>
@@ -69,12 +69,12 @@ export default function OnboardingScreen() {
       bottomButton
       renderNextButton={() => (
         <View style={{ marginBottom: 30 }}>
-          <Button title={t('onboarding.next')} variant="primary" onPress={onNext} />
+          <Button label={t('onboarding.next')} variant="primary" onPress={onNext} />
         </View>
       )}
       renderDoneButton={() => (
         <View style={{ marginBottom: 30 }}>
-          <Button title={t('onboarding.done')} variant="primary" onPress={onDone} />
+          <Button label={t('onboarding.done')} variant="primary" onPress={onDone} />
         </View>
       )}
       ref={slideRef}

@@ -1,69 +1,82 @@
 import React, { useMemo } from 'react'
+
 import { TouchableOpacity, Text } from 'react-native'
 
 interface ButtonProps {
-  title: string
+  label: string
   onPress: () => void
-  variant?: 'primary' | 'secondary' | 'tertiary'
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'outline'
   className?: string // Allows for additional custom styling on the container
   textClassName?: string // Allows for additional custom styling on the text
   disabled?: boolean
+  testID?: string // For testing purposes
+  icon?: React.ReactNode // Optional icon to be displayed alongside the text
+  isLoading?: boolean // Optional loading state
 }
 
 const Button: React.FC<ButtonProps> = ({
-  title,
+  label,
   onPress,
   variant = 'primary',
   className = '',
   textClassName = '',
   disabled = false,
+  testID = '',
+  icon = null,
+  isLoading = false,
 }) => {
-  // Base theme colors are used by default, e.g., base-accent-coral
-  // If you implement a theme switcher, you might pass the current theme prefix as a prop
-  // or use a context to dynamically set these prefixes.
-  const themePrefix = 'base-' // Assuming 'base' theme for now
-
   const classNames = useMemo(() => {
-    let containerStyle = 'p-3 flex justify-center align-center' // Default button style
+    let containerStyle =
+      'p-3 flex justify-center align-center' + (icon ? ' flex-row gap-4 items-center' : ' flex-col')
     let textStyle = 'font-nunito font-semibold text-2xl' // Nunito Sans SemiBold as per typography guidelines
 
     switch (variant) {
       case 'primary':
-        containerStyle += ` bg-${themePrefix}neutral-off-white rounded-full shadow-md`
-        textStyle += ` text-${themePrefix}primary text-center`
+        containerStyle += ` bg-neutral-off-white rounded-full shadow-md`
+        textStyle += ` text-primary text-center`
         if (disabled) {
-          containerStyle = ` p-5 items-center justify-center bg-${themePrefix}neutral-medium-gray rounded-full shadow-md opacity-50`
-          textStyle += ` text-${themePrefix}neutral-light-gray`
+          containerStyle = ` p-5 items-center justify-center bg-neutral-medium-gray rounded-full shadow-md opacity-50`
+          textStyle += ` text-neutral-light-gray`
         }
         break
       case 'secondary':
-        containerStyle += ` border border-${themePrefix}primary rounded-md bg-transparent`
-        textStyle += ` text-${themePrefix}primary`
+        containerStyle += ` border border-primary rounded-md bg-transparent`
+        textStyle += ` text-primary`
         if (disabled) {
-          containerStyle = ` p-5 items-center justify-center border border-${themePrefix}neutral-medium-gray rounded-md bg-transparent opacity-50`
-          textStyle += ` text-${themePrefix}neutral-medium-gray`
+          containerStyle = ` p-5 items-center justify-center border border-neutral-medium-gray rounded-md bg-transparent opacity-50`
+          textStyle += ` text-neutral-medium-gray`
         }
         break
       case 'tertiary':
         containerStyle = 'p-2' // Minimal padding for text buttons
-        textStyle += ` text-${themePrefix}primary`
+        textStyle += ` text-primary`
         if (disabled) {
           containerStyle = 'p-2 opacity-50'
-          textStyle += ` text-${themePrefix}neutral-medium-gray`
+          textStyle += ` text-neutral-medium-gray`
         }
         break
+      case 'outline':
+        containerStyle += ` border border-primary rounded-md bg-transparent`
+        textStyle += ` text-primary`
+        if (disabled) {
+          containerStyle = ` p-5 items-center justify-center border border-neutral-medium-gray rounded-md bg-transparent opacity-50`
+          textStyle += ` text-neutral-medium-gray`
+        }
     }
     return { containerStyle, textStyle }
-  }, [variant, disabled, themePrefix])
+  }, [variant, disabled, icon])
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`${classNames.containerStyle} ${className}`}
-      disabled={disabled}
+      className={`${className} ${classNames.containerStyle}`}
+      disabled={disabled || isLoading}
+      style={{ opacity: isLoading ? 0.5 : 1 }} // Optional loading state
       activeOpacity={0.7}
+      testID={testID}
     >
-      <Text className={`${classNames.textStyle} ${textClassName}`}>{title}</Text>
+      {icon && <>{icon}</>}
+      <Text className={`${classNames.textStyle} ${textClassName}`}>{label}</Text>
     </TouchableOpacity>
   )
 }

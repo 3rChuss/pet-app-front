@@ -1,12 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Link } from 'expo-router'
 import { useForm } from 'react-hook-form'
-import { Text, TextInput, View, KeyboardAvoidingView } from 'react-native'
+import { Trans, useTranslation } from 'react-i18next'
+import { Text, TextInput, View, Pressable, Image, Linking } from 'react-native'
 import * as z from 'zod'
+
+import Button from '@/components/Button/Button'
 
 import type { SubmitHandler } from 'react-hook-form'
 
 const schema = z.object({
-  name: z.string().optional(),
   email: z
     .string({
       required_error: 'Email is required',
@@ -23,59 +26,150 @@ export type FormType = z.infer<typeof schema>
 
 export type LoginFormProps = {
   onSubmit?: SubmitHandler<FormType>
+  onGoogleSignIn?: () => void
+  onFacebookSignIn?: () => void
 }
 
-export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
-  const { handleSubmit, control } = useForm<FormType>({
+export const LoginForm = ({
+  onSubmit = () => {},
+  onGoogleSignIn = () => {},
+  onFacebookSignIn = () => {},
+}: LoginFormProps) => {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormType>({
     resolver: zodResolver(schema),
   })
+  const { t } = useTranslation()
+
+  const handlePrivacyPolicyPress = () => {
+    Linking.openURL('https://tu-pagina-web.com/politica-de-privacidad')
+  }
+
+  const handleCookiesPolicyPress = () => {
+    Linking.openURL('https://tu-pagina-web.com/politica-de-cookies')
+  }
+
+  const handleTermsAndConditionsPress = () => {
+    Linking.openURL('https://tu-pagina-web.com/terminos-y-condiciones')
+  }
+
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={10}>
-      <View className="flex-1 justify-center p-4">
-        <View className="items-center justify-center">
-          <Text testID="form-title" className="pb-6 text-center text-4xl font-bold">
-            Sign In
-          </Text>
-
-          <Text className="mb-6 max-w-xs text-center text-gray-500">
-            Welcome! 👋 This is a demo login screen! Feel free to use any email and password to sign
-            in and try it out.
-          </Text>
-        </View>
-
-        <Text testID="name-label" className="mb-2 text-sm font-semibold">
-          Name
-        </Text>
-        <TextInput
-          testID="name-input"
-          placeholder="John Doe"
-          className="mb-4 border-b border-gray-300 p-2"
-          {...control.register('name')}
-        />
-
-        <Text testID="email-label" className="mb-2 text-sm font-semibold">
-          Email
-        </Text>
+    <View className="flex-1 justify-between p-6 gap-4">
+      <View className="space-y-1 flex justify-end gap-1" style={{ flex: 2 }}>
         <TextInput
           testID="email-input"
-          placeholder="john.doe@example.com"
-          className="mb-4 border-b border-gray-300 p-2"
+          placeholder={t('login.email_placeholder')}
+          className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
+          keyboardType="email-address"
+          autoCapitalize="none"
           {...control.register('email')}
         />
+        {errors.email && <Text className="mt-1 text-accent-coral">{errors.email.message}</Text>}
 
-        <Text testID="password-label" className="mb-2 text-sm font-semibold">
-          Password
-        </Text>
         <TextInput
           testID="password-input"
-          placeholder="***"
+          placeholder={t('login.password_placeholder')}
           secureTextEntry={true}
-          className="mb-4 border-b border-gray-300 p-2"
+          className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
           {...control.register('password')}
         />
+        {errors.password && (
+          <Text className="mt-1 text-accent-coral">{errors.password.message}</Text>
+        )}
 
-        {/* <Button testID="login-button" label="Login" onPress={handleSubmit(onSubmit)} /> */}
+        <Link href="/(auth)/forgot-password" asChild>
+          <Pressable className="mt-2 mb-8 self-end">
+            <Text className="text-sm text-primary">{t('login.forgot_password_button')}</Text>
+          </Pressable>
+        </Link>
+
+        {/* Sign In Button */}
+        <Button
+          testID="login-button"
+          label={t('login.login_button')}
+          onPress={handleSubmit(onSubmit)}
+          variant="primary"
+          textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+          className="bg-primary"
+        />
+        <Text className="text-xs text-neutral-off-white text-center px-8 mt-4">
+          <Trans
+            i18nKey="login.disclaimer"
+            components={{
+              Bold: (
+                <Text
+                  className="text-primary font-bold underline"
+                  onPress={handleTermsAndConditionsPress}
+                />
+              ),
+              LinkPrivacy: (
+                <Text
+                  className="text-primary font-bold underline"
+                  onPress={handlePrivacyPolicyPress}
+                />
+              ),
+              LinkCookies: (
+                <Text
+                  className="text-primary font-bold underline"
+                  onPress={handleCookiesPolicyPress}
+                />
+              ),
+            }}
+            t={t}
+          />
+        </Text>
       </View>
-    </KeyboardAvoidingView>
+
+      <View className="space-y-1 gap-4" style={{ flex: 3 }}>
+        {/* Separator line with OR */}
+        <View className="my-4 flex-row items-center justify-center">
+          <View className="flex-1 border-t border-neutral-dark-gray" />
+          <Text className="mx-4 text-xl text-neutral-dark-gray">O</Text>
+          <View className="flex-1 border-t border-neutral-dark-gray" />
+        </View>
+
+        {/* Social Login Buttons */}
+        <Button
+          testID="google-signin-button"
+          label={t('login.google_signin')}
+          onPress={onGoogleSignIn}
+          variant="primary"
+          icon={
+            <Image
+              source={require('@/assets/images/android_neutral_rd_na.png')}
+              className="w-[35px] h-[35px]"
+            />
+          }
+          className="!bg-[#F2F2F2] border-[#747775] !p-1 h-10"
+          textClassName="!text-[#1F1F1F] uppercase text-sm !font-bold"
+        />
+        <Button
+          testID="facebook-signin-button"
+          label={t('login.facebook_signin')}
+          onPress={onFacebookSignIn}
+          variant="primary"
+          icon={
+            <Image
+              source={require('@/assets/images/Facebook_Logo_Secondary.png')}
+              className="w-[25px] h-[25px] mr-2"
+            />
+          }
+          className="!bg-[#4267b2] !p-1 h-10"
+          textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+        />
+      </View>
+
+      <View className="flex-row items-center justify-center">
+        <Text className="text-sm text-neutral-off-white">{t('login.no_account')}</Text>
+        <Link href="/(auth)/register" asChild>
+          <Pressable>
+            <Text className="text-sm text-primary font-semibold">{t('login.register_button')}</Text>
+          </Pressable>
+        </Link>
+      </View>
+    </View>
   )
 }

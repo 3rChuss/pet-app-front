@@ -26,10 +26,10 @@ export default function HomeScreen() {
       <StatusBar style="light" />
       <VideoView player={player} style={styles.video} playsInline contentFit="cover" />
       <View style={styles.overlay}>
-        <Text className="font-quicksand text-8xl text-base-neutral-off-white mb-4">
+        <Text className="font-quicksand text-8xl text-neutral-off-white mb-4">
           {t('app.welcome')}
         </Text>
-        <Text className="font-nunito text-xl text-base-neutral-off-white text-center">
+        <Text className="font-nunito text-xl text-neutral-off-white text-center">
           {t('app.welcome_message')}
         </Text>
       </View>
