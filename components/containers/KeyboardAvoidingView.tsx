@@ -10,7 +10,7 @@ export const KeyboardAvoidingView = ({
   return (
     <KeyboardAvoidingViewNative
       className={className}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
     >
       {children}
     </KeyboardAvoidingViewNative>

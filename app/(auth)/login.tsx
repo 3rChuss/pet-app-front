@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, Text, StyleSheet } from 'react-native'
@@ -10,7 +9,6 @@ import { useAuth } from '@/lib/auth'
 const assetId = require('@/assets/videos/home_background.mp4')
 
 export default function Login() {
-  const router = useRouter()
   const signIn = useAuth.use.signIn()
   const player = useVideoPlayer({ assetId }, player => {
     player.loop = true
@@ -35,7 +33,7 @@ export default function Login() {
   }
 
   return (
-    <Container className="flex-1 bg-trasparent">
+    <Container className="flex-1 bg-transparent">
       <StatusBar style="inverted" />
       <VideoView player={player} style={styles.video} playsInline contentFit="cover" />
       <View style={styles.overlay} className="bg-neutral-off-white/30" />

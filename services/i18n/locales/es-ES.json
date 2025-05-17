@@ -65,5 +65,34 @@
         "register_button": "Registrarse",
         "forgot_password_button": "¿Olvidaste tu contraseña?",
         "no_account": "¿No tienes una cuenta?"
+    },
+    "register": {
+        "title": "Registrarse",
+        "description": "Crea una cuenta para unirte a la comunidad Zooki.",
+        "name_placeholder": "Nombre completo",
+        "email_placeholder": "Correo electrónico",
+        "password_placeholder": "Mín. 8 caracteres, mayús, minús, núm, especial",
+        "confirm_password_placeholder": "Confirmar contraseña",
+        "register_button": "Registrarse",
+        "login_button": "Iniciar sesión",
+        "terms_conditions": "Al registrarte, aceptas nuestros <Bold>Términos y Condiciones</Bold> y <LinkPrivacy>Política de Privacidad</LinkPrivacy>.",
+        "success_title": "Registro exitoso",
+        "success_message": "¡Bienvenido a Zooki! Tu cuenta ha sido creada con éxito."
+    },
+    "forgot_password": {
+        "title": "¿Olvidaste tu contraseña?",
+        "description": "Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+        "send_button": "Enviar enlace de restablecimiento",
+        "back_to_login": "Volver a iniciar sesión",
+        "success_title": "Revisa tu Email",
+        "success_message": "Si existe una cuenta para {{email}}, recibirás un enlace para restablecer tu contraseña.",
+        "email_required": "El correo electrónico es obligatorio",
+        "email_invalid": "El correo electrónico no es válido"
+    },
+    "email_placeholder": "Correo electrónico",
+    "common": {
+        "done": "Hecho",
+        "cancel": "Cancelar",
+        "back": "Atrás"
     }
 }

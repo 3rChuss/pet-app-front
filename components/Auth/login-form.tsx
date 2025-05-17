@@ -166,7 +166,9 @@ export const LoginForm = ({
         <Text className="text-sm text-neutral-off-white">{t('login.no_account')}</Text>
         <Link href="/(auth)/register" asChild>
           <Pressable>
-            <Text className="text-sm text-primary font-semibold">{t('login.register_button')}</Text>
+            <Text className="text-sm text-primary font-semibold ml-1">
+              {t('login.register_button')}
+            </Text>
           </Pressable>
         </Link>
       </View>

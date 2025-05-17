@@ -40,7 +40,8 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-svg-transformer": "^1.5.1",
-    "zustand": "^5.0.4"
+    "zustand": "^5.0.4",
+    "expo-checkbox": "~4.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
