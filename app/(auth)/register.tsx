@@ -222,10 +222,14 @@ export default function RegisterScreen() {
           </View>
           {/* Login Link */}
           <View className="flex-row items-center justify-center" style={{ flex: 1 }}>
-            <Text className="text-sm text-neutral-dark-gray">¿Ya tienes cuenta? </Text>
+            <Text className="text-sm text-neutral-dark-gray">
+              {t('register.already_have_account')}{' '}
+            </Text>
             <Link href="/login" asChild>
               <Pressable>
-                <Text className="text-sm text-neutral-off-white font-semibold">Iniciar Sesión</Text>
+                <Text className="text-sm text-neutral-off-white font-semibold">
+                  {t('register.login_button')}
+                </Text>
               </Pressable>
             </Link>
           </View>

@@ -77,7 +77,8 @@
         "login_button": "Iniciar sesión",
         "terms_conditions": "Al registrarte, aceptas nuestros <Bold>Términos y Condiciones</Bold> y <LinkPrivacy>Política de Privacidad</LinkPrivacy>.",
         "success_title": "Registro exitoso",
-        "success_message": "¡Bienvenido a Zooki! Tu cuenta ha sido creada con éxito."
+        "success_message": "¡Bienvenido a Zooki! Tu cuenta ha sido creada con éxito.",
+        "already_have_account": "¿Ya tienes una cuenta?"
     },
     "forgot_password": {
         "title": "¿Olvidaste tu contraseña?",
