@@ -61,7 +61,7 @@ export default function ForgotPasswordScreen() {
             <Text className="text-4xl font-bold text-primary mb-3">
               {t('forgot_password.title')}
             </Text>
-            <Text className="text-center text-neutral-dark-gray max-w-xs">
+            <Text className="text-center text-neutral-dark-gray max-w-md">
               {t('forgot_password.description')}
             </Text>
           </View>
@@ -73,7 +73,7 @@ export default function ForgotPasswordScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   placeholder={t('email_placeholder')}
-                  className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray rounded-md"
+                  className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
                   keyboardType="email-address"
                   autoCapitalize="none"
                   onBlur={onBlur}
@@ -99,7 +99,9 @@ export default function ForgotPasswordScreen() {
 
           <Link href="/login" asChild>
             <Pressable className="self-center">
-              <Text className="text-sm text-primary">{t('forgot_password.back_to_login')}</Text>
+              <Text className="text-sm text-neutral-dark-gray">
+                {t('forgot_password.back_to_login')}
+              </Text>
             </Pressable>
           </Link>
         </Container>

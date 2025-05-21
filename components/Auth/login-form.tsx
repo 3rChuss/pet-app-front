@@ -126,9 +126,9 @@ export const LoginForm = ({
       <View className="space-y-1 gap-4" style={{ flex: 3 }}>
         {/* Separator line with OR */}
         <View className="my-4 flex-row items-center justify-center">
-          <View className="flex-1 border-t border-neutral-dark-gray" />
-          <Text className="mx-4 text-xl text-neutral-dark-gray">O</Text>
-          <View className="flex-1 border-t border-neutral-dark-gray" />
+          <View className="flex-1 border-t border-neutral-light-gray" />
+          <Text className="mx-4 text-xl text-neutral-light-gray">O</Text>
+          <View className="flex-1 border-t border-neutral-light-gray" />
         </View>
 
         {/* Social Login Buttons */}

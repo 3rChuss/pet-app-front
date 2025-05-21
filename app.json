@@ -18,6 +18,7 @@
     },
     "newArchEnabled": true,
     "scheme": "zooki",
+    "android.package": "com.zooki.app",
     "description": "Pet adoption app",
     "githubUrl": "https://github.com/3rChuss/zooki.git",
     "experiments": {
