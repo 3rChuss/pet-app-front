@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { Slot, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -16,7 +16,6 @@ import { useThemeConfig } from '@/lib/hooks/use-theme-config'
 
 import 'react-native-reanimated'
 import '@/services/i18n'
-import Login from './(auth)/login'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -112,7 +111,7 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         ) : (
           // App screens are part of the main stack
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         )}
         {/* <Stack.Screen name="home" options={{ headerShown: false }} /> */}
         {/* Add other top-level screens/groups like (protected) if they are direct children of this Stack */}

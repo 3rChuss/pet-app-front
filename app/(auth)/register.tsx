@@ -68,7 +68,7 @@ export default function RegisterScreen() {
     Alert.alert(t('register.success_title'), t('register.success_message'), [
       {
         text: t('common.ok'),
-        onPress: () => router.replace('/(app)'), // Navigate to main app screen
+        onPress: () => router.replace('/(tabs)'), // Navigate to main app screen
       },
     ])
   }

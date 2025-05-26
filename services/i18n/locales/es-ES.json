@@ -64,7 +64,10 @@
         "login_button": "Iniciar sesión",
         "register_button": "Registrarse",
         "forgot_password_button": "¿Olvidaste tu contraseña?",
-        "no_account": "¿No tienes una cuenta?"
+        "no_account": "¿No tienes una cuenta?",
+        "email_invalid": "El correo electrónico no es válido",
+        "email_required": "El correo electrónico es obligatorio",
+        "password_required": "La contraseña es obligatoria"
     },
     "register": {
         "title": "Registrarse",
@@ -94,6 +97,25 @@
     "common": {
         "done": "Hecho",
         "cancel": "Cancelar",
-        "back": "Atrás"
+        "back": "Atrás",
+        "ok": "OK"
+    },
+    "tabs": {
+        "home": "Inicio",
+        "search": "Búsqueda",
+        "create": "Crear",
+        "map": "Mapa",
+        "notifications": "Notificaciones",
+        "profile": "Perfil"
+    },
+    "map": {
+        "title": "Mapa",
+        "coming_soon": "Próximamente",
+        "description": "Encuentra mascotas y refugios cerca de ti en nuestro mapa interactivo.",
+        "features": "Funcionalidades",
+        "feature_1": "Ubicación de refugios",
+        "feature_2": "Mascotas perdidas reportadas",
+        "feature_3": "Eventos de adopción",
+        "feature_4": "Veterinarias cercanas"
     }
 }

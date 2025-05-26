@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, Text, StyleSheet } from 'react-native'
@@ -17,9 +18,8 @@ export default function Login() {
   })
 
   const handleLogin = (data: any) => {
-    console.log('Login Data:', data)
     signIn({ access: 'fake-access-token', refresh: 'fake-refresh-token' })
-    // router.replace('/(app)/')
+    router.replace('/(tabs)') // Navigate to home after login
   }
 
   const handleGoogleSignIn = () => {
@@ -46,7 +46,7 @@ export default function Login() {
           flexBasis: 150,
         }}
       >
-        {/* Replace with your actual logo if available */}
+        {/* TODO: Replace with your actual logo if available */}
         {/* <Image source={require('@/assets/images/zooki_logo.png')} className="w-40 h-20" resizeMode="contain" /> */}
         <Text className="text-5xl font-bold text-neutral-off-white">Zooki logo</Text>
       </View>

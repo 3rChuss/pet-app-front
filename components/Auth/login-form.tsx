@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'expo-router'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { Trans, useTranslation } from 'react-i18next'
 import { Text, TextInput, View, Pressable, Image, Linking } from 'react-native'
 import * as z from 'zod'
@@ -12,12 +12,12 @@ import type { SubmitHandler } from 'react-hook-form'
 const schema = z.object({
   email: z
     .string({
-      required_error: 'Email is required',
+      required_error: 'login.email_required',
     })
-    .email('Invalid email format'),
+    .email('login.email_invalid'),
   password: z
     .string({
-      required_error: 'Password is required',
+      required_error: 'login.password_required',
     })
     .min(6, 'Password must be at least 6 characters'),
 })
@@ -42,6 +42,7 @@ export const LoginForm = ({
   } = useForm<FormType>({
     resolver: zodResolver(schema),
   })
+
   const { t } = useTranslation()
 
   const handlePrivacyPolicyPress = () => {
@@ -59,25 +60,39 @@ export const LoginForm = ({
   return (
     <View className="flex-1 justify-between p-6 gap-4">
       <View className="space-y-1 flex justify-end gap-1" style={{ flex: 2 }}>
-        <TextInput
-          testID="email-input"
-          placeholder={t('login.email_placeholder')}
-          className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          {...control.register('email')}
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              testID="email-input"
+              placeholder={t('login.email_placeholder')}
+              className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
         />
-        {errors.email && <Text className="mt-1 text-accent-coral">{errors.email.message}</Text>}
+        {errors.email && <Text className="mt-1 text-accent-coral">{t(errors.email.message!)}</Text>}
 
-        <TextInput
-          testID="password-input"
-          placeholder={t('login.password_placeholder')}
-          secureTextEntry={true}
-          className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
-          {...control.register('password')}
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              testID="password-input"
+              placeholder={t('login.password_placeholder')}
+              secureTextEntry={true}
+              className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
+              value={value}
+              onChangeText={onChange}
+            />
+          )}
         />
         {errors.password && (
-          <Text className="mt-1 text-accent-coral">{errors.password.message}</Text>
+          <Text className="mt-1 text-accent-coral">{t(errors.password.message!)}</Text>
         )}
 
         <Link href="/(auth)/forgot-password" asChild>
@@ -95,6 +110,7 @@ export const LoginForm = ({
           textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
           className="bg-primary"
         />
+
         <Text className="text-xs text-neutral-off-white text-center px-8 mt-4">
           <Trans
             i18nKey="login.disclaimer"

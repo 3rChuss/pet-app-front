@@ -30,5 +30,23 @@
         "unauthorized": "Unauthorized",
         "forbidden": "Forbidden",
         "internal_server_error": "Internal Server Error"
+    },
+    "tabs": {
+        "home": "Home",
+        "search": "Search",
+        "create": "Create",
+        "map": "Map",
+        "notifications": "Notifications",
+        "profile": "Profile"
+    },
+    "map": {
+        "title": "Map",
+        "coming_soon": "Coming Soon",
+        "description": "Find pets and shelters near you on our interactive map.",
+        "features": "Features",
+        "feature_1": "Shelter locations",
+        "feature_2": "Reported lost pets",
+        "feature_3": "Adoption events",
+        "feature_4": "Nearby veterinarians"
     }
 }
