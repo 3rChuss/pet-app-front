@@ -1,26 +1,32 @@
 import '../global.css'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ThemeProvider } from '@react-navigation/native'
-import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import OnboardingScreen from '@/components/Onboarding/Onboarding'
-import { useAuth, hydrateAuth } from '@/lib/auth'
-import { ONBOARDING_KEY } from '@/lib/const/onBoarding'
+import ErrorScreen from '@/components/splash/ErrorScreen'
+import SplashScreenComponent from '@/components/splash/SplashScreen'
+import { hydrateAuth } from '@/lib/auth'
+import { useAppInitialization } from '@/lib/hooks'
 import { useThemeConfig } from '@/lib/hooks/use-theme-config'
 
 import 'react-native-reanimated'
 import '@/services/i18n'
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router'
+export { ErrorBoundary } from 'expo-router'
+
+// App state types for better state management
+export type AppState =
+  | 'initializing' // Initial app load and verification
+  | 'loading' // Loading resources
+  | 'onboarding' // First time user
+  | 'authenticated' // User is logged in
+  | 'unauthenticated' // Needs authentication
+  | 'error' // Critical error occurred
 
 hydrateAuth()
 
@@ -33,64 +39,37 @@ SplashScreen.setOptions({
 })
 
 export default function RootLayout() {
-  const status = useAuth.use.status()
-  const [fontsLoaded, fontError] = useFonts({
-    // Define keys for each font file. These are for expo-font's use.
-    // Tailwind CSS will use the font family names (e.g., 'Quicksand', 'Nunito Sans')
-    // which should be available after `npx react-native-asset` and proper font file naming.
-    'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
-    'Quicksand-SemiBold': require('../assets/fonts/Quicksand-SemiBold.ttf'),
-    'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-    // For Nunito Sans (Variable font), load the main variable font files.
-    // Specific weights and styles (like italic) will be derived from these variable fonts.
-    'NunitoSans-Variable': require('../assets/fonts/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf'),
-    'NunitoSans-Italic-Variable': require('../assets/fonts/NunitoSans-Italic-VariableFont_YTLC,opsz,wdth,wght.ttf'),
-  })
+  const { appState, progress, error } = useAppInitialization()
 
-  const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null)
-
+  // Hide the native splash screen once our custom splash is ready
   useEffect(() => {
-    const checkOnboardingStatus = async () => {
-      try {
-        const value = await AsyncStorage.getItem(ONBOARDING_KEY)
-        setOnboardingCompleted(value === 'true')
-      } catch (e) {
-        console.error('Failed to load onboarding status from AsyncStorage', e)
-        setOnboardingCompleted(false) // Default to not completed if there's an error
-      }
-    }
-    checkOnboardingStatus()
-  }, [])
-
-  useEffect(() => {
-    // Hide the splash screen once fonts are loaded AND onboarding status is checked
-    if ((fontsLoaded || fontError) && onboardingCompleted !== null) {
+    if (appState !== 'initializing') {
       SplashScreen.hideAsync()
     }
-  }, [fontsLoaded, fontError, onboardingCompleted])
+  }, [appState])
 
-  useEffect(() => {
-    if (fontError) {
-      // Log font loading errors
-      // You might want to add more sophisticated error handling here
-      console.error('Font loading error:', fontError)
-    }
-  }, [fontError])
-
-  // If fonts are not loaded OR onboarding status is not checked yet, return null (splash screen is visible)
-  if ((!fontsLoaded && !fontError) || onboardingCompleted === null) {
-    return null
+  // Show custom splash screen during initialization and loading
+  if (appState === 'initializing' || appState === 'loading') {
+    return <SplashScreenComponent progress={progress} onAnimationComplete={() => {}} />
   }
 
-  // If onboarding is not completed, show the OnboardingScreen.
-  // OnboardingScreen will navigate to '/(auth)/login' upon completion or skip.
-  if (onboardingCompleted === false) {
+  // Show error screen if critical error occurred
+  if (appState === 'error') {
+    return (
+      <Providers>
+        <ErrorScreen error={error} />
+      </Providers>
+    )
+  }
+
+  // Show onboarding for first-time users
+  if (appState === 'onboarding') {
     return <OnboardingScreen />
   }
 
-  // Apply base styling according to the branding guide.
-  // Default background: Blanco Roto (#FDFDFD) -> mapped to 'neutral-off-white' in Tailwind config.
-  // NativeWind applies Tailwind classes directly to standard React Native components.
+  // Show main app with appropriate initial route
+  const initialRoute = appState === 'authenticated' ? '(tabs)' : '(auth)'
+
   return (
     <Providers>
       <Stack
@@ -104,17 +83,10 @@ export default function RootLayout() {
             fontWeight: '600',
           },
         }}
+        initialRouteName={initialRoute}
       >
-        {/* Define your main app screens here, they will only be accessible if onboarding is done and user is authenticated */}
-        {status === 'signOut' ? (
-          // Auth screens are part of the main stack
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        ) : (
-          // App screens are part of the main stack
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        )}
-        {/* <Stack.Screen name="home" options={{ headerShown: false }} /> */}
-        {/* Add other top-level screens/groups like (protected) if they are direct children of this Stack */}
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     </Providers>
   )

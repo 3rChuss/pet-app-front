@@ -1,9 +1,10 @@
 import React from 'react'
 
-import Ionicons from '@expo/vector-icons/Ionicons'
 import { View, Text, Pressable, Dimensions } from 'react-native'
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import ZookiIcon from '../icons/ZookiIcon'
 
 interface FloatingTabBarProps {
   state: any
@@ -25,29 +26,23 @@ export function FloatingTabBar({
   const insets = useSafeAreaInsets()
   const translateX = useSharedValue(0)
 
-  const animatedIndicatorStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: translateX.value }],
-    }
-  })
-
   const getTabIcon = (routeName: string, focused: boolean) => {
-    const color = focused ? '#FDFDFD' : '#BDBDBD'
+    const color = focused ? '#A0D2DB' : '#BDBDBD'
     const size = focused ? 26 : 24
 
     switch (routeName) {
       case 'index':
-        return <Ionicons name="home" size={size} color={color} />
+        return <ZookiIcon name="home" size={size} color={color} />
       case 'search':
-        return <Ionicons name="search" size={size} color={color} />
+        return <ZookiIcon name="search" size={size} color={color} />
       case 'map':
-        return <Ionicons name="map" size={size} color={color} />
-      case 'create':
-        return <Ionicons name="add-circle" size={size} color={color} />
+        return <ZookiIcon name="map" size={size} color={color} />
+      // case 'create':
+      //   return <ZookiIcon name="add-circle" size={size} color={color} />
       case 'notifications':
         return (
           <View className="relative">
-            <Ionicons name="notifications" size={size} color={color} />
+            <ZookiIcon name="notifications" size={size} color={color} />
             {unreadNotifications > 0 && (
               <View className="absolute -top-1 -right-1 bg-accent-coral rounded-full min-w-[18px] h-[18px] items-center justify-center">
                 <Text className="text-neutral-off-white text-xs font-bold font-nunito">
@@ -58,9 +53,9 @@ export function FloatingTabBar({
           </View>
         )
       case 'profile':
-        return <Ionicons name="person" size={size} color={color} />
+        return <ZookiIcon name="person" size={size} color={color} />
       default:
-        return <Ionicons name="ellipse" size={size} color={color} />
+        return <ZookiIcon name="ellipse" size={size} color={color} />
     }
   }
 
@@ -72,6 +67,8 @@ export function FloatingTabBar({
     })
   }, [state.index, translateX])
 
+  const filteredRoutes = state.routes.filter((route: any) => !route.name.includes('disabled'))
+
   return (
     <View
       className="absolute left-4 right-4 bg-neutral-off-white rounded-2xl shadow-lg border border-neutral-light-gray"
@@ -80,23 +77,9 @@ export function FloatingTabBar({
         height: 60,
       }}
     >
-      {/* Animated Indicator */}
-      <Animated.View
-        className="absolute bg-primary rounded-full"
-        style={[
-          {
-            width: INDICATOR_SIZE,
-            height: INDICATOR_SIZE,
-            left: 8,
-            bottom: 30,
-          },
-          animatedIndicatorStyle,
-        ]}
-      />
-
       {/* Tab Items */}
       <View className="flex-row flex-1 items-center justify-around px-3">
-        {state.routes.map((route: any, index: number) => {
+        {filteredRoutes.map((route: any, index: number) => {
           const { options } = descriptors[route.key]
           const isFocused = state.index === index
 
@@ -124,33 +107,20 @@ export function FloatingTabBar({
               key={route.key}
               onPress={onPress}
               onLongPress={onLongPress}
-              className="flex-1 items-center justify-center"
+              className="flex-1 items-center justify-center mt-1"
               style={{ minHeight: 48 }}
             >
-              <Animated.View
-                className="items-center justify-center"
-                style={[
-                  {
-                    zIndex: 10,
-                    transform: [{ translateY: isFocused ? -25 : 0 }],
-                    animationDelay: isFocused ? '0.1s' : '0s',
-                    transitionProperty: 'transform',
-                    transitionDuration: '0.2s',
-                  },
-                ]}
-              >
+              <Animated.View className="items-center justify-center z-10">
                 {getTabIcon(route.name, isFocused)}
               </Animated.View>
-
-              {/* Label - only show for non-focused tabs */}
-              {!isFocused && (
-                <Text
-                  className="text-neutral-medium-gray font-nunito text-xs mt-1"
-                  numberOfLines={1}
-                >
-                  {options.title}
-                </Text>
-              )}
+              <Text
+                className={`font-nunito text-xs mt-1 ${
+                  isFocused ? 'text-primary font-semibold' : 'text-neutral-medium-gray'
+                }`}
+                numberOfLines={1}
+              >
+                {options.title}
+              </Text>
             </Pressable>
           )
         })}

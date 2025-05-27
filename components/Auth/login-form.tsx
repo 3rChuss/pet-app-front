@@ -19,7 +19,7 @@ const schema = z.object({
     .string({
       required_error: 'login.password_required',
     })
-    .min(6, 'Password must be at least 6 characters'),
+    .min(6, 'login.password_min_length'),
 })
 
 export type FormType = z.infer<typeof schema>
@@ -56,10 +56,10 @@ export const LoginForm = ({
   const handleTermsAndConditionsPress = () => {
     Linking.openURL('https://tu-pagina-web.com/terminos-y-condiciones')
   }
-
   return (
-    <View className="flex-1 justify-between p-6 gap-4">
-      <View className="space-y-1 flex justify-end gap-1" style={{ flex: 2 }}>
+    <View className="w-full">
+      {/* Form Fields Section */}
+      <View className="gap-y-2 mb-6">
         <Controller
           control={control}
           name="email"
@@ -72,11 +72,17 @@ export const LoginForm = ({
               autoCapitalize="none"
               value={value}
               onChangeText={onChange}
+              multiline={false}
+              textContentType="emailAddress"
+              autoComplete="email"
+              autoCorrect={false}
+              spellCheck={false}
             />
           )}
         />
-        {errors.email && <Text className="mt-1 text-accent-coral">{t(errors.email.message!)}</Text>}
-
+        {errors.email && (
+          <Text className="text-accent-coral text-xs">{t(errors.email.message!)}</Text>
+        )}
         <Controller
           control={control}
           name="password"
@@ -88,15 +94,19 @@ export const LoginForm = ({
               className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
               value={value}
               onChangeText={onChange}
+              multiline={false}
+              textContentType="password"
+              autoComplete="password"
+              autoCapitalize="none"
             />
           )}
         />
         {errors.password && (
-          <Text className="mt-1 text-accent-coral">{t(errors.password.message!)}</Text>
+          <Text className="text-accent-coral text-xs">{t(errors.password.message!)}</Text>
         )}
 
         <Link href="/(auth)/forgot-password" asChild>
-          <Pressable className="mt-2 mb-8 self-end">
+          <Pressable className="mt-2 mb-4 self-end">
             <Text className="text-sm text-primary">{t('login.forgot_password_button')}</Text>
           </Pressable>
         </Link>
@@ -110,8 +120,7 @@ export const LoginForm = ({
           textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
           className="bg-primary"
         />
-
-        <Text className="text-xs text-neutral-off-white text-center px-8 mt-4">
+        <Text className="text-xs text-neutral-off-white text-center px-4 mt-4">
           <Trans
             i18nKey="login.disclaimer"
             components={{
@@ -139,9 +148,10 @@ export const LoginForm = ({
         </Text>
       </View>
 
-      <View className="space-y-1 gap-4" style={{ flex: 3 }}>
+      {/* Social Login Section */}
+      <View className="gap-y-2 mt-6 ">
         {/* Separator line with OR */}
-        <View className="my-4 flex-row items-center justify-center">
+        <View className="my-4 flex-row items-center justify-center opacity-70">
           <View className="flex-1 border-t border-neutral-light-gray" />
           <Text className="mx-4 text-xl text-neutral-light-gray">O</Text>
           <View className="flex-1 border-t border-neutral-light-gray" />
@@ -178,7 +188,8 @@ export const LoginForm = ({
         />
       </View>
 
-      <View className="flex-row items-center justify-center">
+      {/* Register Link */}
+      <View className="flex-row items-center justify-center mt-6">
         <Text className="text-sm text-neutral-off-white">{t('login.no_account')}</Text>
         <Link href="/(auth)/register" asChild>
           <Pressable>

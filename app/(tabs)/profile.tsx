@@ -1,12 +1,16 @@
 import React from 'react'
 
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { router } from 'expo-router'
 import { View, Text, ScrollView, Pressable } from 'react-native'
 
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
+import { useAuth } from '@/lib/auth'
 
 export default function ProfileScreen() {
+  const signOut = useAuth.use.signOut()
+
   const userStats = {
     posts: 24,
     followers: 156,
@@ -21,6 +25,15 @@ export default function ProfileScreen() {
     { id: 5, title: 'Ayuda y soporte', icon: 'help-circle-outline', color: '#FFDA63' },
     { id: 6, title: 'Acerca de', icon: 'information-circle-outline', color: '#BDBDBD' },
   ]
+
+  const onLogout = async () => {
+    try {
+      await signOut()
+      router.replace('/(auth)/login')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
 
   return (
     <Container className="flex-1 bg-neutral-off-white">
@@ -103,7 +116,7 @@ export default function ProfileScreen() {
           <View className="mt-8 mb-4">
             <Button
               label="Cerrar sesión"
-              onPress={() => {}}
+              onPress={onLogout}
               variant="outline"
               className="border-accent-coral"
               textClassName="text-accent-coral"

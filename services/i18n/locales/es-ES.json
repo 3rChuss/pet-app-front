@@ -7,16 +7,45 @@
     },
     "onboarding": {
         "skip": "Saltar",
-        "done": "Hecho",
+        "done": "Comenzar",
         "next": "Siguiente",
+        "back": "Atrás",
         "welcome1": "¡Bienvenido a Zooki!",
         "text1": "Tu comunidad para encontrar el match perfecto para tu mascota.",
+        "pet_selection_title": "¿Qué mascotas tienes?",
+        "pet_selection_text": "Selecciona los tipos de mascotas que tienes o te interesan. Esto nos ayudará a personalizar tu experiencia.",
+        "location_title": "¿Dónde te encuentras?",
+        "location_text": "Permítenos conocer tu ubicación para mostrarte mascotas y eventos cercanos.",
+        "interests_title": "¿Qué te interesa?",
+        "interests_text": "Selecciona tus intereses para personalizar el contenido que ves en Zooki.",
         "welcome2": "Descubre Conexiones",
         "text2": "Explora perfiles y encuentra amigos peludos cercanos.",
         "welcome3": "Comparte Momentos",
         "text3": "Publica fotos y comparte historias con tu comunidad.",
-        "welcome4": "¡Comienza la Aventura!",
-        "text4": "Únete a Zooki, descrube lugares y haz amigos."
+        "welcome4": "¡Todo listo!",
+        "text4": "Tu perfil está personalizado. ¡Comienza a descubrir la comunidad Zooki!",
+        "location_enable": "Activar ubicación",
+        "location_skip": "Configurar después",
+        "location_permission": "Necesitamos acceso a tu ubicación para una mejor experiencia",
+        "location_enabled": "Ubicación activada {{city}}, {{region}}, ¡Gracias!",
+        "pets": {
+            "dogs": "Perros",
+            "cats": "Gatos",
+            "birds": "Aves",
+            "rabbits": "Conejos",
+            "other": "Otros"
+        },
+        "interests": {
+            "adoption": "Adopción",
+            "breeding": "Cría",
+            "training": "Entrenamiento",
+            "playdates": "Citas de juego",
+            "pet_care": "Cuidado",
+            "veterinary": "Veterinaria",
+            "grooming": "Peluquería",
+            "community": "Comunidad",
+            "matching": "Conexiones"
+        }
     },
     "settings": {
         "title": "Configuración",
@@ -67,18 +96,27 @@
         "no_account": "¿No tienes una cuenta?",
         "email_invalid": "El correo electrónico no es válido",
         "email_required": "El correo electrónico es obligatorio",
-        "password_required": "La contraseña es obligatoria"
+        "password_required": "La contraseña es obligatoria",
+        "password_min_length": "La contraseña debe tener al menos 8 caracteres"
     },
     "register": {
         "title": "Registrarse",
         "description": "Crea una cuenta para unirte a la comunidad Zooki.",
         "name_placeholder": "Nombre completo",
         "email_placeholder": "Correo electrónico",
+        "email_invalid": "El correo electrónico no es válido",
         "password_placeholder": "Mín. 8 caracteres, mayús, minús, núm, especial",
+        "password_lowercase": "Debe contener al menos una letra minúscula",
+        "password_uppercase": "Debe contener al menos una letra mayúscula",
+        "password_number": "Debe contener al menos un número",
+        "password_special": "Debe contener al menos un carácter especial",
+        "password_length": "Debe tener al menos 8 caracteres",
+        "password_mismatch": "Las contraseñas no coinciden",
         "confirm_password_placeholder": "Confirmar contraseña",
         "register_button": "Registrarse",
         "login_button": "Iniciar sesión",
         "terms_conditions": "Al registrarte, aceptas nuestros <Bold>Términos y Condiciones</Bold> y <LinkPrivacy>Política de Privacidad</LinkPrivacy>.",
+        "accept_terms_required": "Debes aceptar los Términos y Condiciones",
         "success_title": "Registro exitoso",
         "success_message": "¡Bienvenido a Zooki! Tu cuenta ha sido creada con éxito.",
         "already_have_account": "¿Ya tienes una cuenta?"
@@ -93,12 +131,14 @@
         "email_required": "El correo electrónico es obligatorio",
         "email_invalid": "El correo electrónico no es válido"
     },
-    "email_placeholder": "Correo electrónico",
     "common": {
         "done": "Hecho",
         "cancel": "Cancelar",
         "back": "Atrás",
-        "ok": "OK"
+        "ok": "OK",
+        "password_required": "La contraseña es obligatoria",
+        "email_required": "El correo electrónico es obligatorio",
+        "email_placeholder": "Correo electrónico"
     },
     "tabs": {
         "home": "Inicio",

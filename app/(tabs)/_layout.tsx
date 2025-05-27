@@ -11,6 +11,7 @@ export default function TabLayout() {
       tabBar={props => <FloatingTabBar {...props} unreadNotifications={3} />}
       screenOptions={{
         headerShown: false,
+        animation: 'shift',
       }}
     >
       <Tabs.Screen
@@ -31,12 +32,12 @@ export default function TabLayout() {
           title: t('tabs.map', { defaultValue: 'Mapa' }),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="create"
         options={{
           title: t('tabs.create', { defaultValue: 'Crear' }),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="notifications"
         options={{
