@@ -6,10 +6,13 @@ import { useFonts } from 'expo-font'
 import { useAuth } from '@/lib/auth'
 import { ONBOARDING_KEY } from '@/lib/const/onBoarding'
 
+import { useGuestMode } from './useGuestMode'
+
 export type AppState =
   | 'initializing' // Initial app load and verification
   | 'loading' // Loading resources
   | 'onboarding' // First time user
+  | 'guest' // Anonymous browsing mode
   | 'authenticated' // User is logged in
   | 'unauthenticated' // Needs authentication
   | 'error' // Critical error occurred
@@ -18,14 +21,21 @@ interface InitializationResult {
   appState: AppState
   progress: number
   error?: string
+  enterGuestMode: () => void
 }
 
 export function useAppInitialization(): InitializationResult {
+  const { enterGuestMode } = useGuestMode()
   const [appState, setAppState] = useState<AppState>('initializing')
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string>()
 
   const authStatus = useAuth.use.status()
+
+  const onEnterGuestMode = () => {
+    setAppState('guest')
+    enterGuestMode()
+  }
 
   const [fontsLoaded, fontError] = useFonts({
     'Quicksand-Medium': require('../../assets/fonts/Quicksand-Medium.ttf'),
@@ -107,10 +117,10 @@ export function useAppInitialization(): InitializationResult {
       }
     }
   }, [authStatus, appState, onboardingCompleted, fontsLoaded])
-
   return {
     appState,
     progress,
     error,
+    enterGuestMode: onEnterGuestMode,
   }
 }

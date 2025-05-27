@@ -3,8 +3,26 @@ import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 
 import { Container } from '@/components/containers/Container'
+import MockPostFeed from '@/components/Guest/MockPostFeed'
+import { useGuestModeContext } from '@/lib/context/GuestModeContext'
 
 export default function HomeScreen() {
+  const { isGuest } = useGuestModeContext()
+
+  if (isGuest) {
+    return (
+      <Container className="flex-1 bg-neutral-off-white">
+        <View className="px-4 py-3 bg-amber-100 border-b border-amber-200">
+          <Text className="text-center text-amber-800 font-nunito text-sm">
+            🎯 Estás explorando en modo invitado •
+            <Text className="font-bold"> ¡Regístrate gratis para interactuar!</Text>
+          </Text>
+        </View>
+        <MockPostFeed />
+      </Container>
+    )
+  }
+
   return (
     <Container className="flex-1 bg-neutral-off-white">
       <ScrollView className="flex-1">

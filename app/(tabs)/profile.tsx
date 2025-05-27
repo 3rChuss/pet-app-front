@@ -2,14 +2,20 @@ import React from 'react'
 
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { router } from 'expo-router'
-import { View, Text, ScrollView, Pressable } from 'react-native'
+import { View, Text, ScrollView, Pressable, Image } from 'react-native'
 
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import { useAuth } from '@/lib/auth'
+import { MOCK_PROFILES } from '@/lib/const/mockData'
+import { useGuestModeContext } from '@/lib/context/GuestModeContext'
 
 export default function ProfileScreen() {
   const signOut = useAuth.use.signOut()
+  const { isGuest, trackInteraction } = useGuestModeContext()
+
+  // Mock profile for guest mode
+  const guestProfile = MOCK_PROFILES[0] // Use first mock profile
 
   const userStats = {
     posts: 24,
@@ -33,6 +39,98 @@ export default function ProfileScreen() {
     } catch (error) {
       console.error('Error signing out:', error)
     }
+  }
+
+  if (isGuest) {
+    return (
+      <Container className="flex-1 bg-neutral-off-white">
+        <ScrollView className="flex-1">
+          <View className="p-6">
+            {/* Guest Profile Header */}
+            <View className="items-center mb-6">
+              <Image
+                source={{ uri: guestProfile.avatar }}
+                style={{ width: 100, height: 100, borderRadius: 50 }}
+                className="mb-4"
+              />
+              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+                {guestProfile.name}
+              </Text>
+              <Text className="text-neutral-medium-gray font-nunito text-center mb-2">
+                {guestProfile.bio}
+              </Text>
+              <Text className="text-neutral-medium-gray font-nunito">
+                📍 {guestProfile.location}
+              </Text>
+            </View>
+
+            {/* Stats */}
+            <View className="flex-row justify-around bg-white p-4 rounded-xl mb-6">
+              <View className="items-center">
+                <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
+                  {guestProfile.stats.posts}
+                </Text>
+                <Text className="text-neutral-medium-gray font-nunito">Publicaciones</Text>
+              </View>
+              <View className="items-center">
+                <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
+                  {guestProfile.stats.followers}
+                </Text>
+                <Text className="text-neutral-medium-gray font-nunito">Seguidores</Text>
+              </View>
+              <View className="items-center">
+                <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
+                  {guestProfile.stats.following}
+                </Text>
+                <Text className="text-neutral-medium-gray font-nunito">Siguiendo</Text>
+              </View>
+            </View>
+
+            {/* Pets Section */}
+            <View className="mb-6">
+              <Text className="text-lg font-semibold text-neutral-dark-gray font-quicksand mb-3">
+                Sus mascotas 🐾
+              </Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {guestProfile.pets.map((pet, index) => (
+                  <View key={index} className="mr-4 items-center">
+                    <Image
+                      source={{ uri: pet.image }}
+                      style={{ width: 80, height: 80, borderRadius: 40 }}
+                      className="mb-2"
+                    />
+                    <Text className="text-sm font-medium text-neutral-dark-gray font-nunito">
+                      {pet.name}
+                    </Text>
+                    <Text className="text-xs text-neutral-medium-gray font-nunito">
+                      {pet.type} • {pet.age}
+                    </Text>
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+
+            {/* CTA to Register */}
+            <View className="bg-primary/10 p-6 rounded-xl mb-6">
+              <Text className="text-lg font-semibold text-neutral-dark-gray font-quicksand mb-2 text-center">
+                ¡Crea tu perfil ahora! 🎉
+              </Text>
+              <Text className="text-neutral-medium-gray font-nunito text-center mb-4">
+                Regístrate gratis para personalizar tu perfil, subir fotos de tu mascota y conectar
+                con la comunidad.
+              </Text>
+              <Button
+                label="Crear cuenta gratis"
+                onPress={() => trackInteraction('profile')}
+                variant="primary"
+                className="bg-primary"
+                textClassName="!text-white"
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </Container>
+    )
   }
 
   return (

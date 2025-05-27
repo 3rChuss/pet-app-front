@@ -131,7 +131,6 @@ export default function RegisterScreen() {
     signIn({ access: 'new-user-access-token', refresh: 'new-user-refresh-token' })
     // Navigate to onboarding or main feed
     // router.replace('/onboarding-features'); // If you have this route
-    // router.replace('/(app)/'); // Or directly to the app
 
     Alert.alert(t('register.success_title'), t('register.success_message'), [
       {

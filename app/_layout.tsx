@@ -11,11 +11,12 @@ import OnboardingScreen from '@/components/Onboarding/Onboarding'
 import ErrorScreen from '@/components/splash/ErrorScreen'
 import SplashScreenComponent from '@/components/splash/SplashScreen'
 import { hydrateAuth } from '@/lib/auth'
+import { GuestModeProvider } from '@/lib/context/GuestModeContext'
 import { useAppInitialization } from '@/lib/hooks'
 import { useThemeConfig } from '@/lib/hooks/use-theme-config'
-
 import 'react-native-reanimated'
 import '@/services/i18n'
+import { UserMode } from '@/lib/types/guest-mode'
 
 export { ErrorBoundary } from 'expo-router'
 
@@ -24,6 +25,7 @@ export type AppState =
   | 'initializing' // Initial app load and verification
   | 'loading' // Loading resources
   | 'onboarding' // First time user
+  | 'guest' // Anonymous browsing mode
   | 'authenticated' // User is logged in
   | 'unauthenticated' // Needs authentication
   | 'error' // Critical error occurred
@@ -39,7 +41,14 @@ SplashScreen.setOptions({
 })
 
 export default function RootLayout() {
-  const { appState, progress, error } = useAppInitialization()
+  const { appState, progress, error, enterGuestMode } = useAppInitialization()
+
+  const userMode =
+    appState === 'guest'
+      ? 'guest'
+      : appState === 'authenticated'
+        ? 'authenticated'
+        : 'unauthenticated'
 
   // Hide the native splash screen once our custom splash is ready
   useEffect(() => {
@@ -56,22 +65,21 @@ export default function RootLayout() {
   // Show error screen if critical error occurred
   if (appState === 'error') {
     return (
-      <Providers>
+      <Providers userMode={userMode}>
         <ErrorScreen error={error} />
       </Providers>
     )
   }
-
   // Show onboarding for first-time users
   if (appState === 'onboarding') {
-    return <OnboardingScreen />
+    return <OnboardingScreen onGuestMode={enterGuestMode} />
   }
-
   // Show main app with appropriate initial route
-  const initialRoute = appState === 'authenticated' ? '(tabs)' : '(auth)'
+  const initialRoute =
+    appState === 'authenticated' ? '(tabs)' : appState === 'guest' ? '(tabs)' : '(auth)'
 
   return (
-    <Providers>
+    <Providers userMode={userMode}>
       <Stack
         screenOptions={{
           headerStyle: {
@@ -92,11 +100,13 @@ export default function RootLayout() {
   )
 }
 
-function Providers({ children }: { children: React.ReactNode }) {
+function Providers({ children, userMode }: { children: React.ReactNode; userMode: UserMode }) {
   const theme = useThemeConfig()
   return (
     <GestureHandlerRootView style={styles.container} className={theme.dark ? `dark` : undefined}>
-      <ThemeProvider value={theme}>{children}</ThemeProvider>
+      <GuestModeProvider userMode={userMode}>
+        <ThemeProvider value={theme}>{children}</ThemeProvider>
+      </GuestModeProvider>
     </GestureHandlerRootView>
   )
 }

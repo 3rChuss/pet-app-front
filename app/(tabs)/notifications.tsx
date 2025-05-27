@@ -3,7 +3,9 @@ import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { View, Text, ScrollView, Pressable } from 'react-native'
 
+import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
+import { useGuestModeContext } from '@/lib/context/GuestModeContext'
 
 interface Notification {
   id: string
@@ -17,6 +19,56 @@ interface Notification {
 }
 
 export default function NotificationsScreen() {
+  const { isGuest, trackInteraction } = useGuestModeContext()
+
+  if (isGuest) {
+    return (
+      <Container className="flex-1 bg-neutral-off-white">
+        <ScrollView className="flex-1">
+          <View className="p-6">
+            <Text className="text-3xl font-bold text-neutral-dark-gray font-quicksand mb-6">
+              Notificaciones
+            </Text>
+
+            {/* Guest State */}
+            <View className="items-center justify-center flex-1 py-20">
+              <View className="bg-gray-100 p-8 rounded-full mb-6">
+                <Ionicons name="notifications-off" size={64} color="#BDBDBD" />
+              </View>
+
+              <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mb-3 text-center">
+                Las notificaciones están deshabilitadas
+              </Text>
+
+              <Text className="text-neutral-medium-gray font-nunito text-center mb-6">
+                Regístrate para recibir notificaciones sobre me gusta, comentarios, nuevos
+                seguidores y más.
+              </Text>
+
+              <View className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+                <Text className="text-yellow-800 font-nunito text-center">
+                  📱 <Text className="font-semibold">Vista previa de notificaciones</Text>
+                  {'\n'}• Me gusta en tus publicaciones
+                  {'\n'}• Comentarios y respuestas
+                  {'\n'}• Nuevos seguidores
+                  {'\n'}• Recomendaciones personalizadas
+                </Text>
+              </View>
+
+              <Button
+                label="Crear cuenta para recibir notificaciones"
+                onPress={() => trackInteraction('notifications')}
+                variant="primary"
+                className="bg-primary"
+                textClassName="!text-white"
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </Container>
+    )
+  }
+
   // Mock notifications data
   const notifications: Notification[] = [
     {
@@ -53,7 +105,7 @@ export default function NotificationsScreen() {
       id: '4',
       type: 'recommendation',
       title: 'Lugar recomendado',
-      message: 'Descubre un nuevo parque pet-friendly cerca de ti',
+      message: 'Descubre el parque canino cerca de ti',
       time: 'Hace 2 días',
       read: true,
       icon: 'location',
@@ -62,11 +114,11 @@ export default function NotificationsScreen() {
     {
       id: '5',
       type: 'system',
-      title: 'Bienvenido a Zooki',
-      message: 'Completa tu perfil para obtener mejores recomendaciones',
+      title: 'Consejo del día',
+      message: 'Tips para mantener a tu mascota hidratada en verano',
       time: 'Hace 3 días',
       read: true,
-      icon: 'information-circle',
+      icon: 'bulb',
       iconColor: '#F8B595',
     },
   ]
@@ -77,75 +129,77 @@ export default function NotificationsScreen() {
     <Container className="flex-1 bg-neutral-off-white">
       <ScrollView className="flex-1">
         <View className="p-6">
-          <View className="flex-row items-center justify-between mb-6">
+          <View className="flex-row justify-between items-center mb-6">
             <Text className="text-3xl font-bold text-neutral-dark-gray font-quicksand">
               Notificaciones
             </Text>
             {unreadCount > 0 && (
               <View className="bg-accent-coral rounded-full px-3 py-1">
-                <Text className="text-neutral-off-white font-nunito font-bold text-sm">
-                  {unreadCount}
+                <Text className="text-white font-nunito font-bold text-sm">
+                  {unreadCount} nuevas
                 </Text>
               </View>
             )}
           </View>
 
           {notifications.length === 0 ? (
-            <View className="bg-neutral-light-gray rounded-xl p-8 items-center">
-              <Ionicons name="notifications-off" size={48} color="#BDBDBD" />
-              <Text className="text-neutral-medium-gray font-nunito text-center mt-4 text-lg">
-                No tienes notificaciones
+            <View className="items-center justify-center py-20">
+              <Ionicons name="notifications-outline" size={64} color="#BDBDBD" />
+              <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mt-4 mb-2">
+                No hay notificaciones
               </Text>
-              <Text className="text-neutral-medium-gray font-nunito text-center mt-2">
-                Cuando tengas actividad nueva, aparecerá aquí
+              <Text className="text-neutral-medium-gray font-nunito text-center">
+                Cuando tengas nuevas notificaciones aparecerán aquí
               </Text>
             </View>
           ) : (
-            <View>
+            <View className="space-y-2">
               {notifications.map(notification => (
                 <Pressable
                   key={notification.id}
-                  className={`${
-                    !notification.read ? 'bg-primary/5' : 'bg-neutral-off-white'
-                  } border border-neutral-light-gray rounded-xl p-4 mb-3 flex-row items-start`}
+                  className={`p-4 rounded-xl flex-row items-start ${
+                    notification.read
+                      ? 'bg-neutral-light-gray'
+                      : 'bg-white border border-primary/20'
+                  }`}
                 >
-                  <View className="mr-4 mt-1">
+                  <View
+                    className="w-10 h-10 rounded-full items-center justify-center mr-3"
+                    style={{ backgroundColor: `${notification.iconColor}20` }}
+                  >
                     <Ionicons
                       name={notification.icon as any}
-                      size={24}
+                      size={20}
                       color={notification.iconColor}
                     />
                   </View>
 
                   <View className="flex-1">
-                    <View className="flex-row items-start justify-between mb-1">
-                      <Text className="text-neutral-dark-gray font-quicksand font-semibold flex-1">
-                        {notification.title}
-                      </Text>
-                      {!notification.read && (
-                        <View className="bg-primary rounded-full w-2 h-2 ml-2 mt-2" />
-                      )}
-                    </View>
-
-                    <Text className="text-neutral-dark-gray font-nunito mb-2">
+                    <Text className="text-neutral-dark-gray font-quicksand font-semibold mb-1">
+                      {notification.title}
+                    </Text>
+                    <Text className="text-neutral-medium-gray font-nunito mb-2">
                       {notification.message}
                     </Text>
-
                     <Text className="text-neutral-medium-gray font-nunito text-sm">
                       {notification.time}
                     </Text>
                   </View>
+
+                  {!notification.read && <View className="w-3 h-3 bg-primary rounded-full mt-2" />}
                 </Pressable>
               ))}
             </View>
           )}
 
-          {notifications.length > 0 && (
-            <Pressable className="mt-6 p-4 border border-neutral-medium-gray rounded-xl">
-              <Text className="text-primary font-nunito font-semibold text-center">
-                Marcar todas como leídas
-              </Text>
-            </Pressable>
+          {unreadCount > 0 && (
+            <View className="mt-6">
+              <Pressable className="bg-neutral-light-gray rounded-xl p-4 items-center">
+                <Text className="text-neutral-medium-gray font-nunito">
+                  Marcar todas como leídas
+                </Text>
+              </Pressable>
+            </View>
           )}
         </View>
       </ScrollView>

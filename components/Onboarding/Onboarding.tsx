@@ -16,7 +16,11 @@ import { ONBOARDING_KEY, slides, PET_TYPES, INTERESTS } from '@/lib/const/onBoar
 import { useUserPreferences } from '@/lib/hooks/useUserPreferences'
 import { OnboardingSlide } from '@/lib/types/onboarding'
 
-export default function OnboardingScreen() {
+interface OnboardingScreenProps {
+  onGuestMode?: () => void
+}
+
+export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps) {
   const { t } = useTranslation()
   const router = useRouter()
   const slideRef = useRef<AppIntroSlider>(null)
@@ -43,7 +47,7 @@ export default function OnboardingScreen() {
         key={item.key}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <View style={[styles.contentOverlay, { backgroundColor: item.backgroundColor + '99' }]}>
+          <View style={[styles.contentOverlay]}>
             <StatusBar style="light" />
 
             {!isInteractionSlide && (
@@ -164,7 +168,7 @@ export default function OnboardingScreen() {
   const onSlideChange = (index: number) => {
     setCurrentSlideIndex(index)
   }
-  const currentSlide = useMemo(() => slides[currentSlideIndex], [currentSlideIndex, slides])
+  const currentSlide = useMemo(() => slides[currentSlideIndex], [currentSlideIndex])
   const canSkip = currentSlide?.skipable
 
   return (
@@ -207,12 +211,20 @@ export default function OnboardingScreen() {
           <Button
             variant="primary"
             textClassName="!text-primary uppercase text-sm !font-bold"
-            className="bg-neutral-off-white"
+            className="bg-neutral-off-white mb-3"
             label={t('onboarding.done')}
             testID="onboarding-done-button"
             onPress={onDone}
             isLoading={preferencesLoading}
           />
+          {onGuestMode && (
+            <Button
+              variant="tertiary"
+              textClassName="!text-neutral-off-white text-sm"
+              label="Explorar sin cuenta"
+              onPress={onGuestMode}
+            />
+          )}
         </View>
       )}
       ref={slideRef}
@@ -232,6 +244,7 @@ const styles = StyleSheet.create({
   },
   contentOverlay: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 24,

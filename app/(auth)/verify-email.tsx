@@ -85,7 +85,7 @@ export default function VerifyEmailScreen() {
   }
 
   const handleGoHome = () => {
-    router.replace('/(app)')
+    router.replace('/(tabs)')
   }
 
   return (

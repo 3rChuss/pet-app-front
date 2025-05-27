@@ -94,9 +94,9 @@ export default function LocationSetup({ onLocationSet, location }: LocationSetup
             {t('onboarding.location_skip')}
           </Text>
         ) : (
-          <Text className="text-center text-sm">
+          <Text className="text-center text-sm text-neutral-off-white">
             {t('onboarding.location_enabled', {
-              city: location.city || 'tu ubicación',
+              city: location.city || ', tu ubicación',
               region: location.region || '',
             })}
           </Text>
