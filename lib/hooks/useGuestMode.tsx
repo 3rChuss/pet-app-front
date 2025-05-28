@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GUEST_MODE_CONFIG, MOCK_POSTS, MOCK_PROFILES } from '@/lib/const/mockData'
 import { UserMode } from '@/lib/types/guest-mode'
 
-const GUEST_MODE_KEY = '@zooki_guest_mode'
-const GUEST_INTERACTIONS_KEY = '@zooki_guest_interactions'
+const GUEST_MODE_KEY = '@petopia_guest_mode'
+const GUEST_INTERACTIONS_KEY = '@petopia_guest_interactions'
 
 export function useGuestMode() {
   const [userMode, setUserMode] = useState<UserMode>('unauthenticated')
@@ -100,14 +100,14 @@ export function useGuestMode() {
 
   const getRestrictedFeatureMessage = useCallback((feature: string) => {
     const messages: Record<string, string> = {
-      create: '¡Únete a Zooki para compartir momentos con tu mascota!',
+      create: '¡Únete a Petopia para compartir momentos con tu mascota!',
       like: 'Regístrate para dar me gusta a las publicaciones',
       comment: 'Únete para comentar y conectar con otros dueños',
       share: 'Crea tu cuenta para compartir contenido',
       follow: 'Regístrate para seguir a otros usuarios',
       message: 'Únete para enviar mensajes privados',
     }
-    return messages[feature] || '¡Únete a Zooki para acceder a esta función!'
+    return messages[feature] || '¡Únete a Petopia para acceder a esta función!'
   }, [])
   return {
     config: GUEST_MODE_CONFIG,

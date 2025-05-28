@@ -244,7 +244,7 @@ export default function ErrorScreen({
           </View>
         )}{' '}
         <Text style={styles.supportText}>
-          Si el problema persiste, contáctanos en soporte@zooki.app
+          Si el problema persiste, contáctanos en soporte@petopia.app
         </Text>
       </View>
     </View>

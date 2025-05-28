@@ -4,7 +4,7 @@ import { View, Text, Pressable, Dimensions } from 'react-native'
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import ZookiIcon from '../icons/ZookiIcon'
+import PetopiaIcon from '../icons/PetopiaIcon'
 
 interface FloatingTabBarProps {
   state: any
@@ -32,17 +32,17 @@ export function FloatingTabBar({
 
     switch (routeName) {
       case 'index':
-        return <ZookiIcon name="home" size={size} color={color} />
+        return <PetopiaIcon name="home" size={size} color={color} />
       case 'search':
-        return <ZookiIcon name="search" size={size} color={color} />
+        return <PetopiaIcon name="search" size={size} color={color} />
       case 'map':
-        return <ZookiIcon name="map" size={size} color={color} />
+        return <PetopiaIcon name="map" size={size} color={color} />
       // case 'create':
-      //   return <ZookiIcon name="add-circle" size={size} color={color} />
+      //   return <PetopiaIcon name="add-circle" size={size} color={color} />
       case 'notifications':
         return (
           <View className="relative">
-            <ZookiIcon name="notifications" size={size} color={color} />
+            <PetopiaIcon name="notifications" size={size} color={color} />
             {unreadNotifications > 0 && (
               <View className="absolute -top-1 -right-1 bg-accent-coral rounded-full min-w-[18px] h-[18px] items-center justify-center">
                 <Text className="text-neutral-off-white text-xs font-bold font-nunito">
@@ -53,9 +53,9 @@ export function FloatingTabBar({
           </View>
         )
       case 'profile':
-        return <ZookiIcon name="person" size={size} color={color} />
+        return <PetopiaIcon name="person" size={size} color={color} />
       default:
-        return <ZookiIcon name="ellipse" size={size} color={color} />
+        return <PetopiaIcon name="ellipse" size={size} color={color} />
     }
   }
 

@@ -10,16 +10,16 @@
       }
     },
     "jsEngine": "hermes",
-    "name": "zooki",
-    "slug": "zooki",
+    "name": "Petopia",
+    "slug": "Petopia",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "newArchEnabled": true,
-    "scheme": "zooki",
-    "android.package": "com.zooki.app",
-    "description": "Pet adoption app",
+    "scheme": "Petopia",
+    "android.package": "com.petopia.app",
+    "description": "Pet world app",
     "githubUrl": "https://github.com/3rChuss/zooki.git",
     "experiments": {
       "tsconfigPaths": true,

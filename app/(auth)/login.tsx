@@ -94,12 +94,12 @@ export default function Login() {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
           {/* TODO: Replace with your actual logo if available */}
-          {/* <Image source={require('@/assets/images/zooki_logo.png')} className="w-40 h-20" resizeMode="contain" /> */}
+          {/* <Image source={require('@/assets/images/petopia_logo.png')} className="w-40 h-20" resizeMode="contain" /> */}
           <Animated.Text
             style={[animatedTextStyle]}
             className="text-5xl font-bold text-neutral-off-white"
           >
-            Zooki logo
+            petopia logo
           </Animated.Text>
         </Animated.View>
 

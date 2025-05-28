@@ -1,9 +1,9 @@
 {
     "app": {
-        "title": "Zooki",
+        "title": "Petopia",
         "description": "A simple and powerful tool for managing your bookmarks.",
-        "welcome": "Welcome to Zooki!",
-        "welcome_message": "Zooki is a simple and powerful tool for managing your bookmarks. You can easily add, edit, and delete bookmarks, and organize them into folders."
+        "welcome": "Welcome to Petopia!",
+        "welcome_message": "Petopia is a simple and powerful tool for managing your bookmarks. You can easily add, edit, and delete bookmarks, and organize them into folders."
     },
     "settings": {
         "title": "Settings",

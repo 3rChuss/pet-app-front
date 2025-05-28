@@ -79,7 +79,7 @@ export default function SplashScreen({ progress, onAnimationComplete }: SplashSc
           <Animated.View style={[styles.logoCircle, animatedPulseStyle]}>
             <Text style={styles.logoText}>🐾</Text>
           </Animated.View>
-          <Text style={styles.brandText}>Zooki</Text>
+          <Text style={styles.brandText}>Petopia</Text>
           <Text style={styles.taglineText}>Tu mascota merece una vida social</Text>
         </Animated.View>
 

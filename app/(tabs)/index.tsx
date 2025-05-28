@@ -31,7 +31,7 @@ export default function HomeScreen() {
             ¡Hola! 👋
           </Text>
           <Text className="text-lg text-neutral-dark-gray font-nunito mb-6">
-            Bienvenido a Zooki, tu app para disfrutar con tu mejor amigo
+            Bienvenido a Petopia, tu espacio perfecto para tu mascota.
           </Text>
 
           <View className="bg-primary/10 p-4 rounded-xl mb-4">

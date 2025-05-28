@@ -20,7 +20,7 @@ const DEFAULT_RETRY_OPTIONS: RetryOptions = {
   timeout: 30000,
 }
 
-const ERROR_STORAGE_KEY = '@zooki/error_reports'
+const ERROR_STORAGE_KEY = '@petopia/error_reports'
 const MAX_STORED_ERRORS = 10
 
 export function useErrorRecovery() {

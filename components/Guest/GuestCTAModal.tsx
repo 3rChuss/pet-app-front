@@ -36,7 +36,7 @@ export default function GuestCTAModal({
         create: {
           title: '¡Comparte momentos únicos!',
           description:
-            'Únete a Zooki para compartir fotos y experiencias de tu mascota con la comunidad.',
+            'Únete a Petopia para compartir fotos y experiencias de tu mascota con la comunidad.',
         },
         like: {
           title: '¡Muestra tu amor!',
@@ -55,7 +55,7 @@ export default function GuestCTAModal({
     }
 
     return {
-      title: title || '¡Únete a la comunidad Zooki!',
+      title: title || '¡Únete a la comunidad Petopia!',
       description: description || 'Descubre todo lo que puedes hacer con tu cuenta gratuita.',
     }
   }

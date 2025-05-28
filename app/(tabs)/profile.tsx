@@ -147,7 +147,7 @@ export default function ProfileScreen() {
             </View>
 
             <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand mb-2">
-              Usuario de Zooki
+              Usuario de Petopia
             </Text>
             <Text className="text-neutral-medium-gray font-nunito text-center">
               Amante de los animales 🐕 🐱

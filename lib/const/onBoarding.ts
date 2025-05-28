@@ -68,5 +68,5 @@ export const INTERESTS: { key: Interest; label: string; emoji: string }[] = [
   { key: 'community', label: 'Community', emoji: '👥' },
 ]
 
-export const ONBOARDING_KEY = '@zooki_onboarding_completed'
-export const USER_PREFERENCES_KEY = '@zooki_user_preferences'
+export const ONBOARDING_KEY = '@petopia_onboarding_completed'
+export const USER_PREFERENCES_KEY = '@petopia_user_preferences'

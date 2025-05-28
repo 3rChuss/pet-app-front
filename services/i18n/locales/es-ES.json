@@ -1,8 +1,8 @@
 {
     "app": {
-        "title": "Zooki",
+        "title": "Petopia",
         "description": "Donde las mascotas encuentran su match perfecto.",
-        "welcome": "¡Bienvenido a Zooki!",
+        "welcome": "¡Bienvenido a Petopia!",
         "welcome_message": "Donde las mascotas encuentran su match perfecto."
     },
     "onboarding": {
@@ -10,20 +10,20 @@
         "done": "Comenzar",
         "next": "Siguiente",
         "back": "Atrás",
-        "welcome1": "¡Bienvenido a Zooki!",
+        "welcome1": "¡Bienvenido a Petopia!",
         "text1": "Tu comunidad para encontrar el match perfecto para tu mascota.",
         "pet_selection_title": "¿Qué mascotas tienes?",
         "pet_selection_text": "Selecciona los tipos de mascotas que tienes o te interesan. Esto nos ayudará a personalizar tu experiencia.",
         "location_title": "¿Dónde te encuentras?",
         "location_text": "Permítenos conocer tu ubicación para mostrarte mascotas y eventos cercanos.",
         "interests_title": "¿Qué te interesa?",
-        "interests_text": "Selecciona tus intereses para personalizar el contenido que ves en Zooki.",
+        "interests_text": "Selecciona tus intereses para personalizar el contenido que ves en Petopia.",
         "welcome2": "Descubre Conexiones",
         "text2": "Explora perfiles y encuentra amigos peludos cercanos.",
         "welcome3": "Comparte Momentos",
         "text3": "Publica fotos y comparte historias con tu comunidad.",
         "welcome4": "¡Todo listo!",
-        "text4": "Tu perfil está personalizado. ¡Comienza a descubrir la comunidad Zooki!",
+        "text4": "Tu perfil está personalizado. ¡Comienza a descubrir la comunidad Petopia!",
         "location_enable": "Activar ubicación",
         "location_skip": "Configurar después",
         "location_permission": "Necesitamos acceso a tu ubicación para una mejor experiencia",
@@ -101,7 +101,7 @@
     },
     "register": {
         "title": "Registrarse",
-        "description": "Crea una cuenta para unirte a la comunidad Zooki.",
+        "description": "Crea una cuenta para unirte a la comunidad Petopia.",
         "name_placeholder": "Nombre completo",
         "email_placeholder": "Correo electrónico",
         "email_invalid": "El correo electrónico no es válido",
@@ -118,7 +118,7 @@
         "terms_conditions": "Al registrarte, aceptas nuestros <Bold>Términos y Condiciones</Bold> y <LinkPrivacy>Política de Privacidad</LinkPrivacy>.",
         "accept_terms_required": "Debes aceptar los Términos y Condiciones",
         "success_title": "Registro exitoso",
-        "success_message": "¡Bienvenido a Zooki! Tu cuenta ha sido creada con éxito.",
+        "success_message": "¡Bienvenido a Petopia! Tu cuenta ha sido creada con éxito.",
         "already_have_account": "¿Ya tienes una cuenta?"
     },
     "forgot_password": {

@@ -2,8 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { ErrorInfo } from '@/lib/types/error-recovery'
 
-const ERROR_STORAGE_KEY = '@zooki/error_reports'
-const ERROR_ANALYTICS_KEY = '@zooki/error_analytics'
+const ERROR_STORAGE_KEY = '@petopia/error_reports'
+const ERROR_ANALYTICS_KEY = '@petopia/error_analytics'
 const MAX_STORED_ERRORS = 50
 
 export interface ErrorAnalytics {
