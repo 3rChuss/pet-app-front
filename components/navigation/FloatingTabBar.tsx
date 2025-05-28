@@ -73,7 +73,7 @@ export function FloatingTabBar({
     <View
       className="absolute left-4 right-4 bg-neutral-off-white rounded-2xl shadow-lg border border-neutral-light-gray"
       style={{
-        bottom: insets.bottom + 4,
+        bottom: insets.bottom,
         height: 60,
       }}
     >

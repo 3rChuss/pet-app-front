@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { GUEST_MODE_CONFIG } from '@/lib/const/mockData'
+import { GUEST_MODE_CONFIG, MOCK_POSTS, MOCK_PROFILES } from '@/lib/const/mockData'
 import { UserMode } from '@/lib/types/guest-mode'
 
 const GUEST_MODE_KEY = '@zooki_guest_mode'
@@ -109,8 +109,10 @@ export function useGuestMode() {
     }
     return messages[feature] || '¡Únete a Zooki para acceder a esta función!'
   }, [])
-
   return {
+    config: GUEST_MODE_CONFIG,
+    mockPosts: MOCK_POSTS,
+    mockProfiles: MOCK_PROFILES,
     userMode,
     interactionCount,
     showCTA,

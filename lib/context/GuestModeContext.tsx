@@ -6,6 +6,7 @@ import { UserMode, GuestModeState } from '@/lib/types/guest-mode'
 interface GuestModeContextType extends GuestModeState {
   userMode: UserMode
   isGuest: boolean
+  exitGuestMode: () => Promise<void>
 }
 
 const GuestModeContext = createContext<GuestModeContextType | undefined>(undefined)
@@ -18,17 +19,13 @@ interface GuestModeProviderProps {
 export function GuestModeProvider({ children, userMode }: GuestModeProviderProps) {
   const guestState = useGuestMode()
 
-  const value: Partial<GuestModeContextType> = {
+  const value: GuestModeContextType = {
     ...guestState,
     userMode,
     isGuest: userMode === 'guest',
   }
 
-  return (
-    <GuestModeContext.Provider value={value as GuestModeContextType}>
-      {children}
-    </GuestModeContext.Provider>
-  )
+  return <GuestModeContext.Provider value={value}>{children}</GuestModeContext.Provider>
 }
 
 export function useGuestModeContext(): GuestModeContextType {

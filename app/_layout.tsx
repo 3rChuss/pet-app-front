@@ -12,7 +12,7 @@ import ErrorScreen from '@/components/splash/ErrorScreen'
 import SplashScreenComponent from '@/components/splash/SplashScreen'
 import { hydrateAuth } from '@/lib/auth'
 import { GuestModeProvider } from '@/lib/context/GuestModeContext'
-import { useAppInitialization } from '@/lib/hooks'
+import { useAppInitialization, useGuestBackHandler } from '@/lib/hooks'
 import { useThemeConfig } from '@/lib/hooks/use-theme-config'
 import 'react-native-reanimated'
 import '@/services/i18n'
@@ -41,7 +41,8 @@ SplashScreen.setOptions({
 })
 
 export default function RootLayout() {
-  const { appState, progress, error, enterGuestMode } = useAppInitialization()
+  const { appState, progress, error, errorInfo, enterGuestMode, retryInitialization } =
+    useAppInitialization()
 
   const userMode =
     appState === 'guest'
@@ -61,12 +62,16 @@ export default function RootLayout() {
   if (appState === 'initializing' || appState === 'loading') {
     return <SplashScreenComponent progress={progress} onAnimationComplete={() => {}} />
   }
-
   // Show error screen if critical error occurred
   if (appState === 'error') {
     return (
       <Providers userMode={userMode}>
-        <ErrorScreen error={error} />
+        <ErrorScreen
+          error={errorInfo || error}
+          onRetry={retryInitialization}
+          onGuestMode={enterGuestMode}
+          isRecovering={false}
+        />
       </Providers>
     )
   }
@@ -105,10 +110,18 @@ function Providers({ children, userMode }: { children: React.ReactNode; userMode
   return (
     <GestureHandlerRootView style={styles.container} className={theme.dark ? `dark` : undefined}>
       <GuestModeProvider userMode={userMode}>
-        <ThemeProvider value={theme}>{children}</ThemeProvider>
+        <ThemeProvider value={theme}>
+          <GuestBackHandlerWrapper>{children}</GuestBackHandlerWrapper>
+        </ThemeProvider>
       </GuestModeProvider>
     </GestureHandlerRootView>
   )
+}
+
+function GuestBackHandlerWrapper({ children }: { children: React.ReactNode }) {
+  // This hook must be used inside GuestModeProvider
+  useGuestBackHandler()
+  return <>{children}</>
 }
 
 const styles = StyleSheet.create({

@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font'
 import { useAuth } from '@/lib/auth'
 import { ONBOARDING_KEY } from '@/lib/const/onBoarding'
 
+import { useErrorRecovery } from './useErrorRecovery'
 import { useGuestMode } from './useGuestMode'
 
 export type AppState =
@@ -21,20 +22,38 @@ interface InitializationResult {
   appState: AppState
   progress: number
   error?: string
+  errorInfo?: any
   enterGuestMode: () => void
+  retryInitialization: () => void
+  clearError: () => void
 }
 
 export function useAppInitialization(): InitializationResult {
   const { enterGuestMode } = useGuestMode()
+  const { reportError, clearError: clearRecoveryError } = useErrorRecovery()
   const [appState, setAppState] = useState<AppState>('initializing')
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string>()
+  const [errorInfo, setErrorInfo] = useState<any>()
 
   const authStatus = useAuth.use.status()
-
   const onEnterGuestMode = () => {
     setAppState('guest')
     enterGuestMode()
+  }
+
+  const retryInitialization = () => {
+    setError(undefined)
+    setErrorInfo(undefined)
+    setAppState('initializing')
+    setProgress(0)
+    clearRecoveryError()
+  }
+
+  const clearError = () => {
+    setError(undefined)
+    setErrorInfo(undefined)
+    clearRecoveryError()
   }
 
   const [fontsLoaded, fontError] = useFonts({
@@ -64,8 +83,16 @@ export function useAppInitialization(): InitializationResult {
         // Step 2: Wait for fonts to load
         if (fontError) {
           console.error('Font loading error:', fontError)
+          const errorInfo = {
+            type: 'font-loading',
+            message: 'Error loading fonts',
+            originalError: fontError,
+            severity: 'medium',
+          }
           setError('Error loading fonts')
+          setErrorInfo(errorInfo)
           setAppState('error')
+          await reportError('font-loading', new Error('Font loading failed'), { fontError })
           return
         }
 
@@ -97,13 +124,21 @@ export function useAppInitialization(): InitializationResult {
         }
       } catch (err) {
         console.error('App initialization error:', err)
+        const errorInfo = {
+          type: 'initialization',
+          message: 'Failed to initialize app',
+          originalError: err,
+          severity: 'high',
+        }
         setError('Failed to initialize app')
+        setErrorInfo(errorInfo)
         setAppState('error')
+        await reportError('initialization', err as Error, { step: 'initialization' })
       }
     }
 
     initializeApp()
-  }, [fontsLoaded, fontError, authStatus])
+  }, [fontsLoaded, fontError, authStatus, reportError])
 
   // Handle auth status changes
   useEffect(() => {
@@ -117,10 +152,14 @@ export function useAppInitialization(): InitializationResult {
       }
     }
   }, [authStatus, appState, onboardingCompleted, fontsLoaded])
+
   return {
     appState,
     progress,
     error,
+    errorInfo,
     enterGuestMode: onEnterGuestMode,
+    retryInitialization,
+    clearError,
   }
 }
