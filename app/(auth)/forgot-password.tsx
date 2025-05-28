@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -118,9 +118,7 @@ export default function ForgotPasswordScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Animated Form Section */}
           <Animated.View style={[styles.formContainer, animatedFormStyle]} className="gap-y-2">
-            {/* Animated Header/Logo Section */}
             <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
               <Animated.Text
                 style={[animatedTextStyle]}
@@ -169,7 +167,6 @@ export default function ForgotPasswordScreen() {
               isLoading={isSubmitting}
             />
 
-            {/* Back to Login Link */}
             <View className="flex-row items-center justify-center" style={styles.linkContainer}>
               <Link href="/login" asChild>
                 <Pressable className="self-center">

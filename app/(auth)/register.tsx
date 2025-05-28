@@ -146,7 +146,7 @@ export default function RegisterScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={100}
     >
-      <Container className="bg-neutral-off-white flex-1">
+      <Container className="bg-transparent flex-1">
         <BackTop />
 
         <LinearGradient
@@ -161,7 +161,6 @@ export default function RegisterScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Animated Form Section */}
           <Animated.View style={[styles.formContainer, animatedFormStyle]} className="gap-y-2">
             <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
               <Animated.Text
@@ -178,7 +177,6 @@ export default function RegisterScreen() {
               </Animated.Text>
             </Animated.View>
 
-            {/* Email */}
             <View>
               <Controller
                 control={control}
@@ -199,7 +197,7 @@ export default function RegisterScreen() {
                 <Text className="text-xs text-accent-coral">{t(errors.email.message!)}</Text>
               )}
             </View>
-            {/* Password */}
+
             <View>
               <Controller
                 control={control}
@@ -220,7 +218,7 @@ export default function RegisterScreen() {
                 <Text className="text-xs text-accent-coral">{t(errors.password.message!)}</Text>
               )}
             </View>
-            {/* Confirm Password */}
+
             <View className="mb-6">
               <Controller
                 control={control}
@@ -243,7 +241,6 @@ export default function RegisterScreen() {
               )}
             </View>
 
-            {/* Accept Terms Checkbox */}
             <View className="mb-6 flex-row items-center">
               <Controller
                 control={control}
@@ -257,6 +254,7 @@ export default function RegisterScreen() {
                   />
                 )}
               />
+
               <View className="ml-1">
                 <Text className="text-xs text-neutral-dark-gray pr-8 mt-4">
                   <Trans
@@ -276,7 +274,7 @@ export default function RegisterScreen() {
                 {t(errors.acceptTerms.message!)}
               </Text>
             )}
-            {/* Register Button */}
+
             <Button
               label="Registrarse"
               onPress={handleSubmit(onSubmit)}

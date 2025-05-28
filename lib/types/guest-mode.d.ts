@@ -17,6 +17,7 @@ export interface MockPost {
     name: string
     avatar: string
     location: string
+    online: boolean
   }
   pet: {
     name: string

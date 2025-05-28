@@ -19,7 +19,6 @@ const INDICATOR_SIZE = 48
 
 export function FloatingTabBar({
   state,
-  descriptors,
   navigation,
   unreadNotifications = 0,
 }: FloatingTabBarProps) {
@@ -37,12 +36,12 @@ export function FloatingTabBar({
         return <PetopiaIcon name="search" size={size} color={color} />
       case 'map':
         return <PetopiaIcon name="map" size={size} color={color} />
-      // case 'create':
-      //   return <PetopiaIcon name="add-circle" size={size} color={color} />
+      case 'create':
+        return <PetopiaIcon name="add-circle" size={size} color={color} />
       case 'notifications':
         return (
           <View className="relative">
-            <PetopiaIcon name="notifications" size={size} color={color} />
+            <PetopiaIcon name="heart-outline" size={size} color={color} />
             {unreadNotifications > 0 && (
               <View className="absolute -top-1 -right-1 bg-accent-coral rounded-full min-w-[18px] h-[18px] items-center justify-center">
                 <Text className="text-neutral-off-white text-xs font-bold font-nunito">
@@ -73,14 +72,13 @@ export function FloatingTabBar({
     <View
       className="absolute left-4 right-4 bg-neutral-off-white rounded-2xl shadow-lg border border-neutral-light-gray"
       style={{
-        bottom: insets.bottom,
-        height: 60,
+        bottom: insets.bottom + 10,
+        height: 50,
       }}
     >
       {/* Tab Items */}
       <View className="flex-row flex-1 items-center justify-around px-3">
         {filteredRoutes.map((route: any, index: number) => {
-          const { options } = descriptors[route.key]
           const isFocused = state.index === index
 
           const onPress = () => {
@@ -113,14 +111,6 @@ export function FloatingTabBar({
               <Animated.View className="items-center justify-center z-10">
                 {getTabIcon(route.name, isFocused)}
               </Animated.View>
-              <Text
-                className={`font-nunito text-xs mt-1 ${
-                  isFocused ? 'text-primary font-semibold' : 'text-neutral-medium-gray'
-                }`}
-                numberOfLines={1}
-              >
-                {options.title}
-              </Text>
             </Pressable>
           )
         })}

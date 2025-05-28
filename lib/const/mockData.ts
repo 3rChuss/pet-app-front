@@ -1,12 +1,18 @@
 import { MockPost, MockProfile } from '@/lib/types/guest-mode'
 
+const anaPic = require('@/assets/images/mock/ana-profile-pic.jpg')
+const carlosPic = require('@/assets/images/mock/carlos-profile-pic.jpg')
+const lunaPic1 = require('@/assets/images/mock/dog-644111_1280.jpg')
+const mariaPic = require('@/assets/images/mock/luna-profile-pic.jpg')
+
 export const MOCK_POSTS: MockPost[] = [
   {
     id: '1',
     user: {
       name: 'Ana García',
-      avatar: '👩‍🦰',
+      avatar: anaPic,
       location: 'Madrid, España',
+      online: true, // Simulating online status
     },
     pet: {
       name: 'Luna',
@@ -15,7 +21,7 @@ export const MOCK_POSTS: MockPost[] = [
     },
     content: {
       text: '¡Luna se lo está pasando genial en el parque! 🌳 Hemos conocido a muchos amigos peludos hoy. ¿Alguien más está en el Parque del Retiro?',
-      images: ['🏞️', '🐕‍🦺'],
+      images: [lunaPic1],
     },
     stats: {
       likes: 23,
@@ -28,8 +34,9 @@ export const MOCK_POSTS: MockPost[] = [
     id: '2',
     user: {
       name: 'Carlos Ruiz',
-      avatar: '👨',
+      avatar: carlosPic,
       location: 'Barcelona, España',
+      online: false, // Simulating offline status
     },
     pet: {
       name: 'Whiskers',
@@ -51,8 +58,9 @@ export const MOCK_POSTS: MockPost[] = [
     id: '3',
     user: {
       name: 'María López',
-      avatar: '👩',
+      avatar: mariaPic,
       location: 'Valencia, España',
+      online: true, // Simulating online status
     },
     pet: {
       name: 'Paco',
@@ -77,6 +85,7 @@ export const MOCK_POSTS: MockPost[] = [
       name: 'Pet Store Valencia',
       avatar: '🏪',
       location: 'Valencia, España',
+      online: true, // Simulating online status
     },
     pet: {
       name: 'Productos',
