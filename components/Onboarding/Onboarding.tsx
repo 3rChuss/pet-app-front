@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ImageBackground } from 'expo-image'
@@ -158,18 +158,9 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
     }
   }
 
-  const onSkip = () => {
-    if (slideRef.current) {
-      // Skip to final slide
-      slideRef.current.goToSlide(slides.length - 1)
-    }
-  }
-
   const onSlideChange = (index: number) => {
     setCurrentSlideIndex(index)
   }
-  const currentSlide = useMemo(() => slides[currentSlideIndex], [currentSlideIndex])
-  const canSkip = currentSlide?.skipable
 
   return (
     <AppIntroSlider
@@ -181,8 +172,6 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
       nextLabel={t('onboarding.next')}
       prevLabel={t('onboarding.back')}
       skipLabel={t('onboarding.skip')}
-      showSkipButton={canSkip}
-      onSkip={onSkip}
       bottomButton
       renderNextButton={() => (
         <View style={styles.buttonContainer}>
@@ -195,23 +184,12 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
           />
         </View>
       )}
-      renderSkipButton={() => (
-        <View style={styles.skipContainer}>
-          <Button
-            textClassName="!text-neutral-off-white text-sm"
-            className="bg-transparent"
-            label={t('onboarding.skip')}
-            variant="secondary"
-            onPress={onSkip}
-          />
-        </View>
-      )}
       renderDoneButton={() => (
         <View style={styles.buttonContainer}>
           <Button
             variant="primary"
             textClassName="!text-primary uppercase text-sm !font-bold"
-            className="bg-neutral-off-white mb-3"
+            className="bg-neutral-off-white"
             label={t('onboarding.done')}
             testID="onboarding-done-button"
             onPress={onDone}
@@ -278,8 +256,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   skipContainer: {
-    position: 'absolute',
-    top: 60,
-    right: 20,
+    paddingHorizontal: 20,
+    marginBottom: 10,
   },
 })

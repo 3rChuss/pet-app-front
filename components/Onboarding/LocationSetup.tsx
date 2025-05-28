@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import * as Location from 'expo-location'
 import { useTranslation } from 'react-i18next'
@@ -61,6 +61,14 @@ export default function LocationSetup({ onLocationSet, location }: LocationSetup
     }
   }
 
+  useEffect(() => {
+    if (location?.enabled) {
+      onLocationSet(location)
+    } else {
+      handleEnableLocation()
+    }
+  }, [location, onLocationSet])
+
   const handleSkipLocation = () => {
     onLocationSet({ enabled: false })
   }
@@ -75,7 +83,9 @@ export default function LocationSetup({ onLocationSet, location }: LocationSetup
         style={styles.permission}
         className="font-nunito text-neutral-off-white text-center mb-8"
       >
-        {t('onboarding.location_permission')}
+        {location?.enabled
+          ? t('onboarding.location_set_text')
+          : t('onboarding.location_permission')}
       </Text>
 
       <View style={styles.buttonContainer}>

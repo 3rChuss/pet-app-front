@@ -26,7 +26,7 @@ export const slides: OnboardingSlide[] = [
     image: require('../../assets/images/onboarding/onboarding_3.jpg'),
     backgroundColor: '#C8E6C9', // Secondary green
     type: 'location',
-    skipable: true,
+    skipable: false,
   },
   {
     key: 'interests',
@@ -53,6 +53,7 @@ export const PET_TYPES: { key: PetType; label: string; emoji: string }[] = [
   { key: 'cats', label: 'Cats', emoji: '🐱' },
   { key: 'birds', label: 'Birds', emoji: '🦜' },
   { key: 'rabbits', label: 'Rabbits', emoji: '🐰' },
+  { key: 'reptiles', label: 'Reptiles', emoji: '🐍' },
   { key: 'other', label: 'Other', emoji: '🐾' },
 ]
 

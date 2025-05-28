@@ -28,11 +28,13 @@
         "location_skip": "Configurar después",
         "location_permission": "Necesitamos acceso a tu ubicación para una mejor experiencia",
         "location_enabled": "Ubicación activada {{city}}, {{region}}, ¡Gracias!",
+        "location_set_text": "¡Gracias por compartir tu ubicación! Ahora podrás ver mascotas y eventos cercanos.",
         "pets": {
             "dogs": "Perros",
             "cats": "Gatos",
             "birds": "Aves",
             "rabbits": "Conejos",
+            "reptiles": "Reptiles",
             "other": "Otros"
         },
         "interests": {

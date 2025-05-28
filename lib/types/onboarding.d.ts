@@ -13,7 +13,7 @@ export interface UserPreferences {
   interests: Interest[]
 }
 
-export type PetType = 'dogs' | 'cats' | 'birds' | 'rabbits' | 'other'
+export type PetType = 'dogs' | 'cats' | 'birds' | 'rabbits' | 'reptiles' | 'other'
 
 export type Interest =
   | 'adoption'
