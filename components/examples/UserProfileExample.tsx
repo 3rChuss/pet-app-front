@@ -3,12 +3,14 @@
  * This demonstrates best practices for API calls with error handling
  */
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { Text, TouchableOpacity, View, Alert } from 'react-native'
 
-import { getCurrentUser, updateCurrentUser, UserProfile } from '@/api/services/users'
+import { getCurrentUser, updateCurrentUser } from '@/api/services/users'
 import { useApiCall, useApiError, useLoadingState } from '@/lib/hooks'
+
+import type { AppTypes } from 'app-types'
 
 export default function UserProfileExample() {
   const [isEditing, setIsEditing] = useState(false)
@@ -21,7 +23,7 @@ export default function UserProfileExample() {
     error,
     isLoading: isLoadingProfile,
     retry,
-  } = useApiCall<UserProfile>(
+  } = useApiCall<AppTypes.UserProfile>(
     () => getCurrentUser(),
     [], // dependencies - empty array means run once on mount
     true // immediate execution

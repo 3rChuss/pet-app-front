@@ -1,5 +1,5 @@
 declare module 'app-types' {
-  namespace AppTypes {
+  export namespace AppTypes {
     interface AppConfig {
       appName: string
       appVersion: string
@@ -14,14 +14,16 @@ declare module 'app-types' {
 
     // Database-related types
     interface User {
-      id: number // BIGSERIAL
-      username: string // VARCHAR(100), UNIQUE, NOT NULL
-      email: string // VARCHAR(255), UNIQUE, NOT NULL
-      password_hash: string // VARCHAR(255), NOT NULL
-      profile_picture_url?: string | null // VARCHAR(512), NULLABLE
-      location_latitude?: number | null // DECIMAL(10,7), NULLABLE
-      location_longitude?: number | null // DECIMAL(11,7), NULLABLE
-      location_geog?: { type: 'Point'; coordinates: [number, number] } | null // GEOGRAPHY(Point, 4326), NULLABLE (Assuming GeoJSON-like structure)
+      id: number
+      name: string
+      last_name: string
+      username: string
+      email: string
+      avatar: string
+      latitude?: number | null
+      longitude?: number | null
+      geog?: { type: 'Point'; coordinates: [number, number] } | null // GEOGRAPHY(Point, 4326), NULLABLE (Assuming GeoJSON-like structure)
+      language: string
       newsletter_subscribed: boolean // BOOLEAN, DEFAULT FALSE
       privacy_policy_accepted_at?: string | null // TIMESTAMP, NULLABLE (ISO Date string)
       terms_accepted_at?: string | null // TIMESTAMP, NULLABLE (ISO Date string)
@@ -31,6 +33,17 @@ declare module 'app-types' {
       is_premium: boolean // BOOLEAN, DEFAULT FALSE
       created_at: string // TIMESTAMP, DEFAULT CURRENT_TIMESTAMP (ISO Date string)
       updated_at: string // TIMESTAMP, DEFAULT CURRENT_TIMESTAMP (ISO Date string)
+    }
+
+    interface UserProfile extends User {
+      id: number
+      pets: Pet[] // Array of Pet objects
+      bio?: string
+      stats: {
+        posts: number // Total posts by the user
+        followers: number // Total followers
+        following: number // Total following
+      }
     }
 
     interface PetType {

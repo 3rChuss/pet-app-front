@@ -1,30 +1,6 @@
 import client from '@/api/client'
 
-export interface User {
-  id: string
-  name: string
-  email: string
-  avatar?: string
-  isVerified?: boolean
-  createdAt: string
-  updatedAt: string
-}
-
-export interface UserProfile extends User {
-  bio?: string
-  location?: string
-  pets: {
-    id: string
-    name: string
-    type: string
-    breed?: string
-  }[]
-  stats: {
-    posts: number
-    followers: number
-    following: number
-  }
-}
+import type { AppTypes } from 'app-types'
 
 export interface CreateUserRequest {
   name: string
@@ -43,32 +19,32 @@ export interface UpdateUserRequest {
 /**
  * Get user profile by ID
  */
-export const getUserProfile = async (userId: string): Promise<UserProfile> => {
-  const response = await client.get<UserProfile>(`/users/${userId}`)
+export const getUserProfile = async (userId: string): Promise<AppTypes.UserProfile> => {
+  const response = await client.get<AppTypes.UserProfile>(`/users/${userId}`)
   return response.data
 }
 
 /**
  * Get current user profile
  */
-export const getCurrentUser = async (): Promise<UserProfile> => {
-  const response = await client.get<UserProfile>('/users/me')
+export const getCurrentUser = async (): Promise<AppTypes.UserProfile> => {
+  const response = await client.get<AppTypes.UserProfile>('/users/me')
   return response.data
 }
 
 /**
  * Update current user profile
  */
-export const updateCurrentUser = async (data: UpdateUserRequest): Promise<UserProfile> => {
-  const response = await client.put<UserProfile>('/users/me', data)
+export const updateCurrentUser = async (data: UpdateUserRequest): Promise<AppTypes.UserProfile> => {
+  const response = await client.put<AppTypes.UserProfile>('/users/me', data)
   return response.data
 }
 
 /**
  * Search users by query
  */
-export const searchUsers = async (query: string, limit = 10): Promise<User[]> => {
-  const response = await client.get<User[]>('/users/search', {
+export const searchUsers = async (query: string, limit = 10): Promise<AppTypes.User[]> => {
+  const response = await client.get<AppTypes.User[]>('/users/search', {
     params: { q: query, limit },
   })
   return response.data
@@ -85,8 +61,8 @@ export const toggleFollowUser = async (userId: string): Promise<{ isFollowing: b
 /**
  * Get user followers
  */
-export const getUserFollowers = async (userId: string, page = 1): Promise<User[]> => {
-  const response = await client.get<User[]>(`/users/${userId}/followers`, {
+export const getUserFollowers = async (userId: string, page = 1): Promise<AppTypes.User[]> => {
+  const response = await client.get<AppTypes.User[]>(`/users/${userId}/followers`, {
     params: { page },
   })
   return response.data
@@ -95,8 +71,8 @@ export const getUserFollowers = async (userId: string, page = 1): Promise<User[]
 /**
  * Get user following
  */
-export const getUserFollowing = async (userId: string, page = 1): Promise<User[]> => {
-  const response = await client.get<User[]>(`/users/${userId}/following`, {
+export const getUserFollowing = async (userId: string, page = 1): Promise<AppTypes.User[]> => {
+  const response = await client.get<AppTypes.User[]>(`/users/${userId}/following`, {
     params: { page },
   })
   return response.data
