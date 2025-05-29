@@ -159,5 +159,16 @@
         "feature_2": "Mascotas perdidas reportadas",
         "feature_3": "Eventos de adopción",
         "feature_4": "Veterinarias cercanas"
+    },
+    "profile": {
+        "title": "Perfil",
+        "edit_profile": "Editar perfil",
+        "view_profile": "Ver perfil",
+        "settings": "Configuración",
+        "logout": "Cerrar sesión",
+        "my_pets": "Mis mascotas",
+        "my_posts": "Mis publicaciones",
+        "my_bookmarks": "Mis marcadores",
+        "my_folders": "Mis carpetas"
     }
 }

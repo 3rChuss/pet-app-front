@@ -28,7 +28,7 @@ export const getUserProfile = async (userId: string): Promise<AppTypes.UserProfi
  * Get current user profile
  */
 export const getCurrentUser = async (): Promise<AppTypes.UserProfile> => {
-  const response = await client.get<AppTypes.UserProfile>('/users/me')
+  const response = await client.get<AppTypes.UserProfile>('/profile')
   return response.data
 }
 

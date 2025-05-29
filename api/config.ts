@@ -9,7 +9,7 @@ const API_CONFIG = {
   TIMEOUT: 15000,
 
   // Default API base URL (should be overridden by environment variable)
-  DEFAULT_BASE_URL: 'https://api.myapp.com/api',
+  DEFAULT_BASE_URL: process.env.EXPO_PUBLIC_API_URL!,
 
   // Request retry configuration
   RETRY_CONFIG: {

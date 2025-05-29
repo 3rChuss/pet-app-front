@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { router } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 import { View, Text, ScrollView, Pressable, Image } from 'react-native'
 
 import Button from '@/components/Button/Button'
@@ -9,6 +10,7 @@ import { MOCK_PROFILES } from '@/lib/const/mockData'
 import { useGuestModeContext } from '@/lib/context/GuestModeContext'
 
 export default function ProfileScreen() {
+  const { t } = useTranslation()
   const signOut = useAuth.use.signOut()
   const { isGuest, trackInteraction } = useGuestModeContext()
 
@@ -44,7 +46,6 @@ export default function ProfileScreen() {
       <Container className="flex-1 bg-neutral-off-white">
         <ScrollView className="flex-1">
           <View className="p-6">
-            {/* Guest Profile Header */}
             <View className="items-center mb-6">
               <Image
                 source={{ uri: guestProfile.avatar }}
@@ -211,7 +212,7 @@ export default function ProfileScreen() {
           {/* Sign Out Button */}
           <View className="mt-8 mb-4">
             <Button
-              label="Cerrar sesión"
+              label={t('profile.logout')}
               onPress={onLogout}
               variant="outline"
               className="border-accent-coral"

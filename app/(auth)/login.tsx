@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -6,20 +6,24 @@ import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 
+import { login } from '@/api/services/auth'
 import { LoginForm } from '@/components/Auth/login-form'
 import { useAuth } from '@/lib/auth'
-import { useKeyboard } from '@/lib/hooks'
+import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 
 const assetId = require('@/assets/videos/home_background.mp4')
 
 export default function Login() {
   const signIn = useAuth.use.signIn()
   const { keyboardVisible } = useKeyboard()
+  const { handleApiError } = useApiError()
+  const { setLoading } = useLoadingState()
   const player = useVideoPlayer({ assetId }, player => {
     player.loop = true
     player.volume = 0 // Muted
     player.play()
   })
+
   // Animated values for smooth transitions
   const logoScale = useSharedValue(1)
   const logoHeight = useSharedValue(250)
@@ -60,9 +64,24 @@ export default function Login() {
     }
   })
 
-  const handleLogin = (_data: any) => {
-    signIn({ access: 'fake-access-token', refresh: 'fake-refresh-token' })
-    router.replace('/(tabs)') // Navigate to home after login
+  const handleLogin = (_data: { email: string; password: string }) => {
+    const operationKey = 'login'
+    try {
+      setLoading(operationKey, true)
+      const { email, password } = _data
+      login(email, password)
+        .then(async response => {
+          const user = response.data.user
+          await signIn(user)
+
+          router.push('/(tabs)') // Navigate to home after successful login
+        })
+        .catch(error => {
+          handleApiError(error, 'Login failed')
+        })
+    } finally {
+      setLoading(operationKey, false)
+    }
   }
 
   const handleGoogleSignIn = () => {
