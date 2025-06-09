@@ -35,7 +35,7 @@ const Button: React.FC<ButtonProps> = ({
         containerStyle += ` bg-neutral-off-white rounded-full shadow-md`
         textStyle += ` text-primary text-center`
         if (disabled) {
-          containerStyle = ` p-5 items-center justify-center bg-neutral-medium-gray rounded-full shadow-md opacity-50`
+          containerStyle += ` !opacity-50`
           textStyle += ` text-neutral-light-gray`
         }
         break
@@ -43,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({
         containerStyle += ` border border-primary rounded-md bg-transparent`
         textStyle += ` text-primary`
         if (disabled) {
-          containerStyle = ` p-5 items-center justify-center border border-neutral-medium-gray rounded-md bg-transparent opacity-50`
+          containerStyle += ` !opacity-50`
           textStyle += ` text-neutral-medium-gray`
         }
         break
@@ -51,7 +51,7 @@ const Button: React.FC<ButtonProps> = ({
         containerStyle = 'p-2' // Minimal padding for text buttons
         textStyle += ` text-primary`
         if (disabled) {
-          containerStyle = 'p-2 opacity-50'
+          containerStyle += ` !opacity-50`
           textStyle += ` text-neutral-medium-gray`
         }
         break
@@ -59,7 +59,7 @@ const Button: React.FC<ButtonProps> = ({
         containerStyle += ` border border-primary rounded-md bg-transparent`
         textStyle += ` text-primary`
         if (disabled) {
-          containerStyle = ` p-5 items-center justify-center border border-neutral-medium-gray rounded-md bg-transparent opacity-50`
+          containerStyle += ` !opacity-50`
           textStyle += ` text-neutral-medium-gray`
         }
     }
@@ -74,6 +74,8 @@ const Button: React.FC<ButtonProps> = ({
       style={{ opacity: isLoading ? 0.5 : 1 }} // Optional loading state
       activeOpacity={0.7}
       testID={testID}
+      delayPressIn={0}
+      delayPressOut={0}
     >
       {icon && <>{icon}</>}
       <Text className={`${classNames.textStyle} ${textClassName}`}>{label}</Text>

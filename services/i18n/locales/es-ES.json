@@ -99,7 +99,8 @@
         "email_invalid": "El correo electrónico no es válido",
         "email_required": "El correo electrónico es obligatorio",
         "password_required": "La contraseña es obligatoria",
-        "password_min_length": "La contraseña debe tener al menos 8 caracteres"
+        "password_min_length": "La contraseña debe tener al menos 8 caracteres",
+        "signing_in": "Iniciando sesión..."
     },
     "register": {
         "title": "Registrarse",

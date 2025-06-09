@@ -29,7 +29,7 @@ client.interceptors.request.use(
     }
     // Add request logging in development
     if (isDevelopment()) {
-      console.log(`🚀 [${config.method?.toUpperCase()}] ${config.url}`, {
+      console.log(`🚀 [${config.method?.toUpperCase()}] ${config.baseURL}${config.url}`, {
         headers: config.headers,
         params: config.params,
         data: config.data,

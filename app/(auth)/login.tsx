@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 
 import { router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -17,7 +17,11 @@ export default function Login() {
   const signIn = useAuth.use.signIn()
   const { keyboardVisible } = useKeyboard()
   const { handleApiError } = useApiError()
-  const { setLoading } = useLoadingState()
+  const { setLoading, loadingStates } = useLoadingState()
+
+  // Loading states for different operations
+  const isLoginLoading = loadingStates.login || false
+
   const player = useVideoPlayer({ assetId }, player => {
     player.loop = true
     player.volume = 0 // Muted
@@ -64,35 +68,47 @@ export default function Login() {
     }
   })
 
-  const handleLogin = (_data: { email: string; password: string }) => {
-    const operationKey = 'login'
-    try {
-      setLoading(operationKey, true)
-      const { email, password } = _data
-      login(email, password)
-        .then(async response => {
-          const user = response.data.user
-          await signIn(user)
+  const handleLogin = useCallback(
+    async (data: { email: string; password: string }) => {
+      // Prevent multiple submissions
+      if (isLoginLoading) {
+        console.warn('Login already in progress, ignoring duplicate submission')
+        return
+      }
 
-          router.push('/(tabs)') // Navigate to home after successful login
-        })
-        .catch(error => {
-          handleApiError(error, 'Login failed')
-        })
-    } finally {
-      setLoading(operationKey, false)
-    }
-  }
+      const operationKey = 'login'
 
-  const handleGoogleSignIn = () => {
+      try {
+        setLoading(operationKey, true)
+        const { email, password } = data
+
+        const response = await login(email, password)
+        const user = response.data.user
+        await signIn(user)
+
+        // Navigate to home after successful login
+        router.push('/(tabs)')
+      } catch (error) {
+        console.error('Login error:', error)
+        handleApiError(error, 'Login failed')
+      } finally {
+        setLoading(operationKey, false)
+      }
+    },
+    [isLoginLoading, setLoading, signIn, handleApiError]
+  )
+
+  const handleGoogleSignIn = useCallback(() => {
+    if (isLoginLoading) return // Prevent action during login
     console.log('Google Sign In Pressed')
     // Implement Google Sign-In logic here
-  }
+  }, [isLoginLoading])
 
-  const handleFacebookSignIn = () => {
+  const handleFacebookSignIn = useCallback(() => {
+    if (isLoginLoading) return // Prevent action during login
     console.log('Facebook Sign In Pressed')
     // Implement Facebook Sign-In logic here
-  }
+  }, [isLoginLoading])
 
   return (
     <KeyboardAvoidingView
@@ -110,7 +126,14 @@ export default function Login() {
       />
       <View style={styles.overlay} />
 
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
+        keyboardDismissMode="interactive"
+        bounces={false}
+        overScrollMode="never"
+      >
         <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
           {/* TODO: Replace with your actual logo if available */}
           {/* <Image source={require('@/assets/images/petopia_logo.png')} className="w-40 h-20" resizeMode="contain" /> */}
@@ -128,6 +151,7 @@ export default function Login() {
             onSubmit={handleLogin}
             onGoogleSignIn={handleGoogleSignIn}
             onFacebookSignIn={handleFacebookSignIn}
+            isLoading={isLoginLoading}
           />
         </Animated.View>
       </ScrollView>

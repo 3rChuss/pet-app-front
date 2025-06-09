@@ -34,9 +34,21 @@ const API_CONFIG = {
  * Get API base URL from environment or use default
  */
 export const getApiBaseUrl = (): string => {
-  // In React Native with Expo, environment variables should be accessed through app.json/app.config.js
-  // For now, using the default URL
-  return process.env.EXPO_PUBLIC_API_URL || API_CONFIG.DEFAULT_BASE_URL
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL || API_CONFIG.DEFAULT_BASE_URL
+
+  // Log the API URL in development
+  if (__DEV__) {
+    console.log('🔗 API Base URL:', apiUrl)
+
+    // Validate URL format
+    try {
+      new URL(apiUrl)
+    } catch {
+      console.error('❌ Invalid API URL format:', apiUrl)
+    }
+  }
+
+  return apiUrl
 }
 
 /**
