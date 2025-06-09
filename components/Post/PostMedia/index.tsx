@@ -6,6 +6,7 @@ import { useFocusEffect } from 'expo-router'
 import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, ScrollView, TouchableOpacity, Text, Dimensions } from 'react-native'
 
+import { SeekBar } from './SeekBar'
 import { styles } from './styles'
 import { PostMediaProps } from './types'
 
@@ -64,51 +65,89 @@ export default function PostMedia({
   )
 }
 
-// Video component with controls
+// Video component with interactive seek controls
 function VideoMediaItem({ item, isActive }: { item: any; isActive: boolean }) {
   const [isPlaying, setIsPlaying] = useState(false)
-  const [progress, setProgress] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [isSeeking, setIsSeeking] = useState(false)
+  const [wasPlayingBeforeSeek, setWasPlayingBeforeSeek] = useState(false)
 
   const player = useVideoPlayer({ uri: item.uri }, player => {
     player.loop = false
     player.muted = false
-    player.timeUpdateEventInterval = 1
+    player.timeUpdateEventInterval = 0.1 // More frequent updates for smooth seeking
   })
 
+  // Listen to time updates
   useEventListener(player, 'timeUpdate', payload => {
-    setProgress(payload.currentTime)
+    if (!isSeeking) {
+      setCurrentTime(payload.currentTime)
+    }
   })
 
-  const togglePlayback = () => {
+  // Listen to duration changes
+  useEventListener(player, 'statusChange', payload => {
+    if (payload.status === 'readyToPlay' && player.duration > 0) {
+      setDuration(player.duration)
+    }
+  })
+
+  // Listen to playback state changes
+  useEventListener(player, 'playingChange', payload => {
+    setIsPlaying(payload.isPlaying)
+  })
+
+  const togglePlayback = useCallback(() => {
+    if (isSeeking) return // Don't toggle during seeking
+
     if (isPlaying) {
       player.pause()
     } else {
       player.play()
     }
-    setIsPlaying(!isPlaying)
-  }
+  }, [isPlaying, isSeeking, player])
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs.toString().padStart(2, '0')}`
-  }
+  const handleSeek = useCallback(
+    async (time: number) => {
+      try {
+        await player.seekBy(time - currentTime)
+        setCurrentTime(time)
+      } catch (error) {
+        console.warn('Failed to seek:', error)
+      }
+    },
+    [player, currentTime]
+  )
+
+  const handleSeekStart = useCallback(() => {
+    setIsSeeking(true)
+    setWasPlayingBeforeSeek(isPlaying)
+    if (isPlaying) {
+      player.pause()
+    }
+  }, [isPlaying, player])
+
+  const handleSeekEnd = useCallback(() => {
+    setIsSeeking(false)
+    if (wasPlayingBeforeSeek) {
+      player.play()
+    }
+  }, [wasPlayingBeforeSeek, player])
 
   useFocusEffect(
     useCallback(() => {
-      if (isActive) {
+      if (isActive && !isSeeking) {
         player.play()
-        setIsPlaying(true)
       } else {
         player.pause()
-        setIsPlaying(false)
       }
 
       return () => {
         player.pause()
         setIsPlaying(false)
       }
-    }, [isActive, player])
+    }, [isActive, isSeeking, player])
   )
 
   return (
@@ -122,19 +161,22 @@ function VideoMediaItem({ item, isActive }: { item: any; isActive: boolean }) {
         playsInline
       />
 
-      {!isPlaying && (
+      {!isPlaying && !isSeeking && (
         <TouchableOpacity style={styles.playButton} onPress={togglePlayback}>
           <Text style={styles.playIcon}>▶</Text>
         </TouchableOpacity>
       )}
 
-      {item.duration && (
-        <View style={styles.videoControls}>
-          <Text style={styles.duration}>{formatTime(progress)}</Text>
-          <View style={styles.progressBar}>
-            <View style={[styles.progress, { width: `${(progress / player.duration) * 100}%` }]} />
-          </View>
-          <Text style={styles.duration}>{formatTime(player.duration)}</Text>
+      {duration > 0 && (
+        <View style={styles.videoControlsContainer}>
+          <SeekBar
+            currentTime={currentTime}
+            duration={duration}
+            onSeek={handleSeek}
+            onSeekStart={handleSeekStart}
+            onSeekEnd={handleSeekEnd}
+            disabled={!isActive}
+          />
         </View>
       )}
     </View>

@@ -53,6 +53,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
+  videoControlsContainer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 20,
+    right: 20,
+  },
   duration: {
     color: '#fff',
     fontSize: 12,
