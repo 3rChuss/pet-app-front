@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback } from 'react'
 
 import { useEventListener } from 'expo'
 import { Image } from 'expo-image'
+import { useFocusEffect } from 'expo-router'
 import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, ScrollView, TouchableOpacity, Text, Dimensions } from 'react-native'
 
@@ -93,20 +94,22 @@ function VideoMediaItem({ item, isActive }: { item: any; isActive: boolean }) {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  // Reset video when not active
-  React.useEffect(() => {
-    if (!isActive) {
-      player.pause()
-    }
-    if (isActive) {
-      player.play()
-      setIsPlaying(true)
-    }
+  useFocusEffect(
+    useCallback(() => {
+      if (isActive) {
+        player.play()
+        setIsPlaying(true)
+      } else {
+        player.pause()
+        setIsPlaying(false)
+      }
 
-    return () => {
-      player.currentTime = 0
-    }
-  }, [isActive, player])
+      return () => {
+        player.pause()
+        setIsPlaying(false)
+      }
+    }, [isActive, player])
+  )
 
   return (
     <View style={styles.mediaContainer}>
