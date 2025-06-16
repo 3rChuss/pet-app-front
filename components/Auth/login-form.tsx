@@ -87,6 +87,7 @@ export const LoginForm = ({
   const handleTermsAndConditionsPress = () => {
     Linking.openURL('https://tu-pagina-web.com/terminos-y-condiciones')
   }
+
   return (
     <View className="w-full">
       {/* Form Fields Section */}

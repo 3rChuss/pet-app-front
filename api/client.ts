@@ -1,5 +1,7 @@
 import axios from 'axios'
+import camelcaseKeys from 'camelcase-keys'
 import { router } from 'expo-router'
+import snakecaseKeys from 'snakecase-keys'
 
 import { signOut } from '@/lib/auth'
 import { getToken } from '@/lib/auth/utils'
@@ -23,6 +25,9 @@ client.interceptors.request.use(
       const token = await getToken()
       if (token?.access) {
         config.headers.Authorization = `Bearer ${token.access}`
+      }
+      if (config.data) {
+        config.data = snakecaseKeys(config.data, { deep: true })
       }
     } catch (error) {
       console.warn('Failed to get auth token:', error)
@@ -52,6 +57,9 @@ client.interceptors.response.use(
     // Log successful responses in development
     if (isDevelopment()) {
       console.log(`✅ [${response.status}] ${response.config.url}`, response.data)
+    }
+    if (response.data) {
+      response.data = camelcaseKeys(response.data, { deep: true })
     }
     return response
   },

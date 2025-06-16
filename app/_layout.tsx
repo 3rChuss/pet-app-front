@@ -12,6 +12,7 @@ import ErrorScreen from '@/components/splash/ErrorScreen'
 import SplashScreenComponent from '@/components/splash/SplashScreen'
 import { hydrateAuth } from '@/lib/auth'
 import { GuestModeProvider } from '@/lib/context/GuestModeContext'
+import { NotificationProvider } from '@/lib/context/NotificationProvider'
 import { useAppInitialization, useGuestBackHandler } from '@/lib/hooks'
 import { useThemeConfig } from '@/lib/hooks/useThemeConfig'
 import 'react-native-reanimated'
@@ -110,9 +111,11 @@ function Providers({ children, userMode }: { children: React.ReactNode; userMode
   return (
     <GestureHandlerRootView style={styles.container} className={theme.dark ? `dark` : undefined}>
       <GuestModeProvider userMode={userMode}>
-        <ThemeProvider value={theme}>
-          <GuestBackHandlerWrapper>{children}</GuestBackHandlerWrapper>
-        </ThemeProvider>
+        <NotificationProvider>
+          <ThemeProvider value={theme}>
+            <GuestBackHandlerWrapper>{children}</GuestBackHandlerWrapper>
+          </ThemeProvider>
+        </NotificationProvider>
       </GuestModeProvider>
     </GestureHandlerRootView>
   )

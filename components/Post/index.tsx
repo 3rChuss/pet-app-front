@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { View } from 'react-native'
 
+import PostActions from '@/components/Post/PostActions'
+import PostHeader from '@/components/Post/PostHeader'
+import PostIndicator from '@/components/Post/PostIndicator'
+import { PostMedia } from '@/components/Post/PostMedia'
 import { useGuestModeContext } from '@/lib/context/GuestModeContext'
 
-import PostActions from './PostActions'
-import PostHeader from './PostHeader'
-import PostIndicator from './PostIndicator'
-import PostMedia from './PostMedia'
 import { styles } from './styles'
 import { PostContainerProps } from './types'
 

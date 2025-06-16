@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Checkbox } from 'expo-checkbox' // Assuming expo-checkbox is installed
+import { Checkbox } from 'expo-checkbox'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Link, useRouter } from 'expo-router'
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form'
@@ -19,7 +19,6 @@ import {
   Linking,
   Keyboard,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import * as z from 'zod'
@@ -28,9 +27,8 @@ import { register } from '@/api/services/auth'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
-// To potentially sign in the user after registration
-import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
-import { useFormErrors } from '@/lib/hooks/useFormErrors'
+import { useKeyboard, useLoadingState } from '@/lib/hooks'
+import { useApiError, useFormErrors } from '@/lib/hooks/notifications'
 
 const passwordSchema = z
   .string({
@@ -50,43 +48,52 @@ const schema = z
       })
       .email('register.email_invalid'),
     password: passwordSchema,
-    passwordConfirmation: z.string({
-      required_error: 'register.confirm_password_required',
-    }),
+    passwordConfirmation: passwordSchema,
     acceptedPrivacyPolicy: z.boolean().refine(val => val === true, {
       message: 'register.accept_terms_required',
     }),
   })
   .refine(data => data.password === data.passwordConfirmation, {
-    message: 'register.password_mismatch',
-    path: ['passwordConfirmation'], // path to field that gets the error
-  })
-  .refine(data => data.password.length >= 8, {
-    message: 'register.password_length',
+    message: 'register.passwords_mismatch',
+    path: ['passwordConfirmation'],
   })
 
 type RegisterFormType = z.infer<typeof schema>
 
-export default function RegisterScreen() {
+export default function RegisterScreenExample() {
   const { t } = useTranslation()
   const router = useRouter()
   const { setLoading, loadingStates } = useLoadingState()
+
+  // Nuevo sistema de manejo de errores
   const { handleApiError, handleValidationErrors, showSuccess } = useApiError()
 
-  // Loading states for different operations
   const isRegisterLoading = loadingStates.register || false
   const { keyboardVisible } = useKeyboard()
   const [showPassword, setShowPassword] = useState(false)
-  const [registerSuccess, setRegisterSuccess] = useState(false)
 
-  // Animated values for smooth transitions
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormType>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      acceptedPrivacyPolicy: false,
+    },
+  })
+
+  // Hook para manejar errores de formulario
+  const { mapApiErrorsToForm } = useFormErrors({ setError })
+
+  // Animaciones (código similar al original)
   const logoScale = useSharedValue(1)
   const logoHeight = useSharedValue(200)
   const textScale = useSharedValue(1)
   const formOpacity = useSharedValue(0.9)
   const formFlex = useSharedValue(1)
 
-  // Update animations when keyboard state changes
   useEffect(() => {
     if (keyboardVisible) {
       logoScale.value = withSpring(1, { damping: 15, stiffness: 150 })
@@ -103,7 +110,6 @@ export default function RegisterScreen() {
     }
   }, [keyboardVisible, logoScale, logoHeight, textScale, formOpacity, formFlex])
 
-  // Animated styles
   const animatedLogoContainerStyle = useAnimatedStyle(() => {
     return {
       height: logoHeight.value,
@@ -124,20 +130,6 @@ export default function RegisterScreen() {
     }
   })
 
-  const {
-    control,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<RegisterFormType>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      acceptedPrivacyPolicy: false,
-    },
-  })
-
-  const { mapApiErrorsToForm } = useFormErrors({ setError })
-
   const onSubmit: SubmitHandler<RegisterFormType> = useCallback(
     async (data: RegisterFormType) => {
       Keyboard.dismiss()
@@ -150,18 +142,24 @@ export default function RegisterScreen() {
 
       try {
         setLoading(operationKey, true)
-        const response = await register({
-          email: data.email,
-          password: data.password,
-          passwordConfirmation: data.passwordConfirmation,
-          acceptedPrivacyPolicy: false,
-        })
-        if (response.status === 200) {
-          setRegisterSuccess(true)
+        const response = await register(data)
+
+        if (response.status === 200 || response.status === 201) {
+          // Mostrar mensaje de éxito con el nuevo sistema
+          showSuccess('¡Cuenta creada exitosamente! Revisa tu email para verificar tu cuenta.')
+
+          // Redireccionar después de un breve delay para que el usuario vea el mensaje
+          setTimeout(() => {
+            router.push('/(auth)/login')
+          }, 2000)
         }
       } catch (error) {
+        console.error('Registration error:', error)
+
+        // El nuevo sistema maneja automáticamente los diferentes tipos de error
         const apiError = handleApiError(error, 'Registration failed')
 
+        // Si es un error de validación, intentar mapear a campos del formulario
         if (apiError.status === 422 || apiError.validationErrors) {
           handleValidationErrors(apiError, mapApiErrorsToForm)
         }
@@ -169,7 +167,15 @@ export default function RegisterScreen() {
         setLoading(operationKey, false)
       }
     },
-    [router, handleApiError, setLoading, isRegisterLoading]
+    [
+      router,
+      handleApiError,
+      handleValidationErrors,
+      mapApiErrorsToForm,
+      showSuccess,
+      setLoading,
+      isRegisterLoading,
+    ]
   )
 
   const togglePasswordVisibility = () => {
@@ -232,14 +238,12 @@ export default function RegisterScreen() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder={t('common.email_placeholder')}
-                    className={inputClassName(isRegisterLoading)}
+                    className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
                     keyboardType="email-address"
                     autoCapitalize="none"
-                    textContentType="username"
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    editable={!isRegisterLoading}
                   />
                 )}
               />
@@ -256,7 +260,7 @@ export default function RegisterScreen() {
                   <View className="relative">
                     <TextInput
                       placeholder={t('register.password_placeholder')}
-                      className={inputClassName(isRegisterLoading)}
+                      className={`border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isRegisterLoading ? 'opacity-50' : ''}`}
                       secureTextEntry={!showPassword}
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -299,12 +303,11 @@ export default function RegisterScreen() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder={t('register.confirm_password_placeholder')}
-                    className={inputClassName(isRegisterLoading)}
+                    className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
                     secureTextEntry
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    editable={!isRegisterLoading}
                   />
                 )}
               />
@@ -323,7 +326,7 @@ export default function RegisterScreen() {
                   <Checkbox
                     value={value}
                     onValueChange={onChange}
-                    color={value ? '#A0D2DB' : undefined} // primary color when checked
+                    color={value ? '#A0D2DB' : undefined}
                     style={styles.checkbox}
                   />
                 )}
@@ -365,15 +368,13 @@ export default function RegisterScreen() {
             )}
 
             <Button
-              testID="register-button"
-              label={isSubmitting ? t('register.registering') : t('register.register_button')}
+              label="Registrarse"
               onPress={handleSubmit(onSubmit)}
               variant="primary"
               className=" bg-primary"
               textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
-              disabled={isSubmitting || isRegisterLoading}
+              disabled={isSubmitting}
               isLoading={isSubmitting}
-              icon={isSubmitting ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}
             />
 
             <View className="flex-row items-center justify-center" style={styles.linkContainer}>
@@ -394,9 +395,6 @@ export default function RegisterScreen() {
     </KeyboardAvoidingView>
   )
 }
-
-const inputClassName = (disabled: boolean) =>
-  `border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${disabled ? 'opacity-50' : ''}`
 
 const styles = StyleSheet.create({
   container: {
@@ -429,7 +427,7 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     marginRight: 8,
-    borderColor: '#BDBDBD', // neutral-medium-gray
+    borderColor: '#BDBDBD',
     borderWidth: 1,
   },
 })
