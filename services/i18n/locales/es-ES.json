@@ -116,11 +116,12 @@
         "password_mismatch": "Las contraseñas no coinciden",
         "password_number": "Debe contener al menos un número",
         "password_placeholder": "Mín. 8 caracteres, mayús, minús, núm, especial",
+        "password_required": "La contraseña es obligatoria",
         "password_special": "Debe contener al menos un carácter especial",
         "password_uppercase": "Debe contener al menos una letra mayúscula",
         "register_button": "Registrarse",
         "registering": "Registrando...",
-        "success_message": "¡Bienvenido a Petopia! Tu cuenta ha sido creada con éxito. \nSe ha enviado un correo electrónico de verificación.",
+        "success_message": "Tu cuenta ha sido creada con éxito. \nSe ha enviado un correo electrónico de verificación.",
         "success_title": "Registro exitoso",
         "terms_conditions": "Al registrarte, aceptas nuestros <Bold>Términos y Condiciones</Bold> y <LinkPrivacy>Política de Privacidad</LinkPrivacy>.",
         "title": "Registrarse"
@@ -128,12 +129,15 @@
     "forgot_password": {
         "title": "¿Olvidaste tu contraseña?",
         "description": "Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
-        "send_button": "Enviar enlace de restablecimiento",
+        "send_button": "Enviar",
+        "sending_button": "Enviando enlace...",
         "back_to_login": "Volver a iniciar sesión",
         "success_title": "Revisa tu Email",
         "success_message": "Si existe una cuenta para {{email}}, recibirás un enlace para restablecer tu contraseña.",
         "email_required": "El correo electrónico es obligatorio",
-        "email_invalid": "El correo electrónico no es válido"
+        "email_invalid": "El correo electrónico no es válido",
+        "email_sent": "Enlace de restablecimiento enviado a {{email}}",
+        "check_your_email": "Revisa tu correo electrónico para continuar"
     },
     "common": {
         "done": "Hecho",

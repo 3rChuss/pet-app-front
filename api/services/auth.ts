@@ -17,3 +17,6 @@ export const signOut = async () => {
 }
 
 export const register = async (params: RegisterParams) => await client.post('/register', params)
+
+export const forgotPassword = async (email: string) =>
+  await client.post('/send-password-reset-link', { email })

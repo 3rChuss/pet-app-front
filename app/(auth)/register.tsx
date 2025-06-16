@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { startTransition, useCallback, useEffect, useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -51,7 +51,7 @@ const schema = z
       .email('register.email_invalid'),
     password: passwordSchema,
     passwordConfirmation: z.string({
-      required_error: 'register.confirm_password_required',
+      required_error: 'register.password_required',
     }),
     acceptedPrivacyPolicy: z.boolean().refine(val => val === true, {
       message: 'register.accept_terms_required',
@@ -71,7 +71,7 @@ export default function RegisterScreen() {
   const { t } = useTranslation()
   const router = useRouter()
   const { setLoading, loadingStates } = useLoadingState()
-  const { handleApiError, handleValidationErrors, showSuccess } = useApiError()
+  const { handleApiError, handleValidationErrors } = useApiError()
 
   // Loading states for different operations
   const isRegisterLoading = loadingStates.register || false
@@ -157,7 +157,13 @@ export default function RegisterScreen() {
           acceptedPrivacyPolicy: false,
         })
         if (response.status === 200) {
-          setRegisterSuccess(true)
+          startTransition(() => {
+            setRegisterSuccess(true)
+            setTimeout(() => {
+              setLoading(operationKey, false)
+              router.push('/login')
+            }, 5000)
+          })
         }
       } catch (error) {
         const apiError = handleApiError(error, 'Registration failed')
@@ -203,193 +209,215 @@ export default function RegisterScreen() {
           end={{ x: 1.2, y: 1 }}
           className="absolute inset-0"
         />
+        {registerSuccess ? (
+          <View className="p-4 rounded-md mb-4 flex-1 items-center justify-center ">
+            <Text className="text-neutral-dark-gray text-center text-lg">
+              {t('register.success_message')}
+            </Text>
+            <Button
+              label={t('common.done')}
+              onPress={() => router.push('/login')}
+              variant="primary"
+              className="mt-4 bg-primary"
+              textClassName="!text-neutral-off-white uppercase text-sm !font-bold pr-4"
+              icon={<Ionicons name="checkmark" size={20} color="#FFFFFF" />}
+            />
+          </View>
+        ) : (
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <Animated.View style={[styles.formContainer, animatedFormStyle]} className="gap-y-2">
+              <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
+                <Animated.Text
+                  style={[animatedTextStyle]}
+                  className="text-4xl font-bold text-primary mb-2 text-center"
+                >
+                  {t('register.title')}
+                </Animated.Text>
+                <Animated.Text
+                  style={[animatedTextStyle]}
+                  className="text-neutral-dark-gray text-center"
+                >
+                  {t('register.description')}
+                </Animated.Text>
+              </Animated.View>
 
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <Animated.View style={[styles.formContainer, animatedFormStyle]} className="gap-y-2">
-            <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
-              <Animated.Text
-                style={[animatedTextStyle]}
-                className="text-4xl font-bold text-primary mb-2 text-center"
-              >
-                {t('register.title')}
-              </Animated.Text>
-              <Animated.Text
-                style={[animatedTextStyle]}
-                className="text-neutral-dark-gray text-center"
-              >
-                {t('register.description')}
-              </Animated.Text>
-            </Animated.View>
-
-            <View>
-              <Controller
-                control={control}
-                name="email"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder={t('common.email_placeholder')}
-                    className={inputClassName(isRegisterLoading)}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    textContentType="username"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    editable={!isRegisterLoading}
-                  />
-                )}
-              />
-              {errors.email && (
-                <Text className="text-xs text-accent-coral">{t(errors.email.message!)}</Text>
-              )}
-            </View>
-
-            <View>
-              <Controller
-                control={control}
-                name="password"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <View className="relative">
+              <View>
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                      placeholder={t('register.password_placeholder')}
+                      placeholder={t('common.email_placeholder')}
                       className={inputClassName(isRegisterLoading)}
-                      secureTextEntry={!showPassword}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      textContentType="username"
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
-                      textContentType="newPassword"
+                      editable={!isRegisterLoading}
                       multiline={false}
-                      autoComplete="password"
-                      autoCapitalize="none"
+                      autoComplete="email"
                       autoCorrect={false}
                       spellCheck={false}
                       numberOfLines={1}
                       scrollEnabled={false}
+                      autoFocus={!keyboardVisible}
+                    />
+                  )}
+                />
+                {errors.email && (
+                  <Text className="text-xs text-accent-coral">{t(errors.email.message!)}</Text>
+                )}
+              </View>
+
+              <View>
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <View className="relative">
+                      <TextInput
+                        placeholder={t('register.password_placeholder')}
+                        className={inputClassName(isRegisterLoading)}
+                        secureTextEntry={!showPassword}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        textContentType="newPassword"
+                        multiline={false}
+                        autoComplete="password"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        spellCheck={false}
+                        numberOfLines={1}
+                        scrollEnabled={false}
+                        editable={!isRegisterLoading}
+                      />
+                      <TouchableOpacity
+                        testID="toggle-password-visibility"
+                        onPress={togglePasswordVisibility}
+                        className="absolute right-3 top-2 p-1"
+                        style={{ zIndex: 1 }}
+                        disabled={isRegisterLoading}
+                      >
+                        <Ionicons
+                          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                          size={20}
+                          color={isRegisterLoading ? '#D1D5DB' : '#9CA3AF'}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                />
+                {errors.password && (
+                  <Text className="text-xs text-accent-coral">{t(errors.password.message!)}</Text>
+                )}
+              </View>
+
+              <View className="mb-6">
+                <Controller
+                  control={control}
+                  name="passwordConfirmation"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      placeholder={t('register.confirm_password_placeholder')}
+                      className={inputClassName(isRegisterLoading)}
+                      secureTextEntry
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
                       editable={!isRegisterLoading}
                     />
-                    <TouchableOpacity
-                      testID="toggle-password-visibility"
-                      onPress={togglePasswordVisibility}
-                      className="absolute right-3 top-2 p-1"
-                      style={{ zIndex: 1 }}
-                      disabled={isRegisterLoading}
-                    >
-                      <Ionicons
-                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                        size={20}
-                        color={isRegisterLoading ? '#D1D5DB' : '#9CA3AF'}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-              {errors.password && (
-                <Text className="text-xs text-accent-coral">{t(errors.password.message!)}</Text>
-              )}
-            </View>
-
-            <View className="mb-6">
-              <Controller
-                control={control}
-                name="passwordConfirmation"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder={t('register.confirm_password_placeholder')}
-                    className={inputClassName(isRegisterLoading)}
-                    secureTextEntry
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    editable={!isRegisterLoading}
-                  />
-                )}
-              />
-              {errors.passwordConfirmation && (
-                <Text className="text-xs text-accent-coral">
-                  {t(errors.passwordConfirmation.message!)}
-                </Text>
-              )}
-            </View>
-
-            <View className="mb-6 flex-row items-center justify-start">
-              <Controller
-                control={control}
-                name="acceptedPrivacyPolicy"
-                render={({ field: { onChange, value } }) => (
-                  <Checkbox
-                    value={value}
-                    onValueChange={onChange}
-                    color={value ? '#A0D2DB' : undefined} // primary color when checked
-                    style={styles.checkbox}
-                  />
-                )}
-              />
-
-              <View className="ml-1 flex-1">
-                <Text className="text-xs text-neutral-dark-gray">
-                  <Trans
-                    i18nKey="login.disclaimer"
-                    components={{
-                      Bold: (
-                        <Text
-                          className="text-primary font-bold underline"
-                          onPress={handleTermsAndConditionsPress}
-                        />
-                      ),
-                      LinkPrivacy: (
-                        <Text
-                          className="text-primary font-bold underline"
-                          onPress={handlePrivacyPolicyPress}
-                        />
-                      ),
-                      LinkCookies: (
-                        <Text
-                          className="text-primary font-bold underline"
-                          onPress={handleCookiesPolicyPress}
-                        />
-                      ),
-                    }}
-                    t={t}
-                  />
-                </Text>
-              </View>
-            </View>
-            {errors.acceptedPrivacyPolicy && (
-              <Text className="-mt-4 mb-4 text-accent-coral text-xs">
-                {t(errors.acceptedPrivacyPolicy.message!)}
-              </Text>
-            )}
-
-            <Button
-              testID="register-button"
-              label={isSubmitting ? t('register.registering') : t('register.register_button')}
-              onPress={handleSubmit(onSubmit)}
-              variant="primary"
-              className=" bg-primary"
-              textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
-              disabled={isSubmitting || isRegisterLoading}
-              isLoading={isSubmitting}
-              icon={isSubmitting ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}
-            />
-
-            <View className="flex-row items-center justify-center" style={styles.linkContainer}>
-              <Text className="text-sm text-neutral-dark-gray">
-                {t('register.already_have_account')}{' '}
-              </Text>
-              <Link href="/login" asChild>
-                <Pressable>
-                  <Text className="text-sm font-semibold mix-blend-difference backdrop-invert">
-                    {t('register.login_button')}
+                  )}
+                />
+                {errors.passwordConfirmation && (
+                  <Text className="text-xs text-accent-coral">
+                    {t(errors.passwordConfirmation.message!)}
                   </Text>
-                </Pressable>
-              </Link>
-            </View>
-          </Animated.View>
-        </ScrollView>
+                )}
+              </View>
+
+              <View className="mb-6 flex-row items-center justify-start">
+                <Controller
+                  control={control}
+                  name="acceptedPrivacyPolicy"
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      value={value}
+                      onValueChange={onChange}
+                      color={value ? '#A0D2DB' : undefined} // primary color when checked
+                      style={styles.checkbox}
+                    />
+                  )}
+                />
+
+                <View className="ml-1 flex-1">
+                  <Text className="text-xs text-neutral-dark-gray">
+                    <Trans
+                      i18nKey="login.disclaimer"
+                      components={{
+                        Bold: (
+                          <Text
+                            className="text-primary font-bold underline"
+                            onPress={handleTermsAndConditionsPress}
+                          />
+                        ),
+                        LinkPrivacy: (
+                          <Text
+                            className="text-primary font-bold underline"
+                            onPress={handlePrivacyPolicyPress}
+                          />
+                        ),
+                        LinkCookies: (
+                          <Text
+                            className="text-primary font-bold underline"
+                            onPress={handleCookiesPolicyPress}
+                          />
+                        ),
+                      }}
+                      t={t}
+                    />
+                  </Text>
+                </View>
+              </View>
+              {errors.acceptedPrivacyPolicy && (
+                <Text className="-mt-4 mb-4 text-accent-coral text-xs">
+                  {t(errors.acceptedPrivacyPolicy.message!)}
+                </Text>
+              )}
+
+              <Button
+                testID="register-button"
+                label={isSubmitting ? t('register.registering') : t('register.register_button')}
+                onPress={handleSubmit(onSubmit)}
+                variant="primary"
+                className=" bg-primary"
+                textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+                disabled={isSubmitting || isRegisterLoading}
+                isLoading={isSubmitting}
+                icon={isSubmitting ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}
+              />
+
+              <View className="flex-row items-center justify-center" style={styles.linkContainer}>
+                <Text className="text-sm text-neutral-dark-gray">
+                  {t('register.already_have_account')}{' '}
+                </Text>
+                <Link href="/login" asChild>
+                  <Pressable>
+                    <Text className="text-sm font-semibold mix-blend-difference backdrop-invert">
+                      {t('register.login_button')}
+                    </Text>
+                  </Pressable>
+                </Link>
+              </View>
+            </Animated.View>
+          </ScrollView>
+        )}
       </Container>
     </KeyboardAvoidingView>
   )
