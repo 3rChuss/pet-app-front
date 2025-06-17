@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import { Modal, View, Text, StyleSheet, Pressable } from 'react-native'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 import Button from '@/components/Button/Button'
 
@@ -82,57 +83,67 @@ export default function ErrorModal({
   }
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      statusBarTranslucent
-      onRequestClose={onClose}
-      className="h-screen w-screen"
-      presentationStyle="overFullScreen"
-    >
-      <View style={styles.overlay}>
-        <Pressable style={styles.backdrop} onPress={onClose} />
-        <View style={styles.container}>
-          <View style={styles.modal}>
-            {/* Icon */}
-            <View style={[styles.iconContainer, { backgroundColor: config.iconBackgroundColor }]}>
-              <Ionicons name={config.iconName} size={32} color={config.iconColor} />
-            </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.centeredView}>
+        <Modal
+          visible={visible}
+          transparent
+          animationType="fade"
+          statusBarTranslucent
+          onRequestClose={onClose}
+          className="h-screen w-screen"
+          presentationStyle="overFullScreen"
+        >
+          <View style={styles.overlay}>
+            <Pressable style={styles.backdrop} onPress={onClose} />
+            <View style={styles.container}>
+              <View style={styles.modal}>
+                <View
+                  style={[styles.iconContainer, { backgroundColor: config.iconBackgroundColor }]}
+                >
+                  <Ionicons name={config.iconName} size={32} color={config.iconColor} />
+                </View>
 
-            {/* Content */}
-            <View style={styles.content}>
-              <Text style={[styles.title, { color: config.titleColor }]}>{title}</Text>
-              <Text style={styles.message}>{message}</Text>
-            </View>
+                {/* Content */}
+                <View style={styles.content}>
+                  <Text style={[styles.title, { color: config.titleColor }]}>{title}</Text>
+                  <Text style={styles.message}>{message}</Text>
+                </View>
 
-            {/* Actions */}
-            <View style={styles.actions}>
-              {!hideCancel && (
-                <Button
-                  label={cancelText}
-                  onPress={handleCancel}
-                  variant="secondary"
-                  className="flex-1 mr-2 bg-neutral-light-gray"
-                  textClassName="!text-neutral-dark-gray"
-                />
-              )}
-              <Button
-                label={actionText}
-                onPress={handleAction}
-                variant="primary"
-                className={`${hideCancel ? 'flex-1' : 'flex-1 ml-2'} bg-primary`}
-                textClassName="!text-neutral-off-white !font-bold"
-              />
+                {/* Actions */}
+                <View style={styles.actions}>
+                  {!hideCancel && (
+                    <Button
+                      label={cancelText}
+                      onPress={handleCancel}
+                      variant="primary"
+                      className="flex-1 mr-2 bg-neutral-light-gray"
+                      textClassName="!text-neutral-dark-gray"
+                    />
+                  )}
+                  <Button
+                    label={actionText}
+                    onPress={handleAction}
+                    variant="primary"
+                    className={`${hideCancel ? 'flex-1' : 'flex-1 ml-2'} bg-primary`}
+                    textClassName="!text-neutral-off-white !font-bold"
+                  />
+                </View>
+              </View>
             </View>
           </View>
-        </View>
-      </View>
-    </Modal>
+        </Modal>
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 
 const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   overlay: {
     flex: 1,
     justifyContent: 'center',
