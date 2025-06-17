@@ -47,13 +47,15 @@ const schema = z
     userName: z
       .string({
         required_error: 'register.username_required',
-        coerce: true,
       })
       .trim()
       .min(3, {
         message: 'register.username_min_length',
       })
       .refine(val => /^[a-zA-Z0-9_]+$/.test(val), {
+        message: 'register.username_invalid',
+      })
+      .refine(val => val.replace(/[^a-zA-Z0-9_]/g, '').length === val.length, {
         message: 'register.username_invalid',
       }),
     email: z
@@ -435,7 +437,7 @@ export default function RegisterScreen() {
                 onPress={handleSubmit(onSubmit)}
                 variant="primary"
                 className=" bg-primary"
-                textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+                textClassName="!text-neutral-off-white uppercase !font-bold"
                 disabled={isSubmitting || isRegisterLoading}
                 isLoading={isSubmitting}
                 icon={isSubmitting ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}

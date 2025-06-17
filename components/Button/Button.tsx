@@ -27,12 +27,13 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const classNames = useMemo(() => {
     let containerStyle =
-      'p-3 flex justify-center align-center' + (icon ? ' flex-row gap-4 items-center' : ' flex-col')
-    let textStyle = 'font-nunito font-semibold text-2xl' // Nunito Sans SemiBold as per typography guidelines
+      'p-3 flex justify-center align-center rounded-full ' +
+      (icon ? ' flex-row gap-4 items-center' : ' flex-col')
+    let textStyle = 'font-nunito font-semibold text-sm' // Nunito Sans SemiBold as per typography guidelines
 
     switch (variant) {
       case 'primary':
-        containerStyle += ` bg-neutral-off-white rounded-full shadow-md`
+        containerStyle += ` bg-neutral-off-white shadow-md`
         textStyle += ` text-primary text-center`
         if (disabled) {
           containerStyle += ` !opacity-50`
@@ -40,8 +41,8 @@ const Button: React.FC<ButtonProps> = ({
         }
         break
       case 'secondary':
-        containerStyle += ` border border-primary rounded-md bg-transparent`
-        textStyle += ` text-primary`
+        containerStyle += ` border border-primary bg-transparent`
+        textStyle += ` text-primary text-center`
         if (disabled) {
           containerStyle += ` !opacity-50`
           textStyle += ` text-neutral-medium-gray`

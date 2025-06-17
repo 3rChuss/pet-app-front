@@ -129,7 +129,7 @@
         "username_required": "El nombre de usuario es obligatorio",
         "username_invalid": "El nombre de usuario no es válido",
         "username_taken": "El nombre de usuario ya está en uso",
-        "username_length": "El nombre de usuario debe tener entre 3 y 20 caracteres"
+        "username_min_length": "El nombre de usuario debe tener entre 3 y 20 caracteres"
     },
     "forgot_password": {
         "title": "¿Olvidaste tu contraseña?",

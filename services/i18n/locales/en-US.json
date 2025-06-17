@@ -129,7 +129,7 @@
         "username_required": "Username is required",
         "username_invalid": "The username is invalid",
         "username_taken": "Username is already taken",
-        "username_length": "Username must be between 3 and 20 characters"
+        "username_min_length": "Username must be between 3 and 20 characters"
     },
     "forgot_password": {
         "title": "Forgot your password?",

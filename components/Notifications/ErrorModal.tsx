@@ -116,8 +116,8 @@ export default function ErrorModal({
                     <Button
                       label={cancelText}
                       onPress={handleCancel}
-                      variant="primary"
-                      className="flex-1 mr-2 bg-neutral-light-gray"
+                      variant="secondary"
+                      className="flex-1 mr-2 bg-neutral-light-gray w-1/2"
                       textClassName="!text-neutral-dark-gray"
                     />
                   )}
@@ -202,5 +202,7 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     width: '100%',
+    justifyContent: 'space-between',
+    gap: 8,
   },
 })
