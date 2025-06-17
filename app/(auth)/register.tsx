@@ -182,7 +182,6 @@ export default function RegisterScreen() {
         }
       } catch (error) {
         const apiError = handleApiError(error, 'Registration failed')
-        console.log('API Error:', apiError)
 
         if (apiError.status === 422 || apiError.validationErrors) {
           handleValidationErrors(apiError, mapApiErrorsToForm)
