@@ -180,6 +180,9 @@
         "my_pets": "Mis mascotas",
         "my_posts": "Mis publicaciones",
         "my_bookmarks": "Mis marcadores",
-        "my_folders": "Mis carpetas"
+        "my_folders": "Mis carpetas",
+        "posts": "Publicaciones",
+        "followers": "Seguidores",
+        "following": "Siguiendo"
     }
 }

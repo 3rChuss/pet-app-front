@@ -1,10 +1,9 @@
 import { useRouter } from 'expo-router'
 import { View, Text } from 'react-native'
 
+import SettingsItem from '@/features/settings/components/SettingsItem'
 import { useAuth } from '@/lib/auth'
 import { useNotifications } from '@/lib/context/NotificationProvider'
-
-import SettingsItem from './SettingsItem'
 
 export default function AccountSection() {
   const router = useRouter()

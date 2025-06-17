@@ -30,7 +30,6 @@ export default function ProfileScreen() {
         <ScrollView className="flex-1">
           <View className="p-6">
             <View className="flex-row items-center justify-between mb-6">
-              {/* selector de mascotas */}
               <Pressable
                 onPress={() => trackInteraction('selectPet')}
                 className="flex-row items-center bg-primary/10 px-4 py-2 rounded-full"
@@ -179,26 +178,26 @@ export default function ProfileScreen() {
               <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
                 {userStats.posts}
               </Text>
-              <Text className="text-neutral-medium-gray font-nunito">Publicaciones</Text>
+              <Text className="text-neutral-medium-gray font-nunito">{t('profile.posts')}</Text>
             </View>
             <View className="items-center flex-row gap-1">
               <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
                 {userStats.followers}
               </Text>
-              <Text className="text-neutral-medium-gray font-nunito">Seguidores</Text>
+              <Text className="text-neutral-medium-gray font-nunito">{t('profile.followers')}</Text>
             </View>
             <View className="items-center flex-row gap-1">
               <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
                 {userStats.following}
               </Text>
-              <Text className="text-neutral-medium-gray font-nunito">Siguiendo</Text>
+              <Text className="text-neutral-medium-gray font-nunito">{t('profile.following')}</Text>
             </View>
           </View>
 
           {/* Quick Actions */}
           <View className="flex-row gap-4">
             <Button
-              label="Editar perfil"
+              label={t('profile.edit_profile')}
               onPress={() => {}}
               variant="secondary"
               className="flex-1"

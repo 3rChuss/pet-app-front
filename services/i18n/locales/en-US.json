@@ -179,6 +179,9 @@
         "my_pets": "My pets",
         "my_posts": "My posts",
         "my_bookmarks": "My bookmarks",
-        "my_folders": "My folders"
+        "my_folders": "My folders",
+        "posts": "Posts",
+        "followers": "Followers",
+        "following": "Following"
     }
 }

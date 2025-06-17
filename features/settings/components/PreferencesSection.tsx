@@ -1,8 +1,7 @@
 import { View, Text } from 'react-native'
 
+import SettingsItem from '@/features/settings/components/SettingsItem'
 import { useNotifications } from '@/lib/context/NotificationProvider'
-
-import SettingsItem from './SettingsItem'
 
 /**
  * Ejemplo de nueva sección para el sistema de configuración

@@ -6,8 +6,8 @@ import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 
-import { login } from '@/api/services/auth'
-import { LoginForm } from '@/components/Auth/login-form'
+import { LoginForm } from '@/features/auth'
+import { login } from '@/features/auth/services/auth'
 import { useAuth } from '@/lib/auth'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 

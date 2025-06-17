@@ -44,12 +44,12 @@ export type LoginFormProps = {
   isLoading?: boolean
 }
 
-export const LoginForm = ({
+export default function LoginForm({
   onSubmit = () => {},
   onGoogleSignIn = () => {},
   onFacebookSignIn = () => {},
   isLoading = false,
-}: LoginFormProps) => {
+}: LoginFormProps) {
   const {
     handleSubmit,
     control,

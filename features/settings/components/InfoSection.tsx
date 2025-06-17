@@ -1,8 +1,7 @@
 import { View, Text } from 'react-native'
 
-import { useSettingsActions } from '@/lib/hooks/useSettingsActions'
-
-import SettingsItem from './SettingsItem'
+import SettingsItem from '@/features/settings/components/SettingsItem'
+import { useSettingsActions } from '@/features/settings/hooks/useSettingsActions'
 
 export default function InfoSection() {
   const { handleHelp, handlePrivacy, handleAppInfo } = useSettingsActions()

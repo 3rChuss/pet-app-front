@@ -1,7 +1,7 @@
 import { View, ScrollView, SafeAreaView } from 'react-native'
 
 import { Container } from '@/components/containers/Container'
-import { AccountSection, AppSection, InfoSection } from '@/components/Settings'
+import { AccountSection, AppSection, InfoSection } from '@/features/settings/components'
 
 export default function SettingsScreen() {
   return (
