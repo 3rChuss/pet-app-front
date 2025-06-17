@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
 import { View, Text, TouchableOpacity } from 'react-native'

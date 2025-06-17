@@ -1,35 +1,156 @@
 {
     "app": {
         "title": "Petopia",
-        "description": "A simple and powerful tool for managing your bookmarks.",
+        "description": "Where pets find their perfect match.",
         "welcome": "Welcome to Petopia!",
-        "welcome_message": "Petopia is a simple and powerful tool for managing your bookmarks. You can easily add, edit, and delete bookmarks, and organize them into folders."
+        "welcome_message": "Where pets find their perfect match."
+    },
+    "onboarding": {
+        "skip": "Skip",
+        "done": "Get Started",
+        "next": "Next",
+        "back": "Back",
+        "welcome1": "Welcome to Petopia!",
+        "text1": "Your community to find the perfect match for your pet.",
+        "pet_selection_title": "What pets do you have?",
+        "pet_selection_text": "Select the types of pets you have or are interested in. This will help us personalize your experience.",
+        "location_title": "Where are you located?",
+        "location_text": "Let us know your location to show you nearby pets and events.",
+        "interests_title": "What are you interested in?",
+        "interests_text": "Select your interests to personalize the content you see in Petopia.",
+        "welcome2": "Discover Connections",
+        "text2": "Explore profiles and find furry friends nearby.",
+        "welcome3": "Share Moments",
+        "text3": "Post photos and share stories with your community.",
+        "welcome4": "All Set!",
+        "text4": "Your profile is personalized. Start discovering the Petopia community!",
+        "location_enable": "Enable location",
+        "location_skip": "Set up later",
+        "location_permission": "We need access to your location for a better experience",
+        "location_enabled": "Location enabled {{city}}, {{region}}, Thanks!",
+        "location_set_text": "Thanks for sharing your location! Now you can see nearby pets and events.",
+        "pets": {
+            "dogs": "Dogs",
+            "cats": "Cats",
+            "birds": "Birds",
+            "rabbits": "Rabbits",
+            "reptiles": "Reptiles",
+            "other": "Other"
+        },
+        "interests": {
+            "adoption": "Adoption",
+            "breeding": "Breeding",
+            "training": "Training",
+            "playdates": "Playdates",
+            "pet_care": "Pet Care",
+            "veterinary": "Veterinary",
+            "grooming": "Grooming",
+            "community": "Community",
+            "matching": "Matching"
+        }
     },
     "settings": {
         "title": "Settings",
         "language": "Language",
         "theme": "Theme",
-        "dark_mode": "Dark Mode",
-        "light_mode": "Light Mode"
+        "dark_mode": "Dark mode",
+        "light_mode": "Light mode"
     },
     "bookmarks": {
         "title": "Bookmarks",
-        "add_bookmark": "Add Bookmark",
-        "edit_bookmark": "Edit Bookmark",
-        "delete_bookmark": "Delete Bookmark",
-        "search_bookmark": "Search Bookmark"
+        "add_bookmark": "Add bookmark",
+        "edit_bookmark": "Edit bookmark",
+        "delete_bookmark": "Delete bookmark",
+        "search_bookmark": "Search bookmark"
     },
     "folders": {
         "title": "Folders",
-        "add_folder": "Add Folder",
-        "edit_folder": "Edit Folder",
-        "delete_folder": "Delete Folder"
+        "add_folder": "Add folder",
+        "edit_folder": "Edit folder",
+        "delete_folder": "Delete folder"
     },
     "errors": {
-        "not_found": "Not Found",
+        "not_found": "Not found",
         "unauthorized": "Unauthorized",
         "forbidden": "Forbidden",
-        "internal_server_error": "Internal Server Error"
+        "internal_server_error": "Internal server error"
+    },
+    "auth": {
+        "login": "Log in",
+        "register": "Register",
+        "logout": "Log out",
+        "email": "Email",
+        "password": "Password",
+        "confirm_password": "Confirm password",
+        "forgot_password": "Forgot your password?",
+        "reset_password": "Reset password",
+        "send_reset_link": "Send reset link"
+    },
+    "login": {
+        "disclaimer": "By clicking 'Log In', you accept our <Bold>Terms and Conditions</Bold>. Learn more about how we process your data in our <LinkPrivacy>Privacy Policy</LinkPrivacy> and <LinkCookies>Cookie Policy</LinkCookies>.",
+        "google_signin": "Sign in with Google",
+        "facebook_signin": "Sign in with Facebook",
+        "email_placeholder": "Email",
+        "password_placeholder": "Password",
+        "login_button": "Log in",
+        "register_button": "Register",
+        "forgot_password_button": "Forgot your password?",
+        "no_account": "Don't have an account?",
+        "email_invalid": "The email is invalid",
+        "email_required": "Email is required",
+        "password_required": "Password is required",
+        "password_min_length": "Password must be at least 8 characters long",
+        "signing_in": "Signing in..."
+    },
+    "register": {
+        "accept_terms_required": "You must accept the Terms and Conditions",
+        "already_have_account": "Already have an account?",
+        "confirm_password_placeholder": "Confirm password",
+        "description": "Create an account to join the Petopia community.",
+        "email_invalid": "The email is invalid",
+        "email_placeholder": "Email",
+        "login_button": "Log in",
+        "name_placeholder": "Full name",
+        "password_length": "Must be at least 8 characters long",
+        "password_lowercase": "Must contain at least one lowercase letter",
+        "password_mismatch": "Passwords do not match",
+        "password_number": "Must contain at least one number",
+        "password_placeholder": "Min. 8 characters, uppercase, lowercase, number, special",
+        "password_required": "Password is required",
+        "password_special": "Must contain at least one special character",
+        "password_uppercase": "Must contain at least one uppercase letter",
+        "register_button": "Register",
+        "registering": "Registering...",
+        "success_message": "Your account has been successfully created. \nA verification email has been sent.",
+        "success_title": "Registration successful",
+        "terms_conditions": "By registering, you accept our <Bold>Terms and Conditions</Bold> and <LinkPrivacy>Privacy Policy</LinkPrivacy>.",
+        "title": "Register",
+        "username_placeholder": "Username",
+        "username_required": "Username is required",
+        "username_invalid": "The username is invalid",
+        "username_taken": "Username is already taken",
+        "username_length": "Username must be between 3 and 20 characters"
+    },
+    "forgot_password": {
+        "title": "Forgot your password?",
+        "description": "Enter your email and we will send you a link to reset your password.",
+        "send_button": "Send reset link",
+        "back_to_login": "Back to login",
+        "success_title": "Check your Email",
+        "success_message": "If an account for {{email}} exists, you will receive a link to reset your password.",
+        "email_required": "Email is required",
+        "email_invalid": "The email is invalid",
+        "email_sent": "Reset link sent to {{email}}",
+        "check_your_email": "Check your email to continue"
+    },
+    "common": {
+        "done": "Done",
+        "cancel": "Cancel",
+        "back": "Back",
+        "ok": "OK",
+        "password_required": "Password is required",
+        "email_required": "Email is required",
+        "email_placeholder": "Email"
     },
     "tabs": {
         "home": "Home",
@@ -48,5 +169,16 @@
         "feature_2": "Reported lost pets",
         "feature_3": "Adoption events",
         "feature_4": "Nearby veterinarians"
+    },
+    "profile": {
+        "title": "Profile",
+        "edit_profile": "Edit profile",
+        "view_profile": "View profile",
+        "settings": "Settings",
+        "logout": "Log out",
+        "my_pets": "My pets",
+        "my_posts": "My posts",
+        "my_bookmarks": "My bookmarks",
+        "my_folders": "My folders"
     }
 }

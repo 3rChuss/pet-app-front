@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { startTransition, useCallback, useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -10,19 +10,22 @@ import {
   Text,
   TextInput,
   Pressable,
-  Alert,
   ScrollView,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
+  ActivityIndicator,
 } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import * as z from 'zod'
 
+import { forgotPassword } from '@/api/services/auth'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
-import { useKeyboard } from '@/lib/hooks'
+import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
+import { useFormErrors } from '@/lib/hooks/useFormErrors'
 
 const schema = z.object({
   email: z
@@ -38,6 +41,11 @@ export default function ForgotPasswordScreen() {
   const { t } = useTranslation()
   const router = useRouter()
   const { keyboardVisible } = useKeyboard()
+  const { setLoading, loadingStates } = useLoadingState()
+  const { handleApiError, handleValidationErrors } = useApiError()
+  const [emailSent, setEmailSent] = useState(false)
+
+  const isLoading = loadingStates.forgotPassword || loadingStates.default
 
   // Animated values for smooth transitions
   const logoScale = useSharedValue(1)
@@ -83,20 +91,48 @@ export default function ForgotPasswordScreen() {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ForgotPasswordFormType>({
     resolver: zodResolver(schema),
   })
+  const { mapApiErrorsToForm } = useFormErrors({ setError })
 
-  const onSubmit: SubmitHandler<ForgotPasswordFormType> = async (data: ForgotPasswordFormType) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    Alert.alert(
-      t('forgot_password.success_title'),
-      t('forgot_password.success_message', { email: data.email }),
-      [{ text: 'OK', onPress: () => router.replace('/(auth)/login') }]
-    )
-  }
+  const onSubmit: SubmitHandler<ForgotPasswordFormType> = useCallback(
+    async (data: ForgotPasswordFormType) => {
+      Keyboard.dismiss()
+
+      if (isLoading) {
+        return
+      }
+
+      const operationKey = 'forgotPassword'
+
+      try {
+        setLoading(operationKey, true)
+
+        const response = await forgotPassword(data.email)
+        if (response.status === 200) {
+          startTransition(() => {
+            setEmailSent(true)
+            setTimeout(() => {
+              router.push('/login')
+            }, 5000)
+          })
+        }
+      } catch (error) {
+        const apiError = handleApiError(error, 'Registration failed')
+
+        if (apiError.status === 422 || apiError.validationErrors) {
+          handleValidationErrors(apiError, mapApiErrorsToForm)
+        }
+      } finally {
+        setLoading(operationKey, false)
+      }
+    },
+    [router, handleApiError, handleValidationErrors, mapApiErrorsToForm, setLoading, isLoading]
+  )
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -113,71 +149,94 @@ export default function ForgotPasswordScreen() {
           className="absolute inset-0"
         />
 
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <Animated.View style={[styles.formContainer, animatedFormStyle]} className="gap-y-2">
-            <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
-              <Animated.Text
-                style={[animatedTextStyle]}
-                className="text-4xl font-bold text-primary mb-2 text-center"
-              >
-                {t('forgot_password.title')}
-              </Animated.Text>
-              <Animated.Text
-                style={[animatedTextStyle]}
-                className="text-neutral-dark-gray text-center"
-              >
-                {t('forgot_password.description')}
-              </Animated.Text>
-            </Animated.View>
+        {emailSent ? (
+          <View className="flex-1 items-center justify-center">
+            <Text className="text-lg font-semibold text-neutral-dark-gray">
+              {t('forgot_password.email_sent', { email: control._fields.email || '' })}
+            </Text>
+            <Text className="text-sm text-neutral-medium-gray mt-2">
+              {t('forgot_password.check_your_email')}
+            </Text>
+          </View>
+        ) : (
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <Animated.View style={[styles.formContainer, animatedFormStyle]} className="gap-y-2">
+              <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
+                <Animated.Text
+                  style={[animatedTextStyle]}
+                  className="text-4xl font-bold text-primary mb-2 text-center"
+                >
+                  {t('forgot_password.title')}
+                </Animated.Text>
+                <Animated.Text
+                  style={[animatedTextStyle]}
+                  className="text-neutral-dark-gray text-center"
+                >
+                  {t('forgot_password.description')}
+                </Animated.Text>
+              </Animated.View>
 
-            <View className="mb-6">
-              <Controller
-                control={control}
-                name="email"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder={t('common.email_placeholder')}
-                    className="border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
-              {errors.email && (
-                <Text className="text-xs text-accent-coral">
-                  {t(errors.email.message as string)}
-                </Text>
-              )}
-            </View>
-
-            <Button
-              label={t('forgot_password.send_button')}
-              onPress={handleSubmit(onSubmit)}
-              variant="primary"
-              className="!mb-6 bg-primary"
-              textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
-              disabled={isSubmitting}
-              isLoading={isSubmitting}
-            />
-
-            <View className="flex-row items-center justify-center" style={styles.linkContainer}>
-              <Link href="/login" asChild>
-                <Pressable className="self-center">
-                  <Text className="text-sm font-semibold mix-blend-difference backdrop-invert">
-                    {t('forgot_password.back_to_login')}
+              <View className="mb-6">
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      placeholder={t('common.email_placeholder')}
+                      className={`border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      autoCorrect={false}
+                      spellCheck={false}
+                      numberOfLines={1}
+                      scrollEnabled={false}
+                      multiline={false}
+                      returnKeyType="done"
+                      textContentType="username"
+                    />
+                  )}
+                />
+                {errors.email && (
+                  <Text className="text-xs text-accent-coral">
+                    {t(errors.email.message as string)}
                   </Text>
-                </Pressable>
-              </Link>
-            </View>
-          </Animated.View>
-        </ScrollView>
+                )}
+              </View>
+
+              <Button
+                label={
+                  isSubmitting
+                    ? t('forgot_password.sending_button')
+                    : t('forgot_password.send_button')
+                }
+                onPress={handleSubmit(onSubmit)}
+                variant="primary"
+                className="!mb-6 bg-primary"
+                textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+                disabled={isSubmitting}
+                isLoading={isSubmitting}
+                icon={isSubmitting ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}
+              />
+
+              <View className="flex-row items-center justify-center" style={styles.linkContainer}>
+                <Link href="/login" asChild>
+                  <Pressable className="self-center" disabled={isLoading || isSubmitting}>
+                    <Text className="text-sm font-semibold mix-blend-difference backdrop-invert">
+                      {t('forgot_password.back_to_login')}
+                    </Text>
+                  </Pressable>
+                </Link>
+              </View>
+            </Animated.View>
+          </ScrollView>
+        )}
       </Container>
     </KeyboardAvoidingView>
   )

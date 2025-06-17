@@ -1,7 +1,8 @@
 import { useCallback } from 'react'
 
-import { Alert } from 'react-native'
+import { useRouter } from 'expo-router'
 
+import { useNotifications } from '@/lib/context/NotificationProvider'
 import ErrorReportingService from '@/services/error-reporting'
 
 export interface ApiError {
@@ -12,43 +13,264 @@ export interface ApiError {
   originalError?: any
 }
 
+export type ErrorCategory =
+  | 'success'
+  | 'validation'
+  | 'authentication'
+  | 'authorization'
+  | 'network'
+  | 'server'
+  | 'client'
+  | 'unknown'
+
 /**
- * Hook para manejar errores de API de forma consistente
- * Proporciona funciones para mostrar errores al usuario y reportarlos
+ * Extrae errores de validación de diferentes estructuras de respuesta de API
+ * Maneja específicamente las respuestas de Laravel y otras estructuras comunes
+ */
+function extractValidationErrors(error: any): Record<string, string[]> | string | undefined {
+  // Caso 1: Laravel - errores en response.data.errors
+  if (error.response?.data?.errors) {
+    return error.response.data.errors
+  }
+
+  // Caso 2: Errores directos en response.data (para otros backends)
+  if (error.response?.data?.validationErrors) {
+    return error.response.data.validationErrors
+  }
+
+  // Caso 3: Errores en el objeto error directamente
+  if (error.validationErrors) {
+    return error.validationErrors
+  }
+
+  // Caso 4: Mensaje general de validación de Laravel
+  if (error.response?.data?.message && error.response?.status === 422) {
+    return error.response.data.message
+  }
+
+  // Caso 5: Errores en response.errors (formato alternativo)
+  if (error.response?.errors) {
+    return error.response.errors
+  }
+
+  return undefined
+}
+
+/**
+ * Extrae el mensaje de usuario amigable de diferentes estructuras de respuesta
+ */
+function extractUserMessage(error: any): string | undefined {
+  // Mensaje personalizado del usuario
+  if (error.userMessage) {
+    return error.userMessage
+  }
+
+  // Mensaje de Laravel en data.message
+  if (error.response?.data?.message) {
+    return error.response.data.message
+  }
+
+  // Mensaje en response.message
+  if (error.response?.message) {
+    return error.response.message
+  }
+
+  return undefined
+}
+
+/**
+ * Hook para manejar errores de API de forma diferenciada según su criticidad
+ * Proporciona notificaciones no bloqueantes (toasts) y modales para errores críticos
  */
 export function useApiError() {
-  /**
-   * Muestra un error al usuario con un mensaje amigable
-   */
-  const showError = useCallback((error: ApiError, title = 'Error') => {
-    const message = error.userMessage || error.message || 'Ha ocurrido un error inesperado'
+  const { showToast, showErrorModal } = useNotifications()
+  const router = useRouter()
 
-    Alert.alert(title, message, [{ text: 'OK', style: 'default' }])
+  /**
+   * Categoriza un error según su tipo y estado HTTP
+   */
+  const categorizeError = useCallback((error: ApiError): ErrorCategory => {
+    const status = error.status
+
+    // Mensajes de éxito (201, 200 con mensaje positivo)
+    if (status === 200 || status === 201) {
+      return 'success'
+    }
+
+    // Errores de validación
+    if (status === 422 || error.validationErrors) {
+      return 'validation'
+    }
+
+    // Errores de autenticación
+    if (status === 401) {
+      return 'authentication'
+    }
+
+    // Errores de autorización
+    if (status === 403) {
+      return 'authorization'
+    }
+
+    // Errores de red/conectividad
+    if (status === 0 || status === 408 || status === 503 || status === 504) {
+      return 'network'
+    }
+
+    // Errores del servidor
+    if (status && status >= 500) {
+      return 'server'
+    }
+
+    // Errores del cliente
+    if (status && status >= 400 && status < 500) {
+      return 'client'
+    }
+
+    return 'unknown'
   }, [])
 
   /**
-   * Maneja errores de validación mostrando los campos específicos
+   * Muestra un mensaje de éxito con toast verde
    */
-  const showValidationErrors = useCallback(
+  const showSuccess = useCallback(
+    (message: string) => {
+      showToast(message, 'success', 4000)
+    },
+    [showToast]
+  )
+
+  /**
+   * Muestra errores de validación de forma inline (requiere integración con formularios)
+   * Para errores de validación generales, muestra un toast de advertencia
+   */
+  const showValidationError = useCallback(
     (error: ApiError) => {
       if (error.validationErrors) {
-        let message = 'Por favor, corrige los siguientes errores:\n\n'
-
         if (typeof error.validationErrors === 'string') {
-          message += error.validationErrors
+          showToast(error.validationErrors, 'warning', 5000)
         } else {
-          Object.entries(error.validationErrors).forEach(([field, errors]) => {
-            message += `• ${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}\n`
-          })
+          // Si hay múltiples errores de validación, mostrar el primero como toast
+          const firstError = Object.values(error.validationErrors)[0]
+          const message = Array.isArray(firstError) ? firstError[0] : firstError
+          showToast(message, 'warning', 5000)
         }
-
-        Alert.alert('Errores de validación', message, [{ text: 'OK', style: 'default' }])
       } else {
-        showError(error, 'Error de validación')
+        showToast(error.userMessage || 'Por favor, revisa los datos ingresados', 'warning', 5000)
       }
     },
-    [showError]
-  ) /**
+    [showToast]
+  )
+
+  /**
+   * Muestra errores críticos de autenticación con modal
+   */
+  const showAuthenticationError = useCallback(
+    (error: ApiError) => {
+      showErrorModal(
+        'Sesión expirada',
+        error.userMessage || 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.',
+        'critical',
+        {
+          actionText: 'Iniciar sesión',
+          hideCancel: true,
+          onAction: () => {
+            router.replace('/(auth)/login')
+          },
+        }
+      )
+    },
+    [showErrorModal, router]
+  )
+
+  /**
+   * Muestra errores de autorización con modal
+   */
+  const showAuthorizationError = useCallback(
+    (error: ApiError) => {
+      showErrorModal(
+        'Acceso denegado',
+        error.userMessage || 'No tienes permisos para realizar esta acción.',
+        'high',
+        {
+          actionText: 'Entendido',
+          hideCancel: true,
+        }
+      )
+    },
+    [showErrorModal]
+  )
+
+  /**
+   * Muestra errores de red con toast informativo
+   */
+  const showNetworkError = useCallback(
+    (error: ApiError) => {
+      showToast(
+        error.userMessage || 'Problema de conexión. Verifica tu internet e intenta nuevamente.',
+        'error',
+        6000
+      )
+    },
+    [showToast]
+  )
+
+  /**
+   * Muestra errores del servidor con modal
+   */
+  const showServerError = useCallback(
+    (error: ApiError) => {
+      showErrorModal(
+        'Error del servidor',
+        error.userMessage ||
+          'Estamos experimentando problemas técnicos. Intenta nuevamente en unos minutos.',
+        'high',
+        {
+          actionText: 'Reintentar',
+          cancelText: 'Cancelar',
+          onAction: () => {
+            // Podrías implementar lógica de reintento aquí
+          },
+        }
+      )
+    },
+    [showErrorModal]
+  )
+
+  /**
+   * Muestra errores generales del cliente con toast
+   */
+  const showClientError = useCallback(
+    (error: ApiError) => {
+      showToast(
+        error.userMessage || 'Ha ocurrido un error. Por favor, intenta nuevamente.',
+        'error',
+        5000
+      )
+    },
+    [showToast]
+  )
+
+  /**
+   * Muestra errores desconocidos con modal de información
+   */
+  const showUnknownError = useCallback(
+    (error: ApiError) => {
+      showErrorModal(
+        'Error inesperado',
+        error.userMessage ||
+          'Ha ocurrido un error inesperado. Si el problema persiste, contacta al soporte.',
+        'medium',
+        {
+          actionText: 'Entendido',
+          hideCancel: true,
+        }
+      )
+    },
+    [showErrorModal]
+  )
+
+  /**
    * Reporta un error para análisis y debugging
    */
   const reportApiError = useCallback(async (error: ApiError, context?: string) => {
@@ -77,37 +299,127 @@ export function useApiError() {
 
   /**
    * Función principal para manejar cualquier error de API
-   * Determina automáticamente cómo mostrar el error y lo reporta
+   * Determina automáticamente cómo mostrar el error según su categoría
    */
   const handleApiError = useCallback(
     (error: any, context?: string) => {
+      // Extraer información de forma inteligente de diferentes estructuras de respuesta
+      const validationErrors = extractValidationErrors(error)
+      const userMessage = extractUserMessage(error)
+
       const apiError: ApiError = {
         status: error.response?.status || error.status,
         message: error.message || 'Unknown error',
-        userMessage: error.userMessage,
-        validationErrors: error.validationErrors,
+        userMessage,
+        validationErrors,
         originalError: error,
+      }
+
+      // Logging para debugging
+      if (__DEV__) {
+        console.log('🔍 API Error Debug:', {
+          originalError: error,
+          extractedApiError: apiError,
+          responseData: error.response?.data,
+        })
       }
 
       // Report error for analytics
       reportApiError(apiError, context)
 
-      // Show appropriate error message
-      if (apiError.status === 422 && apiError.validationErrors) {
-        showValidationErrors(apiError)
-      } else {
-        showError(apiError)
+      // Categorize and handle error appropriately
+      const category = categorizeError(apiError)
+
+      switch (category) {
+        case 'success':
+          showSuccess(apiError.userMessage || 'Operación completada exitosamente')
+          break
+        case 'validation':
+          showValidationError(apiError)
+          break
+        case 'authentication':
+          showAuthenticationError(apiError)
+          break
+        case 'authorization':
+          showAuthorizationError(apiError)
+          break
+        case 'network':
+          showNetworkError(apiError)
+          break
+        case 'server':
+          showServerError(apiError)
+          break
+        case 'client':
+          showClientError(apiError)
+          break
+        case 'unknown':
+        default:
+          showUnknownError(apiError)
+          break
       }
 
       return apiError
     },
-    [reportApiError, showValidationErrors, showError]
+    [
+      reportApiError,
+      categorizeError,
+      showSuccess,
+      showValidationError,
+      showAuthenticationError,
+      showAuthorizationError,
+      showNetworkError,
+      showServerError,
+      showClientError,
+      showUnknownError,
+    ]
+  )
+
+  /**
+   * Maneja específicamente errores de validación para formularios
+   * Devuelve true si pudo mapear errores a campos, false si necesita mostrar mensaje genérico
+   */
+  const handleValidationErrors = useCallback(
+    (error: ApiError, mapToForm?: (error: ApiError) => boolean) => {
+      // Si se proporciona una función para mapear al formulario, intentar usarla
+      if (mapToForm && mapToForm(error)) {
+        // Los errores se mapearon exitosamente a campos del formulario
+        return true
+      }
+
+      // Si no se pudo mapear al formulario, mostrar como toast
+      showValidationError(error)
+      return false
+    },
+    [showValidationError]
+  )
+
+  /**
+   * Muestra un mensaje de éxito (para compatibilidad con código existente)
+   */
+  const showSuccessMessage = useCallback(
+    (message: string) => {
+      showSuccess(message)
+    },
+    [showSuccess]
   )
 
   return {
-    showError,
-    showValidationErrors,
-    reportApiError,
+    // Funciones principales
     handleApiError,
+    handleValidationErrors,
+    reportApiError,
+
+    // Funciones específicas por categoría (para uso avanzado)
+    showSuccess: showSuccessMessage,
+    showValidationError,
+    showAuthenticationError,
+    showAuthorizationError,
+    showNetworkError,
+    showServerError,
+    showClientError,
+    showUnknownError,
+
+    // Utilidades
+    categorizeError,
   }
 }
