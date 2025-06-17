@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 export const Container = ({
   children,
@@ -7,7 +7,11 @@ export const Container = ({
   children: React.ReactNode
   className?: string
 }) => {
-  return <SafeAreaView className={className}>{children}</SafeAreaView>
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView className={className}>{children}</SafeAreaView>
+    </SafeAreaProvider>
+  )
 }
 
 const styles = {

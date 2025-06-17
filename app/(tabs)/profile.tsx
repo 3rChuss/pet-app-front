@@ -1,17 +1,18 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { View, Text, ScrollView, Pressable, Image } from 'react-native'
+import { View, Text, ScrollView, Pressable, Image, TouchableOpacity } from 'react-native'
+import Animated from 'react-native-reanimated'
 
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
-import { useAuth } from '@/lib/auth'
 import { MOCK_PROFILES } from '@/lib/const/mockData'
 import { useGuestModeContext } from '@/lib/context/GuestModeContext'
 
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
+
 export default function ProfileScreen() {
   const { t } = useTranslation()
-  const signOut = useAuth.use.signOut()
   const { isGuest, trackInteraction } = useGuestModeContext()
 
   // Mock profile for guest mode
@@ -23,29 +24,21 @@ export default function ProfileScreen() {
     following: 89,
   }
 
-  const menuItems = [
-    { id: 1, title: 'Editar perfil', icon: 'person-outline', color: '#A0D2DB' },
-    { id: 2, title: 'Mis mascotas', icon: 'paw', color: '#F8B595' },
-    { id: 3, title: 'Lugares favoritos', icon: 'heart-outline', color: '#F47C7C' },
-    { id: 4, title: 'Configuración', icon: 'settings-outline', color: '#C8E6C9' },
-    { id: 5, title: 'Ayuda y soporte', icon: 'help-circle-outline', color: '#FFDA63' },
-    { id: 6, title: 'Acerca de', icon: 'information-circle-outline', color: '#BDBDBD' },
-  ]
-
-  const onLogout = async () => {
-    try {
-      await signOut()
-      router.replace('/(auth)/login')
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
-  }
-
   if (isGuest) {
     return (
       <Container className="flex-1 bg-neutral-off-white">
         <ScrollView className="flex-1">
           <View className="p-6">
+            <View className="flex-row items-center justify-between mb-6">
+              {/* selector de mascotas */}
+              <Pressable
+                onPress={() => trackInteraction('selectPet')}
+                className="flex-row items-center bg-primary/10 px-4 py-2 rounded-full"
+              >
+                <Ionicons name="paw" size={20} color="#0077BE" />
+                <Text className="ml-2 text-primary font-nunito">Seleccionar mascota</Text>
+              </Pressable>
+            </View>
             <View className="items-center mb-6">
               <Image
                 source={{ uri: guestProfile.avatar }}
@@ -135,10 +128,26 @@ export default function ProfileScreen() {
   return (
     <Container className="flex-1 bg-neutral-off-white">
       <ScrollView className="flex-1">
+        <View className="flex-1 bg-neutral-off-white flex-row items-center justify-between px-2 pt-2">
+          <Pressable
+            onPress={() => trackInteraction('selectPet')}
+            className="flex-row items-center px-4 py-2 rounded-full justify-start"
+          >
+            <Ionicons name="paw" size={20} color="#0077BE" />
+            <Text className="ml-2 mr-1 text-primary font-nunito">Tinkiwinki</Text>
+            <Ionicons name="chevron-down" size={14} color="#0077BE" className="pt-1" />
+          </Pressable>
+          <AnimatedTouchableOpacity
+            onPress={() => router.push('/settings')}
+            className="flex-row items-center px-4 py-2 rounded-full justify-start"
+          >
+            <Ionicons name="list-outline" size={26} color="#0077BE" />
+          </AnimatedTouchableOpacity>
+        </View>
+        {/* Profile Header */}
         <View className="p-6">
-          {/* Profile Header */}
-          <View className="items-center mb-8">
-            <View className="relative mb-4">
+          <View className="items-start flex-row">
+            <View className="relative">
               <View className="w-24 h-24 bg-neutral-light-gray rounded-full items-center justify-center">
                 <Ionicons name="person" size={48} color="#BDBDBD" />
               </View>
@@ -147,30 +156,39 @@ export default function ProfileScreen() {
               </Pressable>
             </View>
 
-            <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand mb-2">
-              Usuario de Petopia
-            </Text>
-            <Text className="text-neutral-medium-gray font-nunito text-center">
-              Amante de los animales 🐕 🐱
-            </Text>
+            <View className="flex-1 ml-4 items-start justify-center">
+              <View className="items-start mb-4">
+                <Text className="text-2xl font-bold text-neutral-dark-gray mb-1">
+                  Usuario de Petopia
+                </Text>
+                <Text className="text-neutral-medium-gray font-nunito text-start pr-4">
+                  Amante de los animales 🐕 🐱
+                </Text>
+                <Text className="text-neutral-medium-gray font-nunito text-start pr-4">
+                  Global citizen 🌍.
+                </Text>
+                <Text className="text-neutral-medium-gray font-nunito text-start pr-4">
+                  <Text className="font-bold underline">#petlover</Text> #friki #vinicius
+                </Text>
+              </View>
+            </View>
           </View>
-
           {/* Stats */}
-          <View className="flex-row justify-around bg-neutral-light-gray rounded-xl p-4 mb-6">
-            <View className="items-center">
-              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+          <View className="flex-row mb-4 gap-4 justify-start items-start">
+            <View className="items-center flex-row gap-1">
+              <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
                 {userStats.posts}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">Publicaciones</Text>
             </View>
-            <View className="items-center">
-              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+            <View className="items-center flex-row gap-1">
+              <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
                 {userStats.followers}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">Seguidores</Text>
             </View>
-            <View className="items-center">
-              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+            <View className="items-center flex-row gap-1">
+              <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
                 {userStats.following}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">Siguiendo</Text>
@@ -178,47 +196,26 @@ export default function ProfileScreen() {
           </View>
 
           {/* Quick Actions */}
-          <View className="flex-row space-x-3 mb-6">
+          <View className="flex-row gap-4">
             <Button
               label="Editar perfil"
               onPress={() => {}}
               variant="secondary"
-              className="flex-1 border-primary"
-              textClassName="text-primary"
+              className="flex-1"
+              textClassName="text-primary "
             />
-            <Pressable className="bg-primary rounded-xl p-3 items-center justify-center">
+            <Pressable className="bg-primary rounded-full p-3 items-center justify-center">
               <Ionicons name="share-outline" size={20} color="#FDFDFD" />
             </Pressable>
           </View>
+        </View>
 
-          {/* Menu Items */}
-          <View className="space-y-2">
-            {menuItems.map(item => (
-              <Pressable
-                key={item.id}
-                className="flex-row items-center p-4 bg-neutral-off-white border border-neutral-light-gray rounded-xl"
-              >
-                <View className="mr-4">
-                  <Ionicons name={item.icon as any} size={24} color={item.color} />
-                </View>
-                <Text className="flex-1 text-neutral-dark-gray font-nunito font-medium">
-                  {item.title}
-                </Text>
-                <Ionicons name="chevron-forward" size={20} color="#BDBDBD" />
-              </Pressable>
-            ))}
-          </View>
+        <View className="border-t border-neutral-light-gray mb-4" />
 
-          {/* Sign Out Button */}
-          <View className="mt-8 mb-4">
-            <Button
-              label={t('profile.logout')}
-              onPress={onLogout}
-              variant="outline"
-              className="border-accent-coral"
-              textClassName="text-accent-coral"
-            />
-          </View>
+        {/* User feed */}
+        <View className="px-6">
+          {/* Replace with actual user feed content */}
+          <View className="bg-neutral-light-gray h-40 rounded-lg" />
         </View>
       </ScrollView>
     </Container>
