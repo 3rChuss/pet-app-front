@@ -44,10 +44,24 @@ const passwordSchema = z
 
 const schema = z
   .object({
+    userName: z
+      .string({
+        required_error: 'register.username_required',
+        coerce: true,
+      })
+      .trim()
+      .min(3, {
+        message: 'register.username_min_length',
+      })
+      .refine(val => /^[a-zA-Z0-9_]+$/.test(val), {
+        message: 'register.username_invalid',
+      }),
     email: z
       .string({
         required_error: 'common.email_required',
       })
+      .trim()
+      .toLowerCase()
       .email('register.email_invalid'),
     password: passwordSchema,
     passwordConfirmation: z.string({
@@ -151,6 +165,7 @@ export default function RegisterScreen() {
       try {
         setLoading(operationKey, true)
         const response = await register({
+          name: data.userName,
           email: data.email,
           password: data.password,
           passwordConfirmation: data.passwordConfirmation,
@@ -167,6 +182,7 @@ export default function RegisterScreen() {
         }
       } catch (error) {
         const apiError = handleApiError(error, 'Registration failed')
+        console.log('API Error:', apiError)
 
         if (apiError.status === 422 || apiError.validationErrors) {
           handleValidationErrors(apiError, mapApiErrorsToForm)
@@ -210,7 +226,7 @@ export default function RegisterScreen() {
           className="absolute inset-0"
         />
         {registerSuccess ? (
-          <View className="p-4 rounded-md mb-4 flex-1 items-center justify-center ">
+          <View className="p-4 rounded-md mb-4 flex-1 items-center justify-center">
             <Text className="text-neutral-dark-gray text-center text-lg">
               {t('register.success_message')}
             </Text>
@@ -245,79 +261,99 @@ export default function RegisterScreen() {
                 </Animated.Text>
               </Animated.View>
 
-              <View>
-                <Controller
-                  control={control}
-                  name="email"
-                  render={({ field: { onChange, onBlur, value } }) => (
+              <Controller
+                control={control}
+                name="userName"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    placeholder={t('register.username_placeholder')}
+                    className={inputClassName(isRegisterLoading)}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    editable={!isRegisterLoading}
+                    multiline={false}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    spellCheck={false}
+                    numberOfLines={1}
+                    scrollEnabled={false}
+                    autoFocus={!keyboardVisible}
+                  />
+                )}
+              />
+              {errors.userName && (
+                <Text className="text-xs text-accent-coral">{t(errors.userName.message!)}</Text>
+              )}
+
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    placeholder={t('common.email_placeholder')}
+                    className={inputClassName(isRegisterLoading)}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    textContentType="username"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    editable={!isRegisterLoading}
+                    multiline={false}
+                    autoComplete="email"
+                    autoCorrect={false}
+                    spellCheck={false}
+                    numberOfLines={1}
+                    scrollEnabled={false}
+                  />
+                )}
+              />
+              {errors.email && (
+                <Text className="text-xs text-accent-coral">{t(errors.email.message!)}</Text>
+              )}
+
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View className="relative">
                     <TextInput
-                      placeholder={t('common.email_placeholder')}
+                      placeholder={t('register.password_placeholder')}
                       className={inputClassName(isRegisterLoading)}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      textContentType="username"
+                      secureTextEntry={!showPassword}
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
-                      editable={!isRegisterLoading}
+                      textContentType="newPassword"
                       multiline={false}
-                      autoComplete="email"
+                      autoComplete="password"
+                      autoCapitalize="none"
                       autoCorrect={false}
                       spellCheck={false}
                       numberOfLines={1}
                       scrollEnabled={false}
-                      autoFocus={!keyboardVisible}
+                      editable={!isRegisterLoading}
                     />
-                  )}
-                />
-                {errors.email && (
-                  <Text className="text-xs text-accent-coral">{t(errors.email.message!)}</Text>
-                )}
-              </View>
-
-              <View>
-                <Controller
-                  control={control}
-                  name="password"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <View className="relative">
-                      <TextInput
-                        placeholder={t('register.password_placeholder')}
-                        className={inputClassName(isRegisterLoading)}
-                        secureTextEntry={!showPassword}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        textContentType="newPassword"
-                        multiline={false}
-                        autoComplete="password"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        spellCheck={false}
-                        numberOfLines={1}
-                        scrollEnabled={false}
-                        editable={!isRegisterLoading}
+                    <TouchableOpacity
+                      testID="toggle-password-visibility"
+                      onPress={togglePasswordVisibility}
+                      className="absolute right-3 top-2 p-1"
+                      style={{ zIndex: 1 }}
+                      disabled={isRegisterLoading}
+                    >
+                      <Ionicons
+                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={20}
+                        color={isRegisterLoading ? '#D1D5DB' : '#9CA3AF'}
                       />
-                      <TouchableOpacity
-                        testID="toggle-password-visibility"
-                        onPress={togglePasswordVisibility}
-                        className="absolute right-3 top-2 p-1"
-                        style={{ zIndex: 1 }}
-                        disabled={isRegisterLoading}
-                      >
-                        <Ionicons
-                          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                          size={20}
-                          color={isRegisterLoading ? '#D1D5DB' : '#9CA3AF'}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                />
-                {errors.password && (
-                  <Text className="text-xs text-accent-coral">{t(errors.password.message!)}</Text>
+                    </TouchableOpacity>
+                  </View>
                 )}
-              </View>
+              />
+              {errors.password && (
+                <Text className="text-xs text-accent-coral">{t(errors.password.message!)}</Text>
+              )}
 
               <View className="mb-6">
                 <Controller
@@ -357,7 +393,10 @@ export default function RegisterScreen() {
                 />
 
                 <View className="ml-1 flex-1">
-                  <Text className="text-xs text-neutral-dark-gray">
+                  <Text
+                    className="text-xs text-neutral-dark-gray"
+                    style={errors.acceptedPrivacyPolicy ? { color: '#F87171' } : {}}
+                  >
                     <Trans
                       i18nKey="login.disclaimer"
                       components={{
@@ -408,8 +447,10 @@ export default function RegisterScreen() {
                   {t('register.already_have_account')}{' '}
                 </Text>
                 <Link href="/login" asChild>
-                  <Pressable>
-                    <Text className="text-sm font-semibold mix-blend-difference backdrop-invert">
+                  <Pressable disabled={isRegisterLoading}>
+                    <Text
+                      className={`text-sm font-semibold mix-blend-difference backdrop-invert ${isRegisterLoading ? 'opacity-50' : ''}`}
+                    >
                       {t('register.login_button')}
                     </Text>
                   </Pressable>

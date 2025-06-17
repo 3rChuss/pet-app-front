@@ -4,6 +4,7 @@ export interface AuthCredentials {
 }
 
 export interface RegisterParams extends AuthCredentials {
+  name: string
   passwordConfirmation: string
   acceptedPrivacyPolicy: boolean
   //acceptedTermsOfService: boolean

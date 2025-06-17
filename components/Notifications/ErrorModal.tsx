@@ -88,6 +88,8 @@ export default function ErrorModal({
       animationType="fade"
       statusBarTranslucent
       onRequestClose={onClose}
+      className="h-screen w-screen"
+      presentationStyle="overFullScreen"
     >
       <View style={styles.overlay}>
         <Pressable style={styles.backdrop} onPress={onClose} />

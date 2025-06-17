@@ -124,7 +124,12 @@
         "success_message": "Tu cuenta ha sido creada con éxito. \nSe ha enviado un correo electrónico de verificación.",
         "success_title": "Registro exitoso",
         "terms_conditions": "Al registrarte, aceptas nuestros <Bold>Términos y Condiciones</Bold> y <LinkPrivacy>Política de Privacidad</LinkPrivacy>.",
-        "title": "Registrarse"
+        "title": "Registrarse",
+        "username_placeholder": "Nombre de usuario",
+        "username_required": "El nombre de usuario es obligatorio",
+        "username_invalid": "El nombre de usuario no es válido",
+        "username_taken": "El nombre de usuario ya está en uso",
+        "username_length": "El nombre de usuario debe tener entre 3 y 20 caracteres"
     },
     "forgot_password": {
         "title": "¿Olvidaste tu contraseña?",

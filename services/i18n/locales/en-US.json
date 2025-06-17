@@ -124,7 +124,9 @@
         "success_message": "Your account has been successfully created. \nA verification email has been sent.",
         "success_title": "Registration successful",
         "terms_conditions": "By registering, you accept our <Bold>Terms and Conditions</Bold> and <LinkPrivacy>Privacy Policy</LinkPrivacy>.",
-        "title": "Register"
+        "title": "Register",
+        "username_placeholder": "Username",
+        "username_required": "Username is required"
     },
     "forgot_password": {
         "title": "Forgot your password?",

@@ -24,6 +24,61 @@ export type ErrorCategory =
   | 'unknown'
 
 /**
+ * Extrae errores de validación de diferentes estructuras de respuesta de API
+ * Maneja específicamente las respuestas de Laravel y otras estructuras comunes
+ */
+function extractValidationErrors(error: any): Record<string, string[]> | string | undefined {
+  // Caso 1: Laravel - errores en response.data.errors
+  if (error.response?.data?.errors) {
+    return error.response.data.errors
+  }
+
+  // Caso 2: Errores directos en response.data (para otros backends)
+  if (error.response?.data?.validationErrors) {
+    return error.response.data.validationErrors
+  }
+
+  // Caso 3: Errores en el objeto error directamente
+  if (error.validationErrors) {
+    return error.validationErrors
+  }
+
+  // Caso 4: Mensaje general de validación de Laravel
+  if (error.response?.data?.message && error.response?.status === 422) {
+    return error.response.data.message
+  }
+
+  // Caso 5: Errores en response.errors (formato alternativo)
+  if (error.response?.errors) {
+    return error.response.errors
+  }
+
+  return undefined
+}
+
+/**
+ * Extrae el mensaje de usuario amigable de diferentes estructuras de respuesta
+ */
+function extractUserMessage(error: any): string | undefined {
+  // Mensaje personalizado del usuario
+  if (error.userMessage) {
+    return error.userMessage
+  }
+
+  // Mensaje de Laravel en data.message
+  if (error.response?.data?.message) {
+    return error.response.data.message
+  }
+
+  // Mensaje en response.message
+  if (error.response?.message) {
+    return error.response.message
+  }
+
+  return undefined
+}
+
+/**
  * Hook para manejar errores de API de forma diferenciada según su criticidad
  * Proporciona notificaciones no bloqueantes (toasts) y modales para errores críticos
  */
@@ -213,7 +268,9 @@ export function useApiError() {
       )
     },
     [showErrorModal]
-  ) /**
+  )
+
+  /**
    * Reporta un error para análisis y debugging
    */
   const reportApiError = useCallback(async (error: ApiError, context?: string) => {
@@ -246,12 +303,25 @@ export function useApiError() {
    */
   const handleApiError = useCallback(
     (error: any, context?: string) => {
+      // Extraer información de forma inteligente de diferentes estructuras de respuesta
+      const validationErrors = extractValidationErrors(error)
+      const userMessage = extractUserMessage(error)
+
       const apiError: ApiError = {
         status: error.response?.status || error.status,
         message: error.message || 'Unknown error',
-        userMessage: error.userMessage,
-        validationErrors: error.validationErrors,
+        userMessage,
+        validationErrors,
         originalError: error,
+      }
+
+      // Logging para debugging
+      if (__DEV__) {
+        console.log('🔍 API Error Debug:', {
+          originalError: error,
+          extractedApiError: apiError,
+          responseData: error.response?.data,
+        })
       }
 
       // Report error for analytics
