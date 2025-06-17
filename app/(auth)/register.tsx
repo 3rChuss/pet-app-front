@@ -169,7 +169,7 @@ export default function RegisterScreen() {
           email: data.email,
           password: data.password,
           passwordConfirmation: data.passwordConfirmation,
-          acceptedPrivacyPolicy: false,
+          acceptedPrivacyPolicy: data.acceptedPrivacyPolicy,
         })
         if (response.status === 200) {
           startTransition(() => {
