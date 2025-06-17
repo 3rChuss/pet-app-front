@@ -83,8 +83,7 @@ export default function Login() {
         const { email, password } = data
 
         const response = await login(email, password)
-        const user = response.data.user
-        await signIn(user)
+        await signIn(response.data)
 
         // Navigate to home after successful login
         router.push('/(tabs)')

@@ -3,18 +3,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const TOKEN = 'token'
 
 export type TokenType = {
-  access: string
-  refresh: string
+  accessToken: string
+  refreshToken?: string
 }
 
-export const getToken = async (): Promise<TokenType | null> => {
-  const json = await AsyncStorage.getItem(TOKEN)
-  return json ? (JSON.parse(json) as TokenType) : null
+export const getToken = async (): Promise<string | null> => {
+  const token = await AsyncStorage.getItem(TOKEN)
+  return token ? token : null
 }
 
 export const removeToken = () => AsyncStorage.removeItem(TOKEN)
 
-export const setToken = (value: TokenType) => {
-  const json = JSON.stringify(value)
-  return AsyncStorage.setItem(TOKEN, json)
+export const setToken = (token: string) => {
+  return AsyncStorage.setItem(TOKEN, token)
 }

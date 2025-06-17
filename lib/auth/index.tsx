@@ -23,9 +23,10 @@ const _useAuth = create<AuthState>((set, get) => ({
   token: null,
   user: null,
   isLoading: false,
-  signIn: async token => {
-    await setToken(token)
-    set({ status: 'signIn', token })
+  signIn: async data => {
+    const { accessToken } = data
+    await setToken(accessToken)
+    set({ status: 'signIn', token: { accessToken } })
   },
   signOut: async () => {
     await removeToken()
@@ -34,8 +35,8 @@ const _useAuth = create<AuthState>((set, get) => ({
   hydrate: async () => {
     try {
       const userToken = await getToken()
-      if (userToken !== null) {
-        get().signIn(userToken)
+      if (userToken) {
+        get().signIn({ accessToken: userToken })
       } else {
         get().signOut()
       }
@@ -53,8 +54,7 @@ const _useAuth = create<AuthState>((set, get) => ({
         // const userData = await fetchUserProfile(token);
         set({
           token: {
-            access: token,
-            refresh: token,
+            accessToken: token,
           },
           status: 'signIn',
         })

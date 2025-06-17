@@ -17,7 +17,7 @@ declare module 'app-types' {
       id: number
       name: string
       last_name: string
-      username: string
+      userName: string
       email: string
       avatar: string
       latitude?: number | null

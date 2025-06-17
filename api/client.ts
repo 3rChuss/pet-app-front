@@ -23,8 +23,8 @@ client.interceptors.request.use(
   async config => {
     try {
       const token = await getToken()
-      if (token?.access) {
-        config.headers.Authorization = `Bearer ${token.access}`
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
       }
       if (config.data) {
         config.data = snakecaseKeys(config.data, { deep: true })
@@ -85,7 +85,7 @@ client.interceptors.response.use(
           try {
             // Try to refresh token
             const token = await getToken()
-            if (token?.refresh) {
+            if (token) {
               // TODO: Implement token refresh logic here
               // const refreshResponse = await axios.post('/refresh', { refresh_token: token.refresh })
               // await setToken(refreshResponse.data)
