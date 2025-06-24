@@ -100,7 +100,7 @@ export default function LoginForm({
             <TextInput
               testID="email-input"
               placeholder={t('login.email_placeholder')}
-              className={`border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
+              className={`border-b border-neutral-medium-gray p-3 text-black bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
               keyboardType="email-address"
               autoCapitalize="none"
               value={value}
@@ -130,7 +130,7 @@ export default function LoginForm({
                 testID="password-input"
                 placeholder={t('login.password_placeholder')}
                 secureTextEntry={!showPassword}
-                className={`border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
+                className={`border-b border-neutral-medium-gray p-3 pr-12 text-black bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
                 value={value}
                 onChangeText={onChange}
                 multiline={false}
