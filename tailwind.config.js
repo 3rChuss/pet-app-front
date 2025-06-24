@@ -12,7 +12,11 @@ const generateThemeColors = themeName => {
   return themedColors
 }
 module.exports = {
-  content: ['./app/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    './app/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+    './features/**/*.{js,jsx,ts,tsx}',
+  ],
   darkMode: 'class',
   presets: [require('nativewind/preset')],
   theme: {

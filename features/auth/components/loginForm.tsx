@@ -15,6 +15,7 @@ import {
   Keyboard,
   TouchableOpacity,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native'
 import * as z from 'zod'
 
@@ -163,7 +164,10 @@ export default function LoginForm({
         )}
         <Link href="/(auth)/forgot-password" asChild>
           <Pressable
-            className={`mt-2 mb-4 self-end ${isLoading ? 'opacity-50' : ''}`}
+            className={`mt-2 mb-4 ${isLoading ? 'opacity-50' : ''}`}
+            style={{
+              alignSelf: 'flex-end',
+            }}
             disabled={isLoading}
           >
             <Text className="text-sm text-primary">{t('login.forgot_password_button')}</Text>
@@ -224,7 +228,7 @@ export default function LoginForm({
           icon={
             <Image
               source={require('@/assets/images/android_neutral_rd_na.png')}
-              className="w-[29px] h-[29px]"
+              style={styles.buttonIcon}
             />
           }
           className="!bg-[#F2F2F2] border-[#747775] !p-1 h-12"
@@ -239,7 +243,7 @@ export default function LoginForm({
           icon={
             <Image
               source={require('@/assets/images/Facebook_Logo_Secondary.png')}
-              className="w-[25px] h-[25px]"
+              style={styles.buttonIcon}
             />
           }
           className="!bg-[#4267b2] !p-1 h-12"
@@ -261,3 +265,12 @@ export default function LoginForm({
     </View>
   )
 }
+
+// styles
+const styles = StyleSheet.create({
+  buttonIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 8,
+  },
+})
