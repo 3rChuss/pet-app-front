@@ -18,7 +18,6 @@
     },
     "newArchEnabled": true,
     "scheme": "petopia",
-    "android.package": "com.petopia.app",
     "description": "Pet world app",
     "githubUrl": "https://github.com/3rChuss/zooki.git",
     "experiments": {
