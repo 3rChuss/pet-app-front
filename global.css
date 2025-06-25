@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom Dark Mode utilities */
+@layer utilities {
+  .dark-mode-transition {
+    transition-property: background-color, border-color, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+  }
+  
+  .theme-background {
+    @apply bg-neutral-off-white dark:bg-gray-900;
+  }
+  
+  .theme-card {
+    @apply bg-white dark:bg-gray-800;
+  }
+  
+  .theme-text {
+    @apply text-neutral-dark-gray dark:text-white;
+  }
+  
+  .theme-text-secondary {
+    @apply text-neutral-medium-gray dark:text-gray-300;
+  }
+  
+  .theme-border {
+    @apply border-neutral-medium-gray dark:border-gray-600;
+  }
+  
+  .theme-input {
+    @apply bg-neutral-light-gray/50 dark:bg-gray-700 border-neutral-medium-gray dark:border-gray-500 text-neutral-dark-gray dark:text-white;
+  }
+}
+
+/* Root variables for consistent theming */
+:root {
+  --theme-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+/* Ensure proper text rendering in dark mode */
+.dark * {
+  color-scheme: dark;
+}
+
+.light * {
+  color-scheme: light;
+}

@@ -1,9 +1,10 @@
 import '../global.css'
 import { useEffect } from 'react'
 
-import { ThemeProvider } from '@react-navigation/native'
+import { ThemeProvider as NavigationThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
 import { StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -13,8 +14,8 @@ import { OnboardingScreen } from '@/features/onboarding'
 import { hydrateAuth } from '@/lib/auth'
 import { GuestModeProvider } from '@/lib/context/GuestModeContext'
 import { NotificationProvider } from '@/lib/context/NotificationProvider'
+import { ThemeProvider, useActiveTheme } from '@/lib/context/ThemeContext'
 import { useAppInitialization, useGuestBackHandler } from '@/lib/hooks'
-import { useThemeConfig } from '@/lib/hooks/useThemeConfig'
 import 'react-native-reanimated'
 import '@/services/i18n'
 import { UserMode } from '@/lib/types/guest-mode'
@@ -118,17 +119,61 @@ export default function RootLayout() {
   )
 }
 
-function Providers({ children, userMode }: { children: React.ReactNode; userMode: UserMode }) {
-  const theme = useThemeConfig()
+function AppWithTheme({ children }: { children: React.ReactNode }) {
+  const activeTheme = useActiveTheme()
+  const isDark = activeTheme === 'dark'
+
+  // Configuración del tema para React Navigation
+  const navigationTheme = {
+    dark: isDark,
+    colors: {
+      primary: '#A0D2DB',
+      background: isDark ? '#111827' : '#FDFDFD',
+      card: isDark ? '#1f2937' : '#FFFFFF',
+      text: isDark ? '#f9fafb' : '#424242',
+      border: isDark ? '#374151' : '#BDBDBD',
+      notification: '#F47C7C',
+    },
+    fonts: {
+      regular: {
+        fontFamily: 'NunitoSans-Variable',
+        fontWeight: '400' as const,
+      },
+      medium: {
+        fontFamily: 'NunitoSans-Variable',
+        fontWeight: '500' as const,
+      },
+      bold: {
+        fontFamily: 'NunitoSans-Variable',
+        fontWeight: '700' as const,
+      },
+      heavy: {
+        fontFamily: 'NunitoSans-Variable',
+        fontWeight: '800' as const,
+      },
+    },
+  }
+
   return (
-    <GestureHandlerRootView style={styles.container} className={theme.dark ? `dark` : undefined}>
-      <GuestModeProvider userMode={userMode}>
-        <NotificationProvider>
-          <ThemeProvider value={theme}>
-            <GuestBackHandlerWrapper>{children}</GuestBackHandlerWrapper>
-          </ThemeProvider>
-        </NotificationProvider>
-      </GuestModeProvider>
+    <NavigationThemeProvider value={navigationTheme}>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      {children}
+    </NavigationThemeProvider>
+  )
+}
+
+function Providers({ children, userMode }: { children: React.ReactNode; userMode: UserMode }) {
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      <ThemeProvider>
+        <GuestModeProvider userMode={userMode}>
+          <NotificationProvider>
+            <GuestBackHandlerWrapper>
+              <AppWithTheme>{children}</AppWithTheme>
+            </GuestBackHandlerWrapper>
+          </NotificationProvider>
+        </GuestModeProvider>
+      </ThemeProvider>
     </GestureHandlerRootView>
   )
 }
