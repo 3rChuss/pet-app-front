@@ -1,5 +1,6 @@
 import { startTransition, useCallback, useEffect, useState } from 'react'
 
+import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Link, useLocalSearchParams, useRouter } from 'expo-router'
@@ -17,6 +18,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Alert,
+  TouchableOpacity,
 } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import * as z from 'zod'
@@ -28,13 +30,19 @@ import { resetPassword } from '@/features/auth/services/auth'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'
 
+const passwordSchema = z
+  .string({
+    required_error: 'reset_password.password_required',
+  })
+  .min(8, 'reset_password.password_min_length')
+  .regex(/[a-z]/, 'reset_password.password_lowercase')
+  .regex(/[A-Z]/, 'reset_password.password_uppercase')
+  .regex(/[0-9]/, 'reset_password.password_number')
+  .regex(/[^a-zA-Z0-9]/, 'reset_password.password_special')
+
 const schema = z
   .object({
-    password: z
-      .string({
-        required_error: 'reset_password.password_required',
-      })
-      .min(8, 'reset_password.password_min_length'),
+    password: passwordSchema,
     password_confirmation: z
       .string({
         required_error: 'reset_password.password_confirmation_required',
@@ -292,16 +300,21 @@ export default function ResetPasswordScreen() {
                       multiline={false}
                       returnKeyType="next"
                       textContentType="newPassword"
+                      autoCapitalize="none"
+                      autoComplete="password-new"
                     />
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3"
+                      className="absolute right-3 top-2 p-1"
+                      style={{ zIndex: 1 }}
                       disabled={isLoading}
                     >
-                      <Text className="text-sm text-primary font-medium">
-                        {showPassword ? t('common.hide') : t('common.show')}
-                      </Text>
-                    </Pressable>
+                      <Ionicons
+                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={20}
+                        color={isLoading ? '#D1D5DB' : '#9CA3AF'}
+                      />
+                    </TouchableOpacity>
                   </View>
                 )}
               />
@@ -336,16 +349,21 @@ export default function ResetPasswordScreen() {
                       multiline={false}
                       returnKeyType="done"
                       textContentType="newPassword"
+                      autoCapitalize="none"
+                      autoComplete="password-new"
                     />
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => setShowPasswordConfirmation(!showPasswordConfirmation)}
-                      className="absolute right-3 top-3"
+                      className="absolute right-3 top-2 p-1"
+                      style={{ zIndex: 1 }}
                       disabled={isLoading}
                     >
-                      <Text className="text-sm text-primary font-medium">
-                        {showPasswordConfirmation ? t('common.hide') : t('common.show')}
-                      </Text>
-                    </Pressable>
+                      <Ionicons
+                        name={showPasswordConfirmation ? 'eye-off-outline' : 'eye-outline'}
+                        size={20}
+                        color={isLoading ? '#D1D5DB' : '#9CA3AF'}
+                      />
+                    </TouchableOpacity>
                   </View>
                 )}
               />
