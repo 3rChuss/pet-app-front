@@ -143,6 +143,15 @@
         "email_sent": "Reset link sent to {{email}}",
         "check_your_email": "Check your email to continue"
     },
+    "verify_email": {
+        "loading": "Verifying your email...",
+        "success_title": "Email Verified",
+        "success_message": "Your email has been successfully verified. You can now log in.",
+        "error_title": "Verification Failed",
+        "error_message": "There was an error verifying your email. Please try again later.",
+        "resend_email": "Resend verification email",
+        "go_to_login": "Go to Login"
+    },
     "common": {
         "done": "Done",
         "cancel": "Cancel",

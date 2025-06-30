@@ -144,6 +144,15 @@
         "email_sent": "Enlace de restablecimiento enviado a {{email}}",
         "check_your_email": "Revisa tu correo electrónico para continuar"
     },
+    "verify_email": {
+        "loading": "Verificando su correo ...",
+        "success_title": "Correo Verificado",
+        "success_message": "Su correo ha sido verificado con éxito. Ahora puede iniciar sesión.",
+        "error_title": "Error de Verificación",
+        "error_message": "Hubo un error al verificar su correo. Por favor, inténtelo de nuevo más tarde.",
+        "resend_email": "Reenviar correo de verificación",
+        "go_to_login": "Ir a Inicio de Sesión"
+    },
     "common": {
         "done": "Hecho",
         "cancel": "Cancelar",

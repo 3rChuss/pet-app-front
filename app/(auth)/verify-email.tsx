@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 import { ActivityIndicator, Text, View } from 'react-native'
 
 import Button from '@/components/Button/Button'
@@ -6,6 +7,7 @@ import { Container } from '@/components/containers/Container'
 import { useEmailVerification } from '@/lib/hooks/useEmailVerification'
 
 export default function VerifyEmailScreen() {
+  const { t } = useTranslation('verify_email')
   const router = useRouter()
   const params = useLocalSearchParams()
   const { status, message, loading } = useEmailVerification({
@@ -21,34 +23,32 @@ export default function VerifyEmailScreen() {
         {loading && (
           <>
             <ActivityIndicator size="large" color="#A0D2DB" />
-            <Text className="mt-4 text-lg text-neutral-dark-gray">Verificando tu email...</Text>
+            <Text className="mt-4 text-lg text-neutral-dark-gray">{t('loading')}</Text>
           </>
         )}
 
         {!loading && status === 'success' && (
           <>
-            <Text className="text-2xl font-bold text-secondary-green mb-4">¡Éxito!</Text>
-            <Text className="text-center text-neutral-dark-gray mb-6">{message}</Text>
+            <Text className="text-2xl font-bold text-secondary-green mb-4">
+              {t('success_title')}
+            </Text>
+
+            <Text className="text-center text-neutral-dark-gray mb-6">{t('success_message')}</Text>
             <Button
-              label="Ir a Iniciar Sesión"
+              label={t('go_to_login')}
               onPress={() => router.replace('/(auth)/login')}
               variant="primary"
             />
             <View className="my-2" />
-            <Button
-              label="Ir a la App"
-              onPress={() => router.replace('/(tabs)')}
-              variant="secondary"
-            />
           </>
         )}
 
         {!loading && status === 'error' && (
           <>
-            <Text className="text-2xl font-bold text-accent-coral mb-4">Error de Verificación</Text>
-            <Text className="text-center text-neutral-dark-gray mb-6">{message}</Text>
+            <Text className="text-2xl font-bold text-accent-coral mb-4">{t('error_title')}</Text>
+            <Text className="text-center text-neutral-dark-gray mb-6">{t('error_message')}</Text>
             <Button
-              label="Volver a Inicio de Sesión"
+              label={t('go_to_login')}
               onPress={() => router.replace('/(auth)/login')}
               variant="primary"
             />

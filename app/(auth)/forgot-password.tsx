@@ -20,10 +20,10 @@ import {
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import * as z from 'zod'
 
-import { forgotPassword } from '@/features/auth/services/auth'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
+import { forgotPassword } from '@/features/auth/services/auth'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'
 
@@ -92,6 +92,7 @@ export default function ForgotPasswordScreen() {
     control,
     handleSubmit,
     setError,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ForgotPasswordFormType>({
     resolver: zodResolver(schema),
@@ -150,11 +151,11 @@ export default function ForgotPasswordScreen() {
         />
 
         {emailSent ? (
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-lg font-semibold text-neutral-dark-gray">
-              {t('forgot_password.email_sent', { email: control._fields.email || '' })}
+          <View className="flex-1 items-center justify-center px-4">
+            <Text className="text-lg text-center font-semibold text-neutral-dark-gray">
+              {t('forgot_password.email_sent', { email: getValues('email') })}
             </Text>
-            <Text className="text-sm text-neutral-medium-gray mt-2">
+            <Text className="text-md text-neutral-medium-gray mt-2">
               {t('forgot_password.check_your_email')}
             </Text>
           </View>
