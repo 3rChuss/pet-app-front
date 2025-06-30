@@ -16,6 +16,7 @@ import { GuestModeProvider } from '@/lib/context/GuestModeContext'
 import { NotificationProvider } from '@/lib/context/NotificationProvider'
 import { ThemeProvider, useActiveTheme } from '@/lib/context/ThemeContext'
 import { useAppInitialization, useGuestBackHandler } from '@/lib/hooks'
+import { useDeepLink } from '@/lib/hooks/useDeepLink'
 import 'react-native-reanimated'
 import '@/services/i18n'
 import { UserMode } from '@/lib/types/guest-mode'
@@ -122,6 +123,9 @@ export default function RootLayout() {
 function AppWithTheme({ children }: { children: React.ReactNode }) {
   const activeTheme = useActiveTheme()
   const isDark = activeTheme === 'dark'
+
+  // Inicializar manejo de deep links (sin bloquear la UI)
+  useDeepLink()
 
   // Configuración del tema para React Navigation
   const navigationTheme = {

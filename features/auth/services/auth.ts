@@ -4,8 +4,12 @@ import { RegisterParams } from '@/lib/types/auth'
 export const login = async (email: string, password: string) =>
   await client.post('/login', { email, password })
 
-export const resetPassword = async (params: { id: number; hash: string; signature: string }) =>
-  await client.post('/reset-password', params)
+export const resetPassword = async (params: {
+  email: string
+  token: string
+  password: string
+  password_confirmation: string
+}) => await client.post('/reset-password', params)
 
 export const signOut = async () => {
   await client.post('/logout')
