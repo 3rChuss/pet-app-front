@@ -173,13 +173,20 @@
         "redirecting_message": "Redirigiendo al inicio de sesión..."
     },
     "verify_email": {
-        "loading": "Verificando su correo ...",
-        "success_title": "Correo Verificado",
-        "success_message": "Su correo ha sido verificado con éxito. Ahora puede iniciar sesión.",
+        "loading_title": "Verificando tu correo electrónico",
+        "loading_message": "Por favor espera mientras verificamos tu correo electrónico...",
+        "success_title": "¡Correo Verificado!",
+        "success_message": "Tu correo electrónico ha sido verificado exitosamente. Ahora puedes iniciar sesión en tu cuenta.",
         "error_title": "Error de Verificación",
-        "error_message": "Hubo un error al verificar su correo. Por favor, inténtelo de nuevo más tarde.",
+        "error_message": "No pudimos verificar tu correo electrónico. El enlace puede ser inválido o haber expirado.",
+        "go_to_login": "Ir a Iniciar Sesión",
         "resend_email": "Reenviar correo de verificación",
-        "go_to_login": "Ir a Inicio de Sesión"
+        "back_to_home": "Volver al inicio",
+        "resend_title": "Reenviar verificación",
+        "resend_message": "Para reenviar el correo de verificación, necesitas registrarte nuevamente o contactar soporte.",
+        "resend_error": "No se pudo reenviar el correo de verificación",
+        "cancel": "Cancelar",
+        "go_to_register": "Ir a registro"
     },
     "common": {
         "done": "Hecho",

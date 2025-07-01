@@ -6,7 +6,6 @@ import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 
-import DeepLinkTester from '@/components/test/DeepLinkTester'
 import { LoginForm } from '@/features/auth'
 import { login } from '@/features/auth/services/auth'
 import { useAuth } from '@/lib/auth'
@@ -116,7 +115,7 @@ export default function Login() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={100}
     >
-      <DeepLinkTester />
+      {/* <DeepLinkTester /> */}
       <StatusBar style="inverted" />
       <VideoView
         player={player}

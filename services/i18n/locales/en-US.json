@@ -173,13 +173,20 @@
         "redirecting_message": "Redirecting to login..."
     },
     "verify_email": {
-        "loading": "Verifying your email...",
-        "success_title": "Email Verified",
-        "success_message": "Your email has been successfully verified. You can now log in.",
+        "loading_title": "Verifying your email",
+        "loading_message": "Please wait while we verify your email address...",
+        "success_title": "Email Verified!",
+        "success_message": "Your email has been successfully verified. You can now log in to your account.",
         "error_title": "Verification Failed",
-        "error_message": "There was an error verifying your email. Please try again later.",
+        "error_message": "We couldn't verify your email. The link may be invalid or expired.",
+        "go_to_login": "Go to Login",
         "resend_email": "Resend verification email",
-        "go_to_login": "Go to Login"
+        "back_to_home": "Back to home",
+        "resend_title": "Resend verification",
+        "resend_message": "To resend the verification email, you need to register again or contact support.",
+        "resend_error": "Could not resend verification email",
+        "cancel": "Cancel",
+        "go_to_register": "Go to register"
     },
     "common": {
         "done": "Done",

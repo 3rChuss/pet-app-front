@@ -24,10 +24,10 @@ import {
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import * as z from 'zod'
 
-import { register } from '@/features/auth/services/auth'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
+import { register } from '@/features/auth/services/auth'
 // To potentially sign in the user after registration
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'

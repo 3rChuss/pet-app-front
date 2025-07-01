@@ -195,10 +195,13 @@ export function useApiError() {
         {
           actionText: 'Entendido',
           hideCancel: true,
+          onAction: () => {
+            router.replace('/(auth)/login')
+          },
         }
       )
     },
-    [showErrorModal]
+    [showErrorModal, router]
   )
 
   /**

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import * as Linking from 'expo-linking'
-import { Link, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native'
 
 /**
@@ -42,11 +42,6 @@ export function DeepLinkTester() {
     })
   }
 
-  const testNormalNavigation = () => {
-    console.log('Testing normal navigation to register')
-    router.push('/(auth)/register')
-  }
-
   const testForgotPasswordNavigation = () => {
     console.log('Testing normal navigation to forgot password')
     router.push('/(auth)/forgot-password')
@@ -57,6 +52,18 @@ export function DeepLinkTester() {
     const testEmail = encodeURIComponent('3rchuss@gmail.com')
 
     router.push(`/(auth)/reset-password?token=${testToken}&email=${testEmail}`)
+  }
+
+  const testVerifyEmailLinkNavigation = () => {
+    ///verify-email?id=20&hash=eaea420526a4d0ac856987a5f9fd8b97b2795352&expires=1751443254&signature=d0167744dc60c1ce099516e2c237ca3008af9cf6544d463a2b997efd8465e576
+    const testId = '20'
+    const testHash = 'eaea420526a4d0ac856987a5f9fd8b97b2795352'
+    const testExpires = '1751443254'
+    const testSignature = 'd0167744dc60c1ce099516e2c237ca3008af9cf6544d463a2b997efd8465e576'
+
+    router.push(
+      `/(auth)/verify-email?id=${testId}&hash=${testHash}&expires=${testExpires}&signature=${testSignature}`
+    )
   }
 
   return (
@@ -74,9 +81,6 @@ export function DeepLinkTester() {
       </Pressable>
 
       <Text style={styles.sectionTitle}>📱 Navegación Normal</Text>
-      <Pressable style={styles.normalButton} onPress={testNormalNavigation}>
-        <Text style={styles.buttonText}>Ir a Register (router.push)</Text>
-      </Pressable>
 
       <Pressable style={styles.normalButton} onPress={testForgotPasswordNavigation}>
         <Text style={styles.buttonText}>Ir a Forgot Password (router.push)</Text>
@@ -86,11 +90,9 @@ export function DeepLinkTester() {
         <Text style={styles.buttonText}>Ir a Reset Password (router.push)</Text>
       </Pressable>
 
-      <Link href="/(auth)/register" asChild>
-        <Pressable style={styles.normalButton}>
-          <Text style={styles.buttonText}>Ir a Register (Link)</Text>
-        </Pressable>
-      </Link>
+      <Pressable style={styles.normalButton} onPress={testVerifyEmailLinkNavigation}>
+        <Text style={styles.buttonText}>Ir a Verify Email (router.push)</Text>
+      </Pressable>
 
       <Text style={styles.info}>
         Deep links (azul) abren URLs externas. Navegación normal (verde) usa rutas internas.
