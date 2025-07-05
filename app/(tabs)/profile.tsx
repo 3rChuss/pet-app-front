@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { router } from 'expo-router'
+import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import {
   AppState,
@@ -9,7 +10,6 @@ import {
   Text,
   ScrollView,
   Pressable,
-  Image,
   TouchableOpacity,
   RefreshControl,
 } from 'react-native'
@@ -25,6 +25,7 @@ import { useGuestModeContext } from '@/lib/context/GuestModeContext'
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
 
 export default function ProfileScreen() {
+  const router = useRouter()
   const { t } = useTranslation()
   const { isGuest, trackInteraction } = useGuestModeContext()
 
@@ -76,6 +77,14 @@ export default function ProfileScreen() {
 
     fetchProfile()
     refresh()
+  }
+
+  const handleEditProfileTap = () => {
+    if (isGuest) {
+      trackInteraction('editProfile')
+    } else {
+      router.push('/(modals)/edit-profile')
+    }
   }
 
   if (isGuest) {
@@ -215,8 +224,21 @@ export default function ProfileScreen() {
             <View className="relative">
               {avatarUrl ? (
                 <Image
-                  source={{ uri: avatarUrl }}
-                  style={{ width: 96, height: 96, borderRadius: 48 }}
+                  source={{
+                    uri: avatarUrl,
+                    height: 96,
+                    width: 96,
+                    headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' },
+                  }}
+                  style={{
+                    height: 96,
+                    width: 96,
+                    borderRadius: 48,
+                    borderWidth: 2,
+                    borderColor: '#0077BE',
+                  }}
+                  contentFit="cover"
+                  contentPosition="center"
                 />
               ) : (
                 <View className="w-24 h-24 bg-neutral-light-gray rounded-full items-center justify-center">
@@ -270,15 +292,11 @@ export default function ProfileScreen() {
           <View className="flex-row gap-4">
             <Button
               label={t('profile.edit_profile')}
-              // onPress={() => router.push('/profile/edit')}
-              onPress={() => trackInteraction('editProfile')}
+              onPress={() => handleEditProfileTap()}
               variant="secondary"
-              className="flex-1"
+              className="flex-1 h-11"
               textClassName="text-primary"
             />
-            <Pressable className="bg-primary rounded-full p-3 items-center justify-center">
-              <Ionicons name="share-outline" size={20} color="#FDFDFD" />
-            </Pressable>
           </View>
         </View>
 

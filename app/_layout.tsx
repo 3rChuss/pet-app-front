@@ -115,6 +115,15 @@ export default function RootLayout() {
             },
           }}
         />
+        <Stack.Screen
+          name="(modals)"
+          options={{
+            headerShown: false,
+            presentation: 'modal',
+            gestureEnabled: true,
+            gestureDirection: 'vertical',
+          }}
+        />
       </Stack>
     </Providers>
   )

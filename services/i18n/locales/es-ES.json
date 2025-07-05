@@ -229,6 +229,20 @@
         "my_folders": "Mis carpetas",
         "posts": "Publicaciones",
         "followers": "Seguidores",
-        "following": "Siguiendo"
+        "following": "Siguiendo",
+        "edit": {
+            "title": "Editar Perfil",
+            "name": "Nombre",
+            "name_placeholder": "Ingresa tu nombre",
+            "name_required": "El nombre es obligatorio",
+            "last_name": "Apellido",
+            "last_name_placeholder": "Ingresa tu apellido",
+            "avatar_help": "Toca para cambiar tu foto de perfil",
+            "avatar_permission_denied": "Se necesitan permisos para acceder a las fotos",
+            "save_button": "Guardar",
+            "saving": "Guardando...",
+            "success": "Perfil actualizado exitosamente",
+            "error": "Error al actualizar el perfil"
+        }
     }
 }

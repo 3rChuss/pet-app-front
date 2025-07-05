@@ -4,7 +4,7 @@ import { View, Text, Pressable, Dimensions } from 'react-native'
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import PetopiaIcon from '../icons/PetopiaIcon'
+import { PetopiaIcon } from '../icons/PetopiaIcon'
 
 interface FloatingTabBarProps {
   state: any
@@ -16,6 +16,7 @@ interface FloatingTabBarProps {
 const { width } = Dimensions.get('window')
 const TAB_WIDTH = width * 0.16 // Approximate width for each tab
 const INDICATOR_SIZE = 48
+const TAB_ROUTES = ['index', 'search', 'map', 'create', 'notifications', 'profile']
 
 export function FloatingTabBar({
   state,
@@ -66,7 +67,7 @@ export function FloatingTabBar({
     })
   }, [state.index, translateX])
 
-  const filteredRoutes = state.routes.filter((route: any) => !route.name.includes('disabled'))
+  const filteredRoutes = state.routes.filter((route: any) => TAB_ROUTES.includes(route.name))
 
   return (
     <View
@@ -86,6 +87,13 @@ export function FloatingTabBar({
               type: 'tabPress',
               target: route.key,
               canPreventDefault: true,
+            })
+            navigation.setParams({
+              tab: route.name,
+            })
+            translateX.value = withSpring(index * 60 + (TAB_WIDTH - INDICATOR_SIZE) / 2, {
+              damping: 20,
+              stiffness: 200,
             })
 
             if (!isFocused && !event.defaultPrevented) {

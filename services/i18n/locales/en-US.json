@@ -229,6 +229,20 @@
         "my_folders": "My folders",
         "posts": "Posts",
         "followers": "Followers",
-        "following": "Following"
+        "following": "Following",
+        "edit": {
+            "title": "Edit Profile",
+            "name": "Name",
+            "name_placeholder": "Enter your name",
+            "name_required": "Name is required",
+            "last_name": "Last Name",
+            "last_name_placeholder": "Enter your last name",
+            "avatar_help": "Tap to change your profile picture",
+            "avatar_permission_denied": "Permission needed to access photos",
+            "save_button": "Save",
+            "saving": "Saving...",
+            "success": "Profile updated successfully",
+            "error": "Error updating profile"
+        }
     }
 }
