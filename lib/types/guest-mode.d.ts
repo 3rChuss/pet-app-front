@@ -45,8 +45,8 @@ export interface MockProfile {
   location: string
   stats: {
     posts: number
-    followers: number
-    following: number
+    followersCount: number
+    followingCount: number
   }
   pets: {
     name: string

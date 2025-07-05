@@ -23,7 +23,7 @@ import * as z from 'zod'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
-import { forgotPassword } from '@/features/auth/services/auth'
+import { AuthService } from '@/features/auth/services/AuthService'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'
 
@@ -112,7 +112,7 @@ export default function ForgotPasswordScreen() {
       try {
         setLoading(operationKey, true)
 
-        const response = await forgotPassword(data.email)
+        const response = await AuthService.forgotPassword(data.email)
         if (response.status === 200) {
           startTransition(() => {
             setEmailSent(true)
@@ -188,7 +188,7 @@ export default function ForgotPasswordScreen() {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       placeholder={t('common.email_placeholder')}
-                      className={`border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
+                      className={`border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-full border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
                       keyboardType="email-address"
                       autoCapitalize="none"
                       onBlur={onBlur}

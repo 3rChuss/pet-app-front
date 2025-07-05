@@ -115,8 +115,8 @@ export const MOCK_PROFILES: MockProfile[] = [
     location: 'Madrid, España',
     stats: {
       posts: 47,
-      followers: 234,
-      following: 156,
+      followersCount: 234,
+      followingCount: 156,
     },
     pets: [
       {
@@ -142,8 +142,8 @@ export const MOCK_PROFILES: MockProfile[] = [
     location: 'Barcelona, España',
     stats: {
       posts: 89,
-      followers: 456,
-      following: 234,
+      followersCount: 456,
+      followingCount: 234,
     },
     pets: [
       {

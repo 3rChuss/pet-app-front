@@ -28,9 +28,9 @@ export function DeepLinkTester() {
 
   const testVerifyEmailLink = () => {
     // URL de ejemplo para testing de verificación de email
-    const testId = '123'
-    const testHash = 'abc123def456'
-    const testSignature = 'signature123'
+    const testId = '21'
+    const testHash = 'eaea420526a4d0ac856987a5f9fd8b97b2795352'
+    const testSignature = '54849771900a8a19983fd16765df297893c743e5b5537e6fd3b3da05df8bceab'
     const testUrl = `petopia://auth/verify-email?id=${testId}&hash=${testHash}&signature=${testSignature}`
 
     console.log('Testing verify email deep link:', testUrl)

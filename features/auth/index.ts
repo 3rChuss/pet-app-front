@@ -5,7 +5,7 @@ export type {
   EmailVerificationParams,
   EmailVerificationResponse,
   EmailVerificationErrorResponse,
-} from './types/verification'
+} from './types'
 
 // Services
-export { EmailVerificationService } from './services/EmailVerificationService'
+export { AuthService } from './services/AuthService'

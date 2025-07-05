@@ -86,7 +86,7 @@ export function useUserProfile(options: UseUserProfileOptions = {}) {
     hasProfile: !!profile,
 
     // Estado derivado
-    displayName: profile?.userName || profile?.email || 'Usuario',
+    displayName: profile?.username || profile?.email || 'Usuario',
     avatarUrl: profile?.avatar,
     isVerified: false,
   }

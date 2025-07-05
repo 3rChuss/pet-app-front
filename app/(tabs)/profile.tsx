@@ -1,7 +1,10 @@
+import { useEffect } from 'react'
+
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import {
+  AppState,
   View,
   Text,
   ScrollView,
@@ -48,16 +51,24 @@ export default function ProfileScreen() {
     autoFetch: false, // We'll fetch user-specific feed later
   })
 
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', state => {
+      console.log('AppState changed:', state)
+      if (state === 'active') fetchProfile()
+    })
+    return () => sub.remove()
+  }, [])
+
   // Mock profile for guest mode
   const guestProfile = MOCK_PROFILES[0]
 
   // Calculate stats
   const userStats = profile
-    ? profile.stats
+    ? profile
     : {
         posts: 24,
-        followers: 156,
-        following: 89,
+        followersCount: 156,
+        followingCount: 89,
       }
 
   const handleRefresh = () => {
@@ -102,19 +113,19 @@ export default function ProfileScreen() {
             <View className="flex-row justify-around bg-white p-4 rounded-xl mb-6">
               <View className="items-center">
                 <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
-                  {guestProfile.stats.posts}
+                  {guestProfile.stats?.posts}
                 </Text>
                 <Text className="text-neutral-medium-gray font-nunito">Publicaciones</Text>
               </View>
               <View className="items-center">
                 <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
-                  {guestProfile.stats.followers}
+                  {guestProfile.stats.followersCount}
                 </Text>
                 <Text className="text-neutral-medium-gray font-nunito">Seguidores</Text>
               </View>
               <View className="items-center">
                 <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
-                  {guestProfile.stats.following}
+                  {guestProfile.stats.followingCount}
                 </Text>
                 <Text className="text-neutral-medium-gray font-nunito">Siguiendo</Text>
               </View>
@@ -199,7 +210,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* Profile Header */}
-        <View className="p-6">
+        <View className="p-6 gap-2">
           <View className="items-start flex-row">
             <View className="relative">
               {avatarUrl ? (
@@ -234,22 +245,22 @@ export default function ProfileScreen() {
           </View>
 
           {/* Stats */}
-          <View className="flex-row mb-4 gap-4 justify-start items-start">
+          <View className="flex-row mb- gap-4 justify-start items-start">
             <View className="items-center flex-row gap-1">
               <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
-                {userStats.posts}
+                {userStats.posts || 0}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">{t('profile.posts')}</Text>
             </View>
             <View className="items-center flex-row gap-1">
               <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
-                {userStats.followers}
+                {userStats.followersCount || 0}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">{t('profile.followers')}</Text>
             </View>
             <View className="items-center flex-row gap-1">
               <Text className="text-lg font-bold text-neutral-dark-gray !font-nunito">
-                {userStats.following}
+                {userStats.followingCount || 0}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">{t('profile.following')}</Text>
             </View>

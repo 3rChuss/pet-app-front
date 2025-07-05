@@ -9,7 +9,8 @@ import { ActivityIndicator, Text, View } from 'react-native'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
-import { EmailVerificationService, type EmailVerificationParams } from '@/features/auth'
+import { AuthService } from '@/features/auth/services/AuthService'
+import { EmailVerificationParams } from '@/features/auth/types'
 import { useApiError } from '@/lib/hooks/notifications'
 import { useApiCall } from '@/lib/hooks/useApiCall'
 
@@ -29,14 +30,14 @@ export default function VerifyEmailScreen() {
   }, [params.id, params.hash, params.expires, params.signature])
 
   const areParamsValid = useMemo(() => {
-    return EmailVerificationService.validateParams(verificationParams)
+    return AuthService.validateParams(verificationParams)
   }, [verificationParams])
 
   const verifyEmailCall = useCallback(async () => {
     if (!areParamsValid) {
       throw new Error('Enlace de verificación inválido o incompleto.')
     }
-    return EmailVerificationService.verifyEmail(verificationParams as EmailVerificationParams)
+    return AuthService.verifyEmail(verificationParams as EmailVerificationParams)
   }, [areParamsValid, verificationParams])
 
   const { data, error, isLoading, retry } = useApiCall(
@@ -57,7 +58,7 @@ export default function VerifyEmailScreen() {
   }, [router])
 
   const handleBackToHome = useCallback(() => {
-    router.replace('/')
+    router.replace('/login')
   }, [router])
 
   return (

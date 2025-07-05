@@ -17,7 +17,7 @@ declare module 'app-types' {
       id: number
       name: string
       last_name: string
-      userName: string
+      username: string
       email: string
       avatar: string
       latitude?: number | null
@@ -39,11 +39,9 @@ declare module 'app-types' {
       id: number
       pets: Pet[] // Array of Pet objects
       bio?: string
-      stats: {
-        posts: number // Total posts by the user
-        followers: number // Total followers
-        following: number // Total following
-      }
+      posts: number // Total posts by the user
+      followersCount: number // Total followers
+      followingCount: number // Total following
     }
 
     interface PetType {

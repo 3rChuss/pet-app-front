@@ -55,11 +55,11 @@ export function DeepLinkTester() {
   }
 
   const testVerifyEmailLinkNavigation = () => {
-    ///verify-email?id=20&hash=eaea420526a4d0ac856987a5f9fd8b97b2795352&expires=1751443254&signature=d0167744dc60c1ce099516e2c237ca3008af9cf6544d463a2b997efd8465e576
-    const testId = '20'
+    ///petopia://auth/verify-email?id=22&hash=eaea420526a4d0ac856987a5f9fd8b97b2795352&expires=1751789746&signature=2f1f613ad900682ff8000a180f033170db772a4180b074afb0f21c9ef75d4957
+    const testId = '22'
     const testHash = 'eaea420526a4d0ac856987a5f9fd8b97b2795352'
-    const testExpires = '1751443254'
-    const testSignature = 'd0167744dc60c1ce099516e2c237ca3008af9cf6544d463a2b997efd8465e576'
+    const testSignature = '2f1f613ad900682ff8000a180f033170db772a4180b074afb0f21c9ef75d4957'
+    const testExpires = '1751789746' // Example expiration timestamp
 
     router.push(
       `/(auth)/verify-email?id=${testId}&hash=${testHash}&expires=${testExpires}&signature=${testSignature}`

@@ -27,8 +27,8 @@ import * as z from 'zod'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
-import { register } from '@/features/auth/services/auth'
 // To potentially sign in the user after registration
+import { AuthService } from '@/features/auth/services/AuthService'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'
 
@@ -166,7 +166,7 @@ export default function RegisterScreen() {
 
       try {
         setLoading(operationKey, true)
-        const response = await register({
+        const response = await AuthService.register({
           name: data.userName,
           email: data.email,
           password: data.password,
@@ -324,6 +324,7 @@ export default function RegisterScreen() {
                       className={inputClassName(isRegisterLoading)}
                       secureTextEntry={!showPassword}
                       onBlur={onBlur}
+                      style={{ backgroundColor: 'transparent' }}
                       onChangeText={onChange}
                       value={value}
                       textContentType="newPassword"
@@ -466,7 +467,7 @@ export default function RegisterScreen() {
 }
 
 const inputClassName = (disabled: boolean) =>
-  `border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${disabled ? 'opacity-50' : ''}`
+  `border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-full border max-h-[100px] ${disabled ? 'opacity-50' : ''}`
 
 const styles = StyleSheet.create({
   container: {

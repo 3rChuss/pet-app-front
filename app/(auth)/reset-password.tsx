@@ -26,7 +26,7 @@ import * as z from 'zod'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
-import { resetPassword } from '@/features/auth/services/auth'
+import { AuthService } from '@/features/auth/services/AuthService'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'
 
@@ -43,13 +43,13 @@ const passwordSchema = z
 const schema = z
   .object({
     password: passwordSchema,
-    password_confirmation: z
+    passwordConfirmation: z
       .string({
         required_error: 'reset_password.password_confirmation_required',
       })
       .min(8, 'reset_password.password_confirmation_min_length'),
   })
-  .refine(data => data.password === data.password_confirmation, {
+  .refine(data => data.password === data.passwordConfirmation, {
     message: 'reset_password.passwords_dont_match',
     path: ['password_confirmation'],
   })
@@ -157,11 +157,11 @@ export default function ResetPasswordScreen() {
       try {
         setLoading(operationKey, true)
 
-        const response = await resetPassword({
+        const response = await AuthService.resetPassword({
           email: decodedEmail,
           token,
           password: data.password,
-          password_confirmation: data.password_confirmation,
+          passwordConfirmation: data.passwordConfirmation,
         })
 
         if (response.status === 200) {
@@ -332,7 +332,7 @@ export default function ResetPasswordScreen() {
               </Text>
               <Controller
                 control={control}
-                name="password_confirmation"
+                name="passwordConfirmation"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <View className="relative">
                     <TextInput
@@ -367,9 +367,9 @@ export default function ResetPasswordScreen() {
                   </View>
                 )}
               />
-              {errors.password_confirmation && (
+              {errors.passwordConfirmation && (
                 <Text className="text-xs text-accent-coral mt-1">
-                  {t(errors.password_confirmation.message as string)}
+                  {t(errors.passwordConfirmation.message as string)}
                 </Text>
               )}
             </View>

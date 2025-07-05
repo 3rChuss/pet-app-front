@@ -6,8 +6,9 @@ import { useVideoPlayer, VideoView } from 'expo-video'
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 
+import { useProfileStore } from '@/features'
 import { LoginForm } from '@/features/auth'
-import { login } from '@/features/auth/services/auth'
+import { AuthService } from '@/features/auth/services/AuthService'
 import { useAuth } from '@/lib/auth'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 
@@ -15,6 +16,7 @@ const assetId = require('@/assets/videos/home_background.mp4')
 
 export default function Login() {
   const signIn = useAuth.use.signIn()
+  const { fetchProfile } = useProfileStore()
   const { keyboardVisible } = useKeyboard()
   const { handleApiError } = useApiError()
   const { setLoading, loadingStates } = useLoadingState()
@@ -82,8 +84,9 @@ export default function Login() {
         setLoading(operationKey, true)
         const { email, password } = data
 
-        const response = await login(email, password)
+        const response = await AuthService.login({ email, password })
         await signIn(response.data)
+        await fetchProfile()
 
         // Navigate to home after successful login
         router.push('/(tabs)')
