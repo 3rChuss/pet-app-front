@@ -101,7 +101,7 @@ export default function SearchScreen() {
                       {profile.name}
                     </Text>
                     <Text className="text-neutral-medium-gray font-nunito text-sm">
-                      📍 {profile.location} • {profile.stats.followers} seguidores
+                      📍 {profile.location} • {profile.stats.followersCount} seguidores
                     </Text>
                   </View>
                   <View className="bg-primary/10 px-3 py-1 rounded-lg">

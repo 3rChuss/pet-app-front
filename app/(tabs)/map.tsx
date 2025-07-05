@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useTranslation } from 'react-i18next'
 import { Text, View, ScrollView } from 'react-native'

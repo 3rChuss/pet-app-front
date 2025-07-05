@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text } from 'react-native'
 
 import { Container } from '@/components/containers/Container'
 import Feed from '@/components/Feed'
@@ -38,25 +38,23 @@ export default function HomeScreen() {
     <View style={{ flex: 1, backgroundColor: '#000' }}>
       <StatusBar style="light" />
       <Container className="flex-1">
-        <ScrollView>
-          {isGuest && (
-            <View className="px-4 py-3 bg-amber-100 border-b border-amber-200">
-              <Text className="text-center text-amber-800 font-nunito text-sm">
-                🎯 Estás explorando en modo invitado •
-                <Text className="font-bold"> ¡Regístrate gratis para interactuar!</Text>
-              </Text>
-            </View>
-          )}
+        {isGuest && (
+          <View className="px-4 py-3 bg-amber-100 border-b border-amber-200">
+            <Text className="text-center text-amber-800 font-nunito text-sm">
+              🎯 Estás explorando en modo invitado •
+              <Text className="font-bold"> ¡Regístrate gratis para interactuar!</Text>
+            </Text>
+          </View>
+        )}
 
-          <Feed
-            posts={isGuest ? ALL_SAMPLE_POSTS : ALL_SAMPLE_POSTS}
-            onLike={handleLike}
-            onComment={handleComment}
-            onShare={handleShare}
-            onSave={handleSave}
-            onUserPress={handleUserPress}
-          />
-        </ScrollView>
+        <Feed
+          posts={isGuest ? ALL_SAMPLE_POSTS : ALL_SAMPLE_POSTS}
+          onLike={handleLike}
+          onComment={handleComment}
+          onShare={handleShare}
+          onSave={handleSave}
+          onUserPress={handleUserPress}
+        />
       </Container>
     </View>
   )

@@ -1,6 +1,6 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 
-import { ScrollView, Dimensions } from 'react-native'
+import { ScrollView, Dimensions, NativeSyntheticEvent, NativeScrollEvent } from 'react-native'
 
 import PostContainer from '../Post'
 
@@ -19,30 +19,26 @@ export default function Feed({
   const [currentIndex, setCurrentIndex] = useState(0)
   const scrollViewRef = useRef<ScrollView>(null)
 
-  const handleScroll = useCallback(
-    (event: any) => {
-      const offsetY = event.nativeEvent.contentOffset.y
-      const newIndex = Math.round(offsetY / SCREEN_HEIGHT)
-
-      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < posts.length) {
-        setCurrentIndex(newIndex)
-      }
-    },
-    [currentIndex, posts.length]
-  )
+  const handleMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = event.nativeEvent.contentOffset.y
+    const newIndex = Math.round(offsetY / SCREEN_HEIGHT)
+    if (newIndex !== currentIndex && newIndex >= 0 && newIndex < posts.length) {
+      setCurrentIndex(newIndex)
+    }
+  }
 
   return (
     <ScrollView
       ref={scrollViewRef}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
-      pagingEnabled // Enable page-by-page scrolling like TikTok
-      snapToInterval={SCREEN_HEIGHT} // Snap to full screen height
+      pagingEnabled
+      snapToInterval={SCREEN_HEIGHT}
       snapToAlignment="start"
-      decelerationRate="fast"
-      alwaysBounceVertical={false} // Disable vertical bounce
+      decelerationRate="normal"
+      alwaysBounceVertical={false}
       bounces={true}
-      onScroll={handleScroll}
+      onMomentumScrollEnd={handleMomentumScrollEnd}
       scrollEventThrottle={16}
       style={{
         flex: 1,
@@ -61,7 +57,7 @@ export default function Feed({
           onShare={onShare}
           onSave={onSave}
           onUserPress={onUserPress}
-          isActive={index === currentIndex} // Pass active state for video control
+          isActive={index === currentIndex}
         />
       ))}
     </ScrollView>
