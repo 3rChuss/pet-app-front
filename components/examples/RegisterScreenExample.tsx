@@ -42,6 +42,17 @@ const passwordSchema = z
 
 const schema = z
   .object({
+    userName: z
+      .string({
+        required_error: 'register.username_required',
+      })
+      .trim()
+      .min(3, {
+        message: 'register.username_min_length',
+      })
+      .refine(val => /^[a-zA-Z0-9_]+$/.test(val), {
+        message: 'register.username_invalid',
+      }),
     email: z
       .string({
         required_error: 'common.email_required',
@@ -142,7 +153,13 @@ export default function RegisterScreenExample() {
 
       try {
         setLoading(operationKey, true)
-        const response = await register(data)
+        const response = await register({
+          name: data.userName,
+          email: data.email,
+          password: data.password,
+          passwordConfirmation: data.passwordConfirmation,
+          acceptedPrivacyPolicy: data.acceptedPrivacyPolicy,
+        })
 
         if (response.status === 200 || response.status === 201) {
           // Mostrar mensaje de éxito con el nuevo sistema

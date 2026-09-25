@@ -1,34 +1,17 @@
 {
   "expo": {
-    "doctor": {
-      "reactNativeDirectoryCheck": {
-        "listUnknownPackages": false,
-        "exclude": [
-          "react-redux",
-          "react-native-restart"
-        ]
-      }
-    },
-    "jsEngine": "hermes",
     "name": "Petopia",
     "slug": "Petopia",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "newArchEnabled": true,
-    "scheme": "Petopia",
-    "android.package": "com.petopia.app",
+    "scheme": "petopia",
     "description": "Pet world app",
     "githubUrl": "https://github.com/3rChuss/zooki.git",
     "experiments": {
       "tsconfigPaths": true,
       "typedRoutes": true
-    },
-    "install": {
-      "exclude": [
-        "eslint-config-expo"
-      ]
     },
     "plugins": [
       [
@@ -43,9 +26,7 @@
           "imageWidth": 200
         }
       ],
-      [
-        "expo-router"
-      ],
+      ["expo-router"],
       [
         "expo-secure-store",
         {
@@ -65,9 +46,6 @@
         }
       ],
       "expo-localization",
-      [
-        "react-native-edge-to-edge"
-      ],
       [
         "@react-native-google-signin/google-signin",
         {
@@ -92,17 +70,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "jsEngine": "jsc"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

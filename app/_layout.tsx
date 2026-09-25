@@ -1,7 +1,7 @@
 import '../global.css'
 import { useEffect } from 'react'
 
-import { ThemeProvider } from '@react-navigation/native'
+import { ThemeProvider } from 'expo-router/react-navigation'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StyleSheet } from 'react-native'

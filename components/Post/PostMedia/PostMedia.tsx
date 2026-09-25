@@ -156,7 +156,7 @@ function VideoMediaItem({ item, isActive }: { item: any; isActive: boolean }) {
         player={player}
         style={styles.video}
         nativeControls={false}
-        allowsFullscreen
+        fullscreenOptions={{ enable: true }}
         onTouchEnd={togglePlayback}
         playsInline
       />

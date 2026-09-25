@@ -1,13 +1,13 @@
 module.exports = {
-  arrowParens: "avoid",
+  arrowParens: 'avoid',
   bracketSpacing: true,
-  endOfLine: "lf",
+  endOfLine: 'lf',
   jsxBracketSameLine: false,
   printWidth: 100,
-  proseWrap: "preserve",
+  proseWrap: 'preserve',
   semi: false,
   singleQuote: true,
   tabWidth: 2,
   useTabs: false,
-  trailingComma: "es5",
-};
+  trailingComma: 'es5',
+}

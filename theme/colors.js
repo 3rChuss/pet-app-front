@@ -8,7 +8,7 @@ const base = {
   neutral_light_gray: '#F5F5F5', // Gris Claro
   neutral_medium_gray: '#BDBDBD', // Gris Medio
   neutral_dark_gray: '#424242', // Gris Oscuro (Texto)
-};
+}
 
 const summer = {
   primary: '#B0E0E6', // Lighter Sky Blue
@@ -20,7 +20,7 @@ const summer = {
   neutral_light_gray: '#FAFAFA', // Brighter Light Gray
   neutral_medium_gray: '#DCDCDC', // Lighter Medium Gray (Gainsboro)
   neutral_dark_gray: '#606060', // Lighter Dark Gray
-};
+}
 
 const xmas = {
   primary: '#FFD700', // Festive Gold
@@ -32,10 +32,10 @@ const xmas = {
   neutral_light_gray: '#E8E8E8', // Slightly darker than summer's light gray for contrast
   neutral_medium_gray: '#A9A9A9', // DarkGray (standard)
   neutral_dark_gray: '#303030', // Darker Text
-};
+}
 
 module.exports = {
   base,
   summer,
   xmas,
-};
+}

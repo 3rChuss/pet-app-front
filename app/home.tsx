@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   video: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     zIndex: 0,
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     zIndex: 1,
     backgroundColor: 'rgba(0,0,0,0.3)', // Dark overlay for better text visibility
     alignItems: 'center',
