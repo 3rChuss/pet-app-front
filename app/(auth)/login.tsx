@@ -166,11 +166,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   video: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     zIndex: -1,
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dark overlay for better text visibility
     zIndex: -1,
   },

@@ -1,9 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { View, Text, StyleSheet } from 'react-native'
-import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler'
+import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -56,33 +55,31 @@ export const SeekBar: React.FC<SeekBarProps> = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }, [])
 
-  const gestureHandler = useAnimatedGestureHandler<
-    PanGestureHandlerGestureEvent,
-    { startX: number }
-  >({
-    onStart: (_, context) => {
+  const panGesture = useMemo(() => {
+    const onStart = () => {
       if (disabled) return
 
-      context.startX = thumbPosition.value
       isDragging.value = true
 
       if (onSeekStart) {
         runOnJS(onSeekStart)()
       }
-    },
-    onActive: (event, context) => {
+    }
+
+    const onActive = (event: { translationX: number }) => {
       if (disabled) return
 
       const newPosition = Math.max(
         0,
-        Math.min(seekBarWidth.value, context.startX + event.translationX)
+        Math.min(seekBarWidth.value, thumbPosition.value + event.translationX)
       )
       thumbPosition.value = newPosition
 
       const newTime = (newPosition / seekBarWidth.value) * duration
       runOnJS(onSeek)(newTime)
-    },
-    onEnd: () => {
+    }
+
+    const onEnd = () => {
       if (disabled) return
 
       isDragging.value = false
@@ -90,8 +87,10 @@ export const SeekBar: React.FC<SeekBarProps> = ({
       if (onSeekEnd) {
         runOnJS(onSeekEnd)()
       }
-    },
-  })
+    }
+
+    return Gesture.Pan().onBegin(onStart).onUpdate(onActive).onEnd(onEnd)
+  }, [disabled, isDragging, seekBarWidth, thumbPosition, duration, onSeek, onSeekStart, onSeekEnd])
 
   const animatedThumbStyle = useAnimatedStyle(() => {
     const scale = isDragging.value ? withSpring(1.2) : withSpring(1)
@@ -123,7 +122,7 @@ export const SeekBar: React.FC<SeekBarProps> = ({
       <Text style={styles.duration}>{formatTime(currentTime)}</Text>
 
       <View style={styles.seekBarContainer}>
-        <PanGestureHandler onGestureEvent={gestureHandler} enabled={!disabled}>
+        <GestureDetector gesture={panGesture}>
           <Animated.View style={styles.seekBar} onLayout={onLayout}>
             {/* Background track */}
             <View style={styles.track} />
@@ -134,7 +133,7 @@ export const SeekBar: React.FC<SeekBarProps> = ({
             {/* Thumb */}
             <Animated.View style={[styles.thumb, animatedThumbStyle]} />
           </Animated.View>
-        </PanGestureHandler>
+        </GestureDetector>
       </View>
 
       <Text style={styles.duration}>{formatTime(duration)}</Text>

@@ -17,6 +17,8 @@ module.exports = defineConfig([
     },
     rules: {
       'react/display-name': 'off',
+      'react-hooks/immutability': 'off',
+      'react-hooks/set-state-in-effect': 'off',
       'unused-imports/no-unused-imports': 'warn',
       'unused-imports/no-unused-vars': [
         'warn',
