@@ -237,7 +237,7 @@ const posts = await client.get(`/users/${userId}/posts`)
 const refreshResponse = await axios.post('/auth/refresh', {
   refresh_token: token.refresh,
 })
-await setToken(refreshResponse.data)
+await setSession({ access: refreshResponse.data.access, refresh: token.refresh, user })
 return client(originalRequest)
 ```
 

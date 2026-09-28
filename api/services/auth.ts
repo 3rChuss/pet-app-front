@@ -12,11 +12,6 @@ export const resetPassword = async (params: { id: number; hash: string; signatur
 
 export const signOut = async () => {
   await client.post('/logout')
-  // Optionally clear local storage or cookies if needed
-  // localStorage.removeItem('token')
-  // document.cookie
-  //   = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
-  // router.replace('/(auth)/login')
 }
 
 export const register = async (params: RegisterParams) => await client.post('/register', params)

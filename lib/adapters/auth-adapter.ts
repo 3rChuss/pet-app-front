@@ -40,6 +40,9 @@ const adaptUser = (source: UnknownRecord): User | null => {
   }
 }
 
+export const normalizeStoredUser = (payload: unknown): User | null =>
+  isRecord(payload) ? adaptUser({ user: payload }) : null
+
 export const normalizeAuthSession = (payload: unknown): AuthSession => {
   if (!isRecord(payload)) {
     throw new AuthContractError('Login response is not an object')

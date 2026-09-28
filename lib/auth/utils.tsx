@@ -9,33 +9,41 @@ export type TokenType = {
   refresh: string
 }
 
-const isTokenType = (value: unknown): value is TokenType =>
-  typeof value === 'object' &&
-  value !== null &&
-  typeof (value as TokenType).access === 'string' &&
-  typeof (value as TokenType).refresh === 'string'
+export type StoredSession = TokenType & {
+  user?: unknown
+}
 
-const readLegacyToken = async (): Promise<TokenType | null> => {
+const parseSession = (value: unknown): StoredSession | null => {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return null
+  }
+  const record = value as Record<string, unknown>
+  if (typeof record.access !== 'string' || typeof record.refresh !== 'string') {
+    return null
+  }
+  return { access: record.access, refresh: record.refresh, user: record.user }
+}
+
+const readLegacySession = async (): Promise<StoredSession | null> => {
   const json = await AsyncStorage.getItem(LEGACY_TOKEN)
   if (!json) {
     return null
   }
   await AsyncStorage.removeItem(LEGACY_TOKEN)
   try {
-    const parsed: unknown = JSON.parse(json)
-    return isTokenType(parsed) ? parsed : null
+    return parseSession(JSON.parse(json))
   } catch {
     return null
   }
 }
 
-export const getToken = async (): Promise<TokenType | null> => {
+const readSession = async (): Promise<StoredSession | null> => {
   const stored = await SecureStore.getItemAsync(TOKEN)
 
   if (stored) {
     try {
-      const parsed: unknown = JSON.parse(stored)
-      if (isTokenType(parsed)) {
+      const parsed = parseSession(JSON.parse(stored))
+      if (parsed) {
         return parsed
       }
     } catch {
@@ -45,15 +53,21 @@ export const getToken = async (): Promise<TokenType | null> => {
     return null
   }
 
-  const legacyToken = await readLegacyToken()
-  if (legacyToken) {
-    await setToken(legacyToken)
-    return legacyToken
+  const legacySession = await readLegacySession()
+  if (legacySession) {
+    await setSession(legacySession)
   }
+  return legacySession
+}
 
-  return null
+export const getSession = (): Promise<StoredSession | null> => readSession()
+
+export const getToken = async (): Promise<TokenType | null> => {
+  const session = await readSession()
+  return session ? { access: session.access, refresh: session.refresh } : null
 }
 
 export const removeToken = () => SecureStore.deleteItemAsync(TOKEN)
 
-export const setToken = (value: TokenType) => SecureStore.setItemAsync(TOKEN, JSON.stringify(value))
+export const setSession = (session: StoredSession) =>
+  SecureStore.setItemAsync(TOKEN, JSON.stringify(session))

@@ -88,7 +88,7 @@ client.interceptors.response.use(
             if (token?.refresh) {
               // TODO: Implement token refresh logic here
               // const refreshResponse = await axios.post('/refresh', { refresh_token: token.refresh })
-              // await setToken(refreshResponse.data)
+              // await setSession({ access: refreshResponse.data.access, refresh: token.refresh, user })
               // return client(originalRequest)
             }
           } catch (refreshError) {
@@ -96,8 +96,10 @@ client.interceptors.response.use(
           }
         }
 
-        // If refresh fails or no refresh token, sign out user
-        await signOut()
+        // If refresh fails or no refresh token, sign out user.
+        // notifyServer is disabled to avoid a loop: the logout request would
+        // fail with 401 again and re-enter this very handler.
+        await signOut({ notifyServer: false })
         router.replace('/(auth)/login')
 
         return Promise.reject({
