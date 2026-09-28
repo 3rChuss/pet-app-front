@@ -10,7 +10,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import OnboardingScreen from '@/components/Onboarding/Onboarding'
 import ErrorScreen from '@/components/splash/ErrorScreen'
 import SplashScreenComponent from '@/components/splash/SplashScreen'
-import { hydrateAuth } from '@/lib/auth'
 import { GuestModeProvider } from '@/lib/context/GuestModeContext'
 import { NotificationProvider } from '@/lib/context/NotificationProvider'
 import { useAppInitialization, useGuestBackHandler } from '@/lib/hooks'
@@ -30,8 +29,6 @@ export type AppState =
   | 'authenticated' // User is logged in
   | 'unauthenticated' // Needs authentication
   | 'error' // Critical error occurred
-
-hydrateAuth()
 
 // Keep the splash screen visible while we load resources
 SplashScreen.preventAutoHideAsync()

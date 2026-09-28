@@ -13,17 +13,21 @@ interface AuthState {
   token: TokenType | null
   user: User | null
   isLoading: boolean
+  isHydrated: boolean
   status: 'idle' | 'signOut' | 'signIn'
   signIn: (session: AuthSession) => Promise<void>
   signOut: (options?: { notifyServer?: boolean }) => Promise<void>
   hydrate: () => Promise<void>
 }
 
+let hydration: Promise<void> | null = null
+
 const _useAuth = create<AuthState>((set, get) => ({
   status: 'idle',
   token: null,
   user: null,
   isLoading: false,
+  isHydrated: false,
   signIn: async session => {
     set({ isLoading: true })
     try {
@@ -52,28 +56,38 @@ const _useAuth = create<AuthState>((set, get) => ({
     await removeToken()
     set({ status: 'signOut', token: null, user: null, isLoading: false })
   },
-  hydrate: async () => {
-    try {
-      const session = await getSession()
-      if (session === null) {
-        await get().signOut({ notifyServer: false })
-        return
-      }
+  hydrate: () => {
+    if (hydration === null) {
+      hydration = (async () => {
+        try {
+          const session = await getSession()
+          if (session === null) {
+            await get().signOut({ notifyServer: false })
+            return
+          }
 
-      set({
-        status: 'signIn',
-        token: { access: session.access, refresh: session.refresh },
+          set({
+            status: 'signIn',
+            token: { access: session.access, refresh: session.refresh },
+          })
+
+          const user = normalizeStoredUser(session.user)
+          if (user) {
+            set({ user })
+          }
+        } catch (error) {
+          // Never leave the app stuck: fall back to a signed-out state
+          console.error('Failed to hydrate the auth session:', error)
+          await removeToken()
+          set({ status: 'signOut', token: null, user: null })
+        } finally {
+          set({ isHydrated: true })
+        }
+      })().finally(() => {
+        hydration = null
       })
-
-      const user = normalizeStoredUser(session.user)
-      if (user) {
-        set({ user })
-      }
-    } catch (error) {
-      console.error('Failed to hydrate the auth session:', error)
-      await removeToken()
-      set({ status: 'signOut', token: null, user: null })
     }
+    return hydration
   },
 }))
 

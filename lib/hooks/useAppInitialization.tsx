@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFonts } from 'expo-font'
 
-import { useAuth } from '@/lib/auth'
+import { useAuth, hydrateAuth } from '@/lib/auth'
 import { ONBOARDING_KEY } from '@/lib/const/onBoarding'
 
 import { useErrorRecovery } from './useErrorRecovery'
@@ -35,8 +35,10 @@ export function useAppInitialization(): InitializationResult {
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string>()
   const [errorInfo, setErrorInfo] = useState<any>()
+  const [retryCount, setRetryCount] = useState(0)
 
   const authStatus = useAuth.use.status()
+  const isAuthHydrated = useAuth.use.isHydrated()
   const onEnterGuestMode = () => {
     setAppState('guest')
     enterGuestMode()
@@ -47,6 +49,7 @@ export function useAppInitialization(): InitializationResult {
     setErrorInfo(undefined)
     setAppState('initializing')
     setProgress(0)
+    setRetryCount(count => count + 1)
     clearRecoveryError()
   }
 
@@ -109,19 +112,13 @@ export function useAppInitialization(): InitializationResult {
           return
         }
 
-        // Step 4: Check authentication status
+        // Step 4: Resolve the session before deriving the auth state.
+        // Awaiting hydrateAuth guarantees `status` is no longer 'idle', so
+        // the app can never stay stuck in the loading splash.
         setProgress(90)
-        if (authStatus === 'signOut') {
-          setProgress(100)
-          setAppState('unauthenticated')
-        } else if (authStatus === 'signIn') {
-          setProgress(100)
-          setAppState('authenticated')
-        } else {
-          // Still loading auth state
-          setProgress(95)
-          // Will be handled by authStatus change
-        }
+        await hydrateAuth()
+        setProgress(100)
+        setAppState(useAuth.getState().status === 'signIn' ? 'authenticated' : 'unauthenticated')
       } catch (err) {
         console.error('App initialization error:', err)
         const errorInfo = {
@@ -138,20 +135,20 @@ export function useAppInitialization(): InitializationResult {
     }
 
     initializeApp()
-  }, [fontsLoaded, fontError, authStatus, reportError])
+  }, [fontsLoaded, fontError, reportError, retryCount])
 
   // Handle auth status changes
   useEffect(() => {
-    if (appState === 'loading' && onboardingCompleted === true && fontsLoaded) {
-      if (authStatus === 'signOut') {
-        setProgress(100)
-        setAppState('unauthenticated')
-      } else if (authStatus === 'signIn') {
-        setProgress(100)
-        setAppState('authenticated')
-      }
+    if (appState !== 'loading' || onboardingCompleted !== true || !fontsLoaded) {
+      return
     }
-  }, [authStatus, appState, onboardingCompleted, fontsLoaded])
+    // Do not derive the state until the session has actually been resolved
+    if (!isAuthHydrated) {
+      return
+    }
+    setProgress(100)
+    setAppState(authStatus === 'signIn' ? 'authenticated' : 'unauthenticated')
+  }, [authStatus, isAuthHydrated, appState, onboardingCompleted, fontsLoaded])
 
   return {
     appState,
