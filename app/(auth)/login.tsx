@@ -82,9 +82,8 @@ export default function Login() {
         setLoading(operationKey, true)
         const { email, password } = data
 
-        const response = await login(email, password)
-        const user = response.data.user
-        await signIn(user)
+        const session = await login(email, password)
+        await signIn(session)
 
         // Navigate to home after successful login
         router.push('/(tabs)')

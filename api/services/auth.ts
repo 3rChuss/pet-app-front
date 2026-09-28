@@ -1,8 +1,11 @@
 import client from '@/api/client'
-import { RegisterParams } from '@/lib/types/auth'
+import { normalizeAuthSession } from '@/lib/adapters/auth-adapter'
+import { RegisterParams, AuthSession } from '@/lib/types/auth'
 
-export const login = async (email: string, password: string) =>
-  await client.post('/login', { email, password })
+export const login = async (email: string, password: string): Promise<AuthSession> => {
+  const response = await client.post('/login', { email, password })
+  return normalizeAuthSession(response.data)
+}
 
 export const resetPassword = async (params: { id: number; hash: string; signature: string }) =>
   await client.post('/reset-password', params)

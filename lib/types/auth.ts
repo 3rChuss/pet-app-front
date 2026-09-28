@@ -1,3 +1,5 @@
+import type { TokenType } from '@/lib/auth/utils'
+
 export interface AuthCredentials {
   email: string
   password: string
@@ -23,4 +25,8 @@ export interface User {
   emailVerifiedAt?: string | null
   createdAt: string
   updatedAt: string
+}
+
+export interface AuthSession extends TokenType {
+  user: User
 }
