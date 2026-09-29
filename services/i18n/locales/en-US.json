@@ -139,6 +139,7 @@
     "title": "Forgot your password?",
     "description": "Enter your email and we will send you a link to reset your password.",
     "send_button": "Send reset link",
+    "sending_button": "Sending link...",
     "back_to_login": "Back to login",
     "success_title": "Check your Email",
     "success_message": "If an account for {{email}} exists, you will receive a link to reset your password.",
