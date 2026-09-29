@@ -135,9 +135,7 @@ export default function NotificationsScreen() {
             </Text>
             {unreadCount > 0 && (
               <View className="bg-accent-coral rounded-full px-3 py-1">
-                <Text className="text-white font-nunito font-bold text-sm">
-                  {unreadCount} nuevas
-                </Text>
+                <Text className="text-white font-nunito-bold text-sm">{unreadCount} nuevas</Text>
               </View>
             )}
           </View>

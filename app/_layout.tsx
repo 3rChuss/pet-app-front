@@ -93,8 +93,7 @@ export default function RootLayout() {
           },
           headerTintColor: 'neutral-dark-gray',
           headerTitleStyle: {
-            fontFamily: 'NunitoSans-Variable',
-            fontWeight: '600',
+            fontFamily: 'NunitoSans-SemiBold',
           },
         }}
         initialRouteName={initialRoute}

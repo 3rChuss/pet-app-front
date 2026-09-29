@@ -98,7 +98,7 @@ export default function ProfileScreen() {
                       style={{ width: 80, height: 80, borderRadius: 40 }}
                       className="mb-2"
                     />
-                    <Text className="text-sm font-medium text-neutral-dark-gray font-nunito">
+                    <Text className="text-sm text-neutral-dark-gray font-nunito-medium">
                       {pet.name}
                     </Text>
                     <Text className="text-xs text-neutral-medium-gray font-nunito">
@@ -201,7 +201,7 @@ export default function ProfileScreen() {
                 <View className="mr-4">
                   <Ionicons name={item.icon as any} size={24} color={item.color} />
                 </View>
-                <Text className="flex-1 text-neutral-dark-gray font-nunito font-medium">
+                <Text className="flex-1 text-neutral-dark-gray font-nunito-medium">
                   {item.title}
                 </Text>
                 <Ionicons name="chevron-forward" size={20} color="#BDBDBD" />

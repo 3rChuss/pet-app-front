@@ -177,7 +177,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
       renderNextButton={() => (
         <View style={styles.buttonContainer}>
           <Button
-            textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+            textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
             className="bg-primary"
             label={t('onboarding.next')}
             variant="primary"
@@ -189,7 +189,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
         <View style={styles.buttonContainer}>
           <Button
             variant="primary"
-            textClassName="!text-primary uppercase text-sm !font-bold"
+            textClassName="!text-primary uppercase text-sm !font-nunito-bold"
             className="bg-neutral-off-white"
             label={t('onboarding.done')}
             testID="onboarding-done-button"

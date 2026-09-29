@@ -175,7 +175,7 @@ export const LoginForm = ({
           label={isLoading ? t('login.signing_in') : t('login.login_button')}
           onPress={handleSubmit(handleFormSubmit)}
           variant="primary"
-          textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+          textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
           className="bg-primary flex-row items-center justify-center h-12"
           isLoading={isLoading}
           icon={isLoading ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}
@@ -228,7 +228,7 @@ export const LoginForm = ({
             />
           }
           className="!bg-[#F2F2F2] border-[#747775] !p-1 h-12"
-          textClassName="!text-[#1F1F1F] uppercase text-sm !font-bold"
+          textClassName="!text-[#1F1F1F] uppercase text-sm !font-nunito-bold"
           disabled={isLoading}
         />
         <Button
@@ -243,7 +243,7 @@ export const LoginForm = ({
             />
           }
           className="!bg-[#4267b2] !p-1 h-12"
-          textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+          textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
           disabled={isLoading}
         />
       </View>

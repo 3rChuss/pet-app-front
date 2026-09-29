@@ -70,7 +70,7 @@ export default function SearchScreen() {
                     color="#A0D2DB"
                     style={{ marginRight: 12 }}
                   />
-                  <Text className="text-neutral-dark-gray font-nunito font-semibold flex-1">
+                  <Text className="text-neutral-dark-gray font-nunito-semibold flex-1">
                     {category.title}
                   </Text>
                 </Pressable>
@@ -169,7 +169,7 @@ export default function SearchScreen() {
                   color="#A0D2DB"
                   style={{ marginRight: 12 }}
                 />
-                <Text className="text-neutral-dark-gray font-nunito font-semibold flex-1">
+                <Text className="text-neutral-dark-gray font-nunito-semibold flex-1">
                   {category.title}
                 </Text>
               </Pressable>

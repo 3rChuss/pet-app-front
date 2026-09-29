@@ -236,7 +236,7 @@ export default function RegisterScreen() {
               onPress={() => router.push('/login')}
               variant="primary"
               className="mt-4 bg-primary"
-              textClassName="!text-neutral-off-white uppercase text-sm !font-bold pr-4"
+              textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold pr-4"
               icon={<Ionicons name="checkmark" size={20} color="#FFFFFF" />}
             />
           </View>
@@ -437,7 +437,7 @@ export default function RegisterScreen() {
                 onPress={handleSubmit(onSubmit)}
                 variant="primary"
                 className=" bg-primary"
-                textClassName="!text-neutral-off-white uppercase !font-bold"
+                textClassName="!text-neutral-off-white uppercase !font-nunito-bold"
                 disabled={isSubmitting || isRegisterLoading}
                 isLoading={isSubmitting}
                 icon={isSubmitting ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}

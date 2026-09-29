@@ -126,7 +126,7 @@ export default function ErrorModal({
                     onPress={handleAction}
                     variant="primary"
                     className={`${hideCancel ? 'flex-1' : 'flex-1 ml-2'} bg-primary`}
-                    textClassName="!text-neutral-off-white !font-bold"
+                    textClassName="!text-neutral-off-white !font-nunito-bold"
                   />
                 </View>
               </View>

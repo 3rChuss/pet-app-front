@@ -97,7 +97,7 @@ export default function LocationSetup({ onLocationSet, location }: LocationSetup
             onPress={handleEnableLocation}
             isLoading={loading}
             className="bg-white mb-4"
-            textClassName="!text-primary !font-bold"
+            textClassName="!text-primary !font-nunito-bold"
           />
         )}
         {!location?.enabled ? (

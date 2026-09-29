@@ -44,7 +44,7 @@ export function FloatingTabBar({
             <PetopiaIcon name="heart-outline" size={size} color={color} />
             {unreadNotifications > 0 && (
               <View className="absolute -top-1 -right-1 bg-accent-coral rounded-full min-w-[18px] h-[18px] items-center justify-center">
-                <Text className="text-neutral-off-white text-xs font-bold font-nunito">
+                <Text className="text-neutral-off-white text-xs font-nunito-bold">
                   {unreadNotifications > 99 ? '99+' : unreadNotifications}
                 </Text>
               </View>

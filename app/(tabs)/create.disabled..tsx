@@ -89,9 +89,7 @@ export default function CreateScreen() {
                   style={{ marginRight: 12 }}
                 />
                 <Text
-                  className={`font-nunito font-semibold flex-1 ${
-                    selectedCategory === category.id ? 'text-primary' : 'text-neutral-dark-gray'
-                  }`}
+                  className={`font-nunito-semibold flex-1 ${selectedCategory === category.id ? 'text-primary' : 'text-neutral-dark-gray'}`}
                 >
                   {category.title}
                 </Text>

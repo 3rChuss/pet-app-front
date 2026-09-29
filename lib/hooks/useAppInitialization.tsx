@@ -60,8 +60,10 @@ export function useAppInitialization(): InitializationResult {
     'Quicksand-Medium': require('../../assets/fonts/Quicksand-Medium.ttf'),
     'Quicksand-SemiBold': require('../../assets/fonts/Quicksand-SemiBold.ttf'),
     'Quicksand-Bold': require('../../assets/fonts/Quicksand-Bold.ttf'),
-    'NunitoSans-Variable': require('../../assets/fonts/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf'),
-    'NunitoSans-Italic-Variable': require('../../assets/fonts/NunitoSans-Italic-VariableFont_YTLC,opsz,wdth,wght.ttf'),
+    'NunitoSans-Regular': require('../../assets/fonts/NunitoSans-Regular.ttf'),
+    'NunitoSans-Medium': require('../../assets/fonts/NunitoSans-Medium.ttf'),
+    'NunitoSans-SemiBold': require('../../assets/fonts/NunitoSans-SemiBold.ttf'),
+    'NunitoSans-Bold': require('../../assets/fonts/NunitoSans-Bold.ttf'),
   })
 
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null)

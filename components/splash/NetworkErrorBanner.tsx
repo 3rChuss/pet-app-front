@@ -38,7 +38,7 @@ export default function NetworkErrorBanner({
             onPress={onRetry}
             variant="secondary"
             className="bg-white border border-orange-300 !px-3 !py-1"
-            textClassName="!text-orange-600 text-xs !font-medium"
+            textClassName="!text-orange-600 text-xs !font-nunito-medium"
           />
         )}
       </View>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 12,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#B7950B',
     marginTop: 2,
   },

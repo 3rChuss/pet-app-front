@@ -113,7 +113,7 @@ export default function GuestCTAModal({
               label="Crear cuenta gratis"
               onPress={handleRegister}
               className="bg-primary mb-3"
-              textClassName="!text-white !font-bold"
+              textClassName="!text-white !font-nunito-bold"
             />
 
             <Text

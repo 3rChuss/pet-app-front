@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     let containerStyle =
       'p-3 flex justify-center align-center rounded-full ' +
       (icon ? ' flex-row gap-4 items-center' : ' flex-col')
-    let textStyle = 'font-nunito font-semibold text-sm' // Nunito Sans SemiBold as per typography guidelines
+    let textStyle = 'font-nunito-semibold text-sm' // Nunito Sans SemiBold as per typography guidelines
 
     switch (variant) {
       case 'primary':
