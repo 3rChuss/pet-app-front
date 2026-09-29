@@ -1,6 +1,7 @@
 import '../global.css'
 import { useEffect } from 'react'
 
+import { isRunningInExpoGo } from 'expo'
 import { ThemeProvider } from 'expo-router/react-navigation'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -35,11 +36,14 @@ hydrateAuth()
 
 // Keep the splash screen visible while we load resources
 SplashScreen.preventAutoHideAsync()
-// Set the animation options. This is optional.
-SplashScreen.setOptions({
-  duration: 800,
-  fade: true,
-})
+// Set the animation options. Expo Go ignores them and warns, so only development
+// and production builds apply them.
+if (!isRunningInExpoGo()) {
+  SplashScreen.setOptions({
+    duration: 800,
+    fade: true,
+  })
+}
 
 export default function RootLayout() {
   const { appState, progress, error, errorInfo, enterGuestMode, retryInitialization } =
