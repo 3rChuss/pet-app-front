@@ -6,7 +6,7 @@ import { Checkbox } from 'expo-checkbox' // Assuming expo-checkbox is installed
 import { LinearGradient } from 'expo-linear-gradient'
 import { Link, useRouter } from 'expo-router'
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import {
   View,
   Text,
@@ -16,7 +16,6 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Linking,
   Keyboard,
   TouchableOpacity,
   ActivityIndicator,
@@ -25,6 +24,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 import * as z from 'zod'
 
 import { register } from '@/api/services/auth'
+import LegalNotice from '@/components/Auth/LegalNotice'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
@@ -197,18 +197,6 @@ export default function RegisterScreen() {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
-  }
-
-  const handlePrivacyPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-privacidad')
-  }
-
-  const handleCookiesPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-cookies')
-  }
-
-  const handleTermsAndConditionsPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/terminos-y-condiciones')
   }
 
   return (
@@ -394,35 +382,14 @@ export default function RegisterScreen() {
                 />
 
                 <View className="ml-1 flex-1">
-                  <Text
-                    className="text-xs text-neutral-dark-gray"
-                    style={errors.acceptedPrivacyPolicy ? { color: '#F87171' } : {}}
-                  >
-                    <Trans
-                      i18nKey="login.disclaimer"
-                      components={{
-                        Bold: (
-                          <Text
-                            className="text-primary font-bold underline"
-                            onPress={handleTermsAndConditionsPress}
-                          />
-                        ),
-                        LinkPrivacy: (
-                          <Text
-                            className="text-primary font-bold underline"
-                            onPress={handlePrivacyPolicyPress}
-                          />
-                        ),
-                        LinkCookies: (
-                          <Text
-                            className="text-primary font-bold underline"
-                            onPress={handleCookiesPolicyPress}
-                          />
-                        ),
-                      }}
-                      t={t}
-                    />
-                  </Text>
+                  <LegalNotice
+                    variant="register"
+                    className={
+                      errors.acceptedPrivacyPolicy
+                        ? 'text-xs text-accent-coral'
+                        : 'text-xs text-neutral-dark-gray'
+                    }
+                  />
                 </View>
               </View>
               {errors.acceptedPrivacyPolicy && (

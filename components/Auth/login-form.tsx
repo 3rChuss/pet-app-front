@@ -4,20 +4,20 @@ import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'expo-router'
 import { useForm, Controller } from 'react-hook-form'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import {
   Text,
   TextInput,
   View,
   Pressable,
   Image,
-  Linking,
   Keyboard,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native'
 import * as z from 'zod'
 
+import LegalNotice from '@/components/Auth/LegalNotice'
 import Button from '@/components/Button/Button'
 
 import type { SubmitHandler } from 'react-hook-form'
@@ -74,18 +74,6 @@ export const LoginForm = ({
   // Toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
-  }
-
-  const handlePrivacyPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-privacidad')
-  }
-
-  const handleCookiesPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-cookies')
-  }
-
-  const handleTermsAndConditionsPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/terminos-y-condiciones')
   }
 
   return (
@@ -180,32 +168,10 @@ export const LoginForm = ({
           isLoading={isLoading}
           icon={isLoading ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}
         />
-        <Text className="text-xs text-neutral-off-white text-center px-4 mt-4">
-          <Trans
-            i18nKey="login.disclaimer"
-            components={{
-              Bold: (
-                <Text
-                  className="text-primary font-bold underline"
-                  onPress={handleTermsAndConditionsPress}
-                />
-              ),
-              LinkPrivacy: (
-                <Text
-                  className="text-primary font-bold underline"
-                  onPress={handlePrivacyPolicyPress}
-                />
-              ),
-              LinkCookies: (
-                <Text
-                  className="text-primary font-bold underline"
-                  onPress={handleCookiesPolicyPress}
-                />
-              ),
-            }}
-            t={t}
-          />
-        </Text>
+        <LegalNotice
+          variant="login"
+          className="text-xs text-neutral-off-white text-center px-4 mt-4"
+        />
       </View>
       {/* Social Login Section */}
       <View className="gap-y-2 mt-6 ">
