@@ -105,15 +105,54 @@ frontend
 ## Commands
 
 ```bash
-npm run start    # Expo dev server (-c to clear cache)
-npm run android  # Run on Android
-npm run ios      # Run on iOS
-npm run web      # Run on web
-npm run lint     # ESLint + Prettier check (autofix via npm run format)
-npm run format   # ESLint --fix + Prettier --write
+npm run start          # Expo dev server (-c to clear cache)
+npm run android        # Run on Android
+npm run ios            # Run on iOS
+npm run web            # Run on web
+npm test               # Jest tests (unit and component)
+npm run typecheck      # TypeScript check (tsc --noEmit)
+npm run lint           # Runs lint:eslint and lint:prettier (autofix via npm run format)
+npm run lint:eslint    # ESLint only
+npm run lint:prettier  # Prettier check only
+npm run format         # ESLint --fix + Prettier --write
 ```
 
-There are no unit/e2e tests configured in this project.
+### Testing
+
+Tests use Jest with the `jest-expo` preset and React Native Testing Library. There are no E2E tests.
+
+- **Location**: `__tests__/` folders next to the code they cover, with files named `*.test.ts` or `*.test.tsx` (Jest ignores test files outside `__tests__/`)
+- **Never inside `app/`**: expo-router would treat the test files as routes
+- **Global mocks**: `jest.setup.js`
+- **Component tests**: take the expected texts from the locale JSON files (`services/i18n/locales/`), do not write them by hand
+- **Styles**: Jest does not compile the Tailwind classes (Metro does), so `className` reaches the rendered elements unresolved. Assert on roles, accessible names, texts and behavior, never on styles that come from classes
+
+## Continuous Integration
+
+`.github/workflows/ci.yml` runs on every pull request against `main` and on every push to `main`. It can also be started by hand (`workflow_dispatch`). A new push to the same pull request cancels the run in progress. The three jobs run in parallel:
+
+| Job | Trigger | Runs |
+|-----|---------|------|
+| **Lint, types and tests** | Pull requests and pushes to `main` | `npm ci`, then `npm run lint:eslint`, `npm run lint:prettier`, `npm run typecheck` and `npm test -- --ci`, each as its own step so one failure does not hide the others |
+| **Conventional commits** | Pull requests only | `npm ci`, then `npx commitlint` over every commit of the pull request |
+| **Android bundle** | Pull requests and pushes to `main` | `npm ci`, then `npx expo export --platform android --output-dir dist` with a dummy `EXPO_PUBLIC_API_URL` |
+
+Reproduce the checks locally with the same commands (run `npm ci` first if `package-lock.json` changed):
+
+```bash
+npm run lint:eslint
+npm run lint:prettier
+npm run typecheck
+npm test -- --ci
+npx commitlint --from origin/main --to HEAD --verbose
+EXPO_PUBLIC_API_URL=https://api.example.invalid/api/v1 \
+NODE_OPTIONS=--max-old-space-size=6144 \
+npx expo export --platform android --output-dir dist
+```
+
+In PowerShell, set the two variables first with `$env:NAME = 'value'`. The bundle goes to `dist/`, which Git and ESLint ignore.
+
+Commit messages must pass commitlint (`commitlint.config.js`) because the CI validates every commit of the pull request. `ci` is not an allowed type: use `chore` or `build`.
 
 ## Mandatory Workflow
 
@@ -145,7 +184,8 @@ Any agent working on this project MUST follow this workflow for every task.
 1. **Update affected documentation** - Any doc that describes the modified area (repo `docs/` and/or Outline)
 2. **Run `npm run lint`** - Ensure ESLint and Prettier pass
 3. **Run `npm run format`** if lint reports fixable issues
-4. **Check TypeScript** - Ensure `tsc --noEmit` passes (`npx tsc --noEmit`)
+4. **Check TypeScript** - Ensure `npm run typecheck` passes (`tsc --noEmit`)
+5. **Run `npm test`** - Ensure the Jest suite passes
 
 **Critical rule**: A task is NOT complete if documentation is outdated.
 
@@ -162,6 +202,7 @@ Before finalising any task, an agent MUST verify:
 7. [ ] Did NOT hardcode user-facing strings (used i18n keys in `en-US` + `es-ES`)
 8. [ ] Kept all code and comments in English
 9. [ ] Ran `npm run lint` (ESLint + Prettier) and fixed issues
-10. [ ] Verified TypeScript passes (`npx tsc --noEmit`)
-11. [ ] Updated affected documentation
-12. [ ] Task is complete: documentation is up to date
+10. [ ] Verified TypeScript passes (`npm run typecheck`)
+11. [ ] Ran `npm test` and the Jest suite passes
+12. [ ] Updated affected documentation
+13. [ ] Task is complete: documentation is up to date
