@@ -1,9 +1,10 @@
 const path = require('path')
 
-// npm installs the dependencies of `expo` (expo-modules-core, expo-file-system...) nested under
-// node_modules/expo/node_modules. The setup file of jest-expo requires some of them from its own
-// location, where Node cannot see them ("Cannot find module 'expo-modules-core'"), so they are
-// added as a last-resort lookup path. Modules installed at the top level still take precedence.
+// Depending on the lockfile, npm may install dependencies of `expo` (expo-modules-core,
+// expo-file-system...) nested under node_modules/expo/node_modules. The setup file of jest-expo
+// requires some of them from its own location, where Node cannot see nested ones ("Cannot find
+// module 'expo-modules-core'"), so that folder is added as a last-resort lookup path. Modules
+// installed at the top level still take precedence.
 const expoNestedModules = path.join(
   path.dirname(require.resolve('expo/package.json')),
   'node_modules'
