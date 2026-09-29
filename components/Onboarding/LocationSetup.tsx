@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import * as Location from 'expo-location'
+import { MapPin } from 'lucide-react-native'
 import { useTranslation } from 'react-i18next'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 
@@ -76,7 +77,7 @@ export default function LocationSetup({ onLocationSet, location }: LocationSetup
   return (
     <View style={styles.container}>
       <View style={styles.locationIcon}>
-        <Text style={styles.emoji}>📍</Text>
+        <MapPin size={36} strokeWidth={2} color="#fff" />
       </View>
 
       <Text
@@ -131,9 +132,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 20,
-  },
-  emoji: {
-    fontSize: 32,
   },
   permission: {
     fontSize: 16,

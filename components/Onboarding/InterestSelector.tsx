@@ -3,8 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 import { Interest } from '@/lib/types/onboarding'
 
+import type { LucideIcon } from 'lucide-react-native'
+
+// Icon colors match the label colors; the soft fill marks the active state (Branding guide 3.4)
+const IDLE_COLOR = 'rgba(255, 255, 255, 0.9)'
+const SELECTED_COLOR = '#fff'
+const SELECTED_FILL = 'rgba(255, 255, 255, 0.25)'
+
 interface InterestSelectorProps {
-  interests: { key: Interest; label: string; emoji: string }[]
+  interests: { key: Interest; label: string; icon: LucideIcon }[]
   selectedInterests: Interest[]
   onToggle: (interest: Interest) => void
 }
@@ -21,6 +28,7 @@ export default function InterestSelector({
       <View style={styles.grid}>
         {interests.map(interest => {
           const isSelected = selectedInterests.includes(interest.key)
+          const Icon = interest.icon
           return (
             <TouchableOpacity
               key={interest.key}
@@ -30,7 +38,13 @@ export default function InterestSelector({
               aria-checked={isSelected}
               accessibilityLabel={t(`onboarding.interests.${interest.key}`)}
             >
-              <Text style={styles.emoji}>{interest.emoji}</Text>
+              <Icon
+                size={24}
+                strokeWidth={2}
+                color={isSelected ? SELECTED_COLOR : IDLE_COLOR}
+                fill={isSelected ? SELECTED_FILL : 'none'}
+                style={styles.icon}
+              />
               <Text
                 style={[styles.interestLabel, isSelected && styles.interestLabelSelected]}
                 className={isSelected ? 'font-quicksand-bold' : 'font-quicksand-semibold'}
@@ -72,8 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
     borderColor: 'rgba(255, 255, 255, 0.8)',
   },
-  emoji: {
-    fontSize: 24,
+  icon: {
     marginBottom: 6,
   },
   interestLabel: {
