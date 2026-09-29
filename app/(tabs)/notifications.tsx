@@ -26,7 +26,7 @@ export default function NotificationsScreen() {
       <Container className="flex-1 bg-neutral-off-white">
         <ScrollView className="flex-1">
           <View className="p-6">
-            <Text className="text-3xl font-bold text-neutral-dark-gray font-quicksand mb-6">
+            <Text className="text-3xl text-neutral-dark-gray font-quicksand-bold mb-6">
               Notificaciones
             </Text>
 
@@ -36,7 +36,7 @@ export default function NotificationsScreen() {
                 <Ionicons name="notifications-off" size={64} color="#BDBDBD" />
               </View>
 
-              <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mb-3 text-center">
+              <Text className="text-xl text-neutral-dark-gray font-quicksand-semibold mb-3 text-center">
                 Las notificaciones están deshabilitadas
               </Text>
 
@@ -130,7 +130,7 @@ export default function NotificationsScreen() {
       <ScrollView className="flex-1">
         <View className="p-6">
           <View className="flex-row justify-between items-center mb-6">
-            <Text className="text-3xl font-bold text-neutral-dark-gray font-quicksand">
+            <Text className="text-3xl text-neutral-dark-gray font-quicksand-bold">
               Notificaciones
             </Text>
             {unreadCount > 0 && (
@@ -145,7 +145,7 @@ export default function NotificationsScreen() {
           {notifications.length === 0 ? (
             <View className="items-center justify-center py-20">
               <Ionicons name="notifications-outline" size={64} color="#BDBDBD" />
-              <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mt-4 mb-2">
+              <Text className="text-xl text-neutral-dark-gray font-quicksand-semibold mt-4 mb-2">
                 No hay notificaciones
               </Text>
               <Text className="text-neutral-medium-gray font-nunito text-center">
@@ -175,7 +175,7 @@ export default function NotificationsScreen() {
                   </View>
 
                   <View className="flex-1">
-                    <Text className="text-neutral-dark-gray font-quicksand font-semibold mb-1">
+                    <Text className="text-neutral-dark-gray font-quicksand-semibold mb-1">
                       {notification.title}
                     </Text>
                     <Text className="text-neutral-medium-gray font-nunito mb-2">

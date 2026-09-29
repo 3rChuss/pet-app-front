@@ -52,7 +52,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
 
             {!isInteractionSlide && (
               <>
-                <Text style={styles.title} className="font-quicksand text-neutral-off-white">
+                <Text style={styles.title} className="font-quicksand-bold text-neutral-off-white">
                   {t(`onboarding.${item.title}`)}
                 </Text>
 
@@ -66,7 +66,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
               <View style={styles.interactionContainer}>
                 <Text
                   style={styles.interactionTitle}
-                  className="font-quicksand text-neutral-off-white"
+                  className="font-quicksand-bold text-neutral-off-white"
                 >
                   {t(`onboarding.${item.title}`)}
                 </Text>
@@ -88,7 +88,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
               <View style={styles.interactionContainer}>
                 <Text
                   style={styles.interactionTitle}
-                  className="font-quicksand text-neutral-off-white"
+                  className="font-quicksand-bold text-neutral-off-white"
                 >
                   {t(`onboarding.${item.title}`)}
                 </Text>
@@ -107,7 +107,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
               <View style={styles.interactionContainer}>
                 <Text
                   style={styles.interactionTitle}
-                  className="font-quicksand text-neutral-off-white"
+                  className="font-quicksand-bold text-neutral-off-white"
                 >
                   {t(`onboarding.${item.title}`)}
                 </Text>
@@ -218,7 +218,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     textAlign: 'center',
-    fontWeight: 'bold',
     marginTop: 60,
   },
   contentOverlay: {
@@ -247,7 +246,6 @@ const styles = StyleSheet.create({
   },
   interactionTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
     marginTop: 40,

@@ -27,9 +27,7 @@ export default function SearchScreen() {
       <Container className="flex-1 bg-neutral-off-white">
         <ScrollView className="flex-1">
           <View className="p-6">
-            <Text className="text-3xl font-bold text-neutral-dark-gray font-quicksand mb-6">
-              Buscar
-            </Text>
+            <Text className="text-3xl text-neutral-dark-gray font-quicksand-bold mb-6">Buscar</Text>
 
             {/* Search Input - Disabled for guests */}
             <View className="relative mb-6">
@@ -55,7 +53,7 @@ export default function SearchScreen() {
             </View>
 
             {/* Preview Categories */}
-            <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mb-4">
+            <Text className="text-xl text-neutral-dark-gray font-quicksand-semibold mb-4">
               Categorías disponibles (vista previa)
             </Text>
 
@@ -80,7 +78,7 @@ export default function SearchScreen() {
             </View>
 
             {/* Sample Users Preview */}
-            <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mb-4 mt-6">
+            <Text className="text-xl text-neutral-dark-gray font-quicksand-semibold mb-4 mt-6">
               Usuarios destacados
             </Text>
 
@@ -97,7 +95,7 @@ export default function SearchScreen() {
                     className="mr-3"
                   />
                   <View className="flex-1">
-                    <Text className="font-semibold text-neutral-dark-gray font-quicksand">
+                    <Text className="text-neutral-dark-gray font-quicksand-semibold">
                       {profile.name}
                     </Text>
                     <Text className="text-neutral-medium-gray font-nunito text-sm">
@@ -116,7 +114,7 @@ export default function SearchScreen() {
               feature="search"
               fallback={
                 <View className="bg-primary/10 p-6 rounded-xl mt-6">
-                  <Text className="text-lg font-semibold text-neutral-dark-gray font-quicksand mb-2 text-center">
+                  <Text className="text-lg text-neutral-dark-gray font-quicksand-semibold mb-2 text-center">
                     ¡Descubre más con tu cuenta! 🔍
                   </Text>
                   <Text className="text-neutral-medium-gray font-nunito text-center mb-4">
@@ -138,9 +136,7 @@ export default function SearchScreen() {
     <Container className="flex-1 bg-neutral-off-white">
       <ScrollView className="flex-1">
         <View className="p-6">
-          <Text className="text-3xl font-bold text-neutral-dark-gray font-quicksand mb-6">
-            Buscar
-          </Text>
+          <Text className="text-3xl text-neutral-dark-gray font-quicksand-bold mb-6">Buscar</Text>
 
           {/* Search Input */}
           <View className="relative mb-6">
@@ -157,7 +153,7 @@ export default function SearchScreen() {
           </View>
 
           {/* Search Categories */}
-          <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mb-4">
+          <Text className="text-xl text-neutral-dark-gray font-quicksand-semibold mb-4">
             Categorías
           </Text>
 
@@ -181,7 +177,7 @@ export default function SearchScreen() {
           </View>
 
           {/* Recent Searches */}
-          <Text className="text-xl font-semibold text-neutral-dark-gray font-quicksand mb-4 mt-6">
+          <Text className="text-xl text-neutral-dark-gray font-quicksand-semibold mb-4 mt-6">
             Búsquedas recientes
           </Text>
 

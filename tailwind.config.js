@@ -20,9 +20,15 @@ module.exports = {
       colors: {
         ...generateThemeColors(activeTheme),
       },
+      // Family names must match the keys registered with useFonts in useAppInitialization.
+      // Each Quicksand weight is a separate font file, so pick the weight through the family
+      // class (font-quicksand-bold) instead of combining font-quicksand with font-bold.
       fontFamily: {
-        quicksand: ['Quicksand', 'sans-serif'],
-        nunito: ['Nunito Sans', 'sans-serif'],
+        quicksand: ['Quicksand-SemiBold', 'sans-serif'],
+        'quicksand-medium': ['Quicksand-Medium', 'sans-serif'],
+        'quicksand-semibold': ['Quicksand-SemiBold', 'sans-serif'],
+        'quicksand-bold': ['Quicksand-Bold', 'sans-serif'],
+        nunito: ['NunitoSans-Variable', 'sans-serif'],
       },
     },
   },

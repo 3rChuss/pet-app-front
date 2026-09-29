@@ -45,13 +45,13 @@ export default function CreateScreen() {
     <Container className="flex-1 bg-neutral-off-white">
       <ScrollView className="flex-1">
         <View className="p-6">
-          <Text className="text-3xl font-bold text-neutral-dark-gray font-quicksand mb-6">
+          <Text className="text-3xl text-neutral-dark-gray font-quicksand-bold mb-6">
             Crear publicación
           </Text>
 
           {/* Post Text Input */}
           <View className="mb-6">
-            <Text className="text-lg font-semibold text-neutral-dark-gray font-quicksand mb-3">
+            <Text className="text-lg text-neutral-dark-gray font-quicksand-semibold mb-3">
               ¿Qué quieres compartir?
             </Text>
             <TextInput
@@ -67,7 +67,7 @@ export default function CreateScreen() {
           </View>
 
           {/* Category Selection */}
-          <Text className="text-lg font-semibold text-neutral-dark-gray font-quicksand mb-4">
+          <Text className="text-lg text-neutral-dark-gray font-quicksand-semibold mb-4">
             Categoría
           </Text>
 

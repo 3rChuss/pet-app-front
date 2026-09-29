@@ -30,7 +30,7 @@ export default function PetTypeSelector({
               <Text style={styles.emoji}>{petType.emoji}</Text>
               <Text
                 style={[styles.petLabel, isSelected && styles.petLabelSelected]}
-                className="font-quicksand"
+                className={isSelected ? 'font-quicksand-bold' : 'font-quicksand-semibold'}
               >
                 {t(`onboarding.pets.${petType.key}`)}
               </Text>
@@ -76,12 +76,10 @@ const styles = StyleSheet.create({
   },
   petLabel: {
     fontSize: 16,
-    fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
   },
   petLabelSelected: {
     color: '#fff',
-    fontWeight: 'bold',
   },
 })

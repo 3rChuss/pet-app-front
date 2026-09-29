@@ -68,7 +68,7 @@ export default function GuestCTAModal({
         <View style={styles.modal}>
           <View style={styles.header}>
             <Text style={styles.emoji}>🐾</Text>
-            <Text style={styles.title} className="font-quicksand">
+            <Text style={styles.title} className="font-quicksand-bold">
               {content.title}
             </Text>
           </View>
@@ -78,7 +78,7 @@ export default function GuestCTAModal({
           </Text>
 
           <View style={styles.benefits}>
-            <Text style={styles.benefitTitle} className="font-quicksand">
+            <Text style={styles.benefitTitle} className="font-quicksand-semibold">
               Con tu cuenta gratis podrás:
             </Text>
             <View style={styles.benefitItem}>
@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#424242',
     textAlign: 'center',
   },
@@ -180,7 +179,6 @@ const styles = StyleSheet.create({
   },
   benefitTitle: {
     fontSize: 16,
-    fontWeight: '600',
     color: '#424242',
     marginBottom: 12,
   },

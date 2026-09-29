@@ -32,7 +32,7 @@ export default function PostHeader({ user, timestamp, isSponsored, onUserPress }
 
         <TouchableOpacity style={styles.userInfo} onPress={handleUserPress} activeOpacity={0.8}>
           <View style={styles.userNameVerified}>
-            <Text style={styles.userName} className="font-quicksand">
+            <Text style={styles.userName} className="font-quicksand-semibold">
               {user.name}
             </Text>
             {user.isVerified && <Text style={styles.verifiedIcon}>✓</Text>}

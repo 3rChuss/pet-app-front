@@ -30,7 +30,7 @@ export default function InterestSelector({
               <Text style={styles.emoji}>{interest.emoji}</Text>
               <Text
                 style={[styles.interestLabel, isSelected && styles.interestLabelSelected]}
-                className="font-quicksand"
+                className={isSelected ? 'font-quicksand-bold' : 'font-quicksand-semibold'}
               >
                 {t(`onboarding.interests.${interest.key}`)}
               </Text>
@@ -75,12 +75,10 @@ const styles = StyleSheet.create({
   },
   interestLabel: {
     fontSize: 12,
-    fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
   },
   interestLabelSelected: {
     color: '#fff',
-    fontWeight: 'bold',
   },
 })
