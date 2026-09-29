@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import {
   View,
   Text,
-  TextInput,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -24,6 +23,7 @@ import { forgotPassword } from '@/api/services/auth'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
+import TextField from '@/components/Form/TextField'
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'
 
@@ -50,7 +50,6 @@ export default function ForgotPasswordScreen() {
   // Animated values for smooth transitions
   const logoScale = useSharedValue(1)
   const textScale = useSharedValue(1)
-  const formOpacity = useSharedValue(0.9)
   const formFlex = useSharedValue(1)
 
   // Update animations when keyboard state changes
@@ -58,15 +57,13 @@ export default function ForgotPasswordScreen() {
     if (keyboardVisible) {
       logoScale.value = withSpring(1, { damping: 15, stiffness: 150 })
       textScale.value = withSpring(1, { damping: 15, stiffness: 150 })
-      formOpacity.value = withSpring(1, { damping: 20, stiffness: 200 })
       formFlex.value = withSpring(0.5, { damping: 20, stiffness: 200 })
     } else {
       logoScale.value = withSpring(1, { damping: 15, stiffness: 150 })
       textScale.value = withSpring(1, { damping: 15, stiffness: 150 })
-      formOpacity.value = withSpring(0.9, { damping: 20, stiffness: 200 })
       formFlex.value = withSpring(1, { damping: 20, stiffness: 200 })
     }
-  }, [keyboardVisible, logoScale, textScale, formOpacity, formFlex])
+  }, [keyboardVisible, logoScale, textScale, formFlex])
 
   // Animated styles
   const animatedLogoContainerStyle = useAnimatedStyle(() => {
@@ -83,7 +80,6 @@ export default function ForgotPasswordScreen() {
 
   const animatedFormStyle = useAnimatedStyle(() => {
     return {
-      opacity: formOpacity.value,
       flex: formFlex.value,
     }
   })
@@ -146,7 +142,7 @@ export default function ForgotPasswordScreen() {
           colors={['#FFDA63', '#FDFDFD', '#A0D2DB']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1.2, y: 1 }}
-          className="absolute inset-0"
+          style={StyleSheet.absoluteFill}
         />
 
         {emailSent ? (
@@ -168,13 +164,13 @@ export default function ForgotPasswordScreen() {
               <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
                 <Animated.Text
                   style={[animatedTextStyle]}
-                  className="text-4xl font-bold text-primary mb-2 text-center"
+                  className="mb-2 text-center font-quicksand-bold text-[28px] leading-9 text-neutral-dark-gray"
                 >
                   {t('forgot_password.title')}
                 </Animated.Text>
                 <Animated.Text
                   style={[animatedTextStyle]}
-                  className="text-neutral-dark-gray text-center"
+                  className="text-center font-nunito text-neutral-dark-gray"
                 >
                   {t('forgot_password.description')}
                 </Animated.Text>
@@ -185,9 +181,10 @@ export default function ForgotPasswordScreen() {
                   control={control}
                   name="email"
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
+                    <TextField
                       placeholder={t('common.email_placeholder')}
-                      className={`border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
+                      error={errors.email?.message && t(errors.email.message)}
+                      editable={!isLoading}
                       keyboardType="email-address"
                       autoCapitalize="none"
                       onBlur={onBlur}
@@ -203,11 +200,6 @@ export default function ForgotPasswordScreen() {
                     />
                   )}
                 />
-                {errors.email && (
-                  <Text className="text-xs text-accent-coral">
-                    {t(errors.email.message as string)}
-                  </Text>
-                )}
               </View>
 
               <Button
@@ -228,7 +220,7 @@ export default function ForgotPasswordScreen() {
               <View className="flex-row items-center justify-center" style={styles.linkContainer}>
                 <Link href="/login" asChild>
                   <Pressable className="self-center" disabled={isLoading || isSubmitting}>
-                    <Text className="text-sm font-semibold mix-blend-difference backdrop-invert">
+                    <Text className="font-nunito-semibold text-sm text-neutral-dark-gray">
                       {t('forgot_password.back_to_login')}
                     </Text>
                   </Pressable>

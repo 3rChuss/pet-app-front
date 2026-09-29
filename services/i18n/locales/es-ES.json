@@ -94,6 +94,7 @@
     "disclaimer": "Al hacer click en 'Iniciar Sesión', aceptas nuestros <Bold>Términos y Condiciones</Bold>. Obtén más información sobre cómo procesamos tus datos en nuestra <LinkPrivacy>Política de Privacidad</LinkPrivacy> y <LinkCookies>Política de Cookies</LinkCookies>.",
     "google_signin": "Iniciar sesión con Google",
     "facebook_signin": "Iniciar sesión con Facebook",
+    "or": "o",
     "email_placeholder": "Correo electrónico",
     "password_placeholder": "Contraseña",
     "login_button": "Iniciar sesión",
@@ -155,7 +156,9 @@
     "ok": "OK",
     "password_required": "La contraseña es obligatoria",
     "email_required": "El correo electrónico es obligatorio",
-    "email_placeholder": "Correo electrónico"
+    "email_placeholder": "Correo electrónico",
+    "show_password": "Mostrar contraseña",
+    "hide_password": "Ocultar contraseña"
   },
   "tabs": {
     "home": "Inicio",

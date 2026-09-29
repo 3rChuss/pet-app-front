@@ -32,7 +32,6 @@ export default function Login() {
   const logoScale = useSharedValue(1)
   const logoHeight = useSharedValue(250)
   const textScale = useSharedValue(1)
-  const formOpacity = useSharedValue(0.9)
 
   // Update animations when keyboard state changes
   useEffect(() => {
@@ -40,14 +39,12 @@ export default function Login() {
       logoScale.value = withSpring(1, { damping: 15, stiffness: 150 })
       logoHeight.value = withSpring(120, { damping: 15, stiffness: 150 })
       textScale.value = withSpring(0.8, { damping: 15, stiffness: 150 })
-      formOpacity.value = withSpring(1, { damping: 20, stiffness: 200 })
     } else {
       logoScale.value = withSpring(1, { damping: 15, stiffness: 150 })
       logoHeight.value = withSpring(250, { damping: 15, stiffness: 150 })
       textScale.value = withSpring(1, { damping: 15, stiffness: 150 })
-      formOpacity.value = withSpring(0.9, { damping: 20, stiffness: 200 })
     }
-  }, [keyboardVisible, logoScale, logoHeight, textScale, formOpacity])
+  }, [keyboardVisible, logoScale, logoHeight, textScale])
 
   // Animated styles
   const animatedLogoContainerStyle = useAnimatedStyle(() => {
@@ -59,12 +56,6 @@ export default function Login() {
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: textScale.value }],
-    }
-  })
-
-  const animatedFormStyle = useAnimatedStyle(() => {
-    return {
-      opacity: formOpacity.value,
     }
   })
 
@@ -146,14 +137,14 @@ export default function Login() {
         </Animated.View>
 
         {/* Login Form */}
-        <Animated.View style={[styles.formContainer, animatedFormStyle]}>
+        <View style={styles.formContainer}>
           <LoginForm
             onSubmit={handleLogin}
             onGoogleSignIn={handleGoogleSignIn}
             onFacebookSignIn={handleFacebookSignIn}
             isLoading={isLoginLoading}
           />
-        </Animated.View>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   )

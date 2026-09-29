@@ -22,18 +22,24 @@ type LegalNoticeProps = {
   variant: LegalNoticeVariant
   /** Classes for the whole notice: layout, text size and text color. */
   className?: string
+  /** Text color of the links. The default suits dark backgrounds; use a dark one over light ones. */
+  linkClassName?: string
 }
 
 // <Trans> injects the translated words as the children of this element.
-const link = (url: string) => (
+const link = (url: string, linkClassName: string) => (
   <Text
     accessibilityRole="link"
-    className="font-nunito-bold text-primary underline"
+    className={`font-nunito-bold underline ${linkClassName}`}
     onPress={() => Linking.openURL(url)}
   />
 )
 
-export default function LegalNotice({ variant, className = '' }: LegalNoticeProps) {
+export default function LegalNotice({
+  variant,
+  className = '',
+  linkClassName = 'text-primary',
+}: LegalNoticeProps) {
   const { t } = useTranslation()
 
   return (
@@ -41,9 +47,9 @@ export default function LegalNotice({ variant, className = '' }: LegalNoticeProp
       <Trans
         i18nKey={NOTICE_KEYS[variant]}
         components={{
-          Bold: link(LEGAL_URLS.terms),
-          LinkPrivacy: link(LEGAL_URLS.privacy),
-          LinkCookies: link(LEGAL_URLS.cookies),
+          Bold: link(LEGAL_URLS.terms, linkClassName),
+          LinkPrivacy: link(LEGAL_URLS.privacy, linkClassName),
+          LinkCookies: link(LEGAL_URLS.cookies, linkClassName),
         }}
         t={t}
       />
