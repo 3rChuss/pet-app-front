@@ -70,7 +70,7 @@ api/                        # HTTP layer (Axios)
   config.ts                 # API_CONFIG (timeout, retry, base URL)
   services/                 # auth.ts, posts.ts, users.ts
 assets/                     # Images, fonts
-components/                 # UI building blocks (Auth, Post, Feed, Notifications, Onboarding, ...)
+components/                 # UI building blocks (Auth, Form, Post, Feed, Notifications, Onboarding, ...)
 lib/                        # Core logic
   auth/                     # Zustand auth store, token utils (secure store)
   context/                  # GuestMode, Notification, Theme providers
@@ -91,6 +91,7 @@ frontend
 - **Hooks**: server-side-ish concerns go in `lib/hooks/` (`useApiCall`, `useApiError`, `useFormErrors`)
 - **i18n**: never hardcode user-facing strings; use `t('key')` with keys in `services/i18n/locales/{en-US,es-ES}.json`
 - **Theming**: use Tailwind classes only for colors defined in `theme/colors.js` for the active `ACTIVE_THEME`
+- **Forms**: render text inputs with `TextField` / `PasswordField` (`components/Form/`). They carry the normal, focus, error and disabled states of the Branding guide, so pass the translated validation message in `error` instead of rendering it apart. For props that do not take classes (`placeholderTextColor`, icon colors) read the palette with `useTheme()` from `lib/context/ThemeContext`, never a hex value
 - **App states**: root `_layout.tsx` drives `initializing | loading | onboarding | guest | authenticated | unauthenticated | error`
 
 ## Conventions

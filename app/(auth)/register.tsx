@@ -6,28 +6,28 @@ import { Checkbox } from 'expo-checkbox' // Assuming expo-checkbox is installed
 import { LinearGradient } from 'expo-linear-gradient'
 import { Link, useRouter } from 'expo-router'
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import {
   View,
   Text,
-  TextInput,
   Pressable,
   ScrollView,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Linking,
   Keyboard,
-  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native'
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import * as z from 'zod'
 
 import { register } from '@/api/services/auth'
+import LegalNotice from '@/components/Auth/LegalNotice'
 import Button from '@/components/Button/Button'
 import { Container } from '@/components/containers/Container'
 import BackTop from '@/components/features/BackTop'
+import PasswordField from '@/components/Form/PasswordField'
+import TextField from '@/components/Form/TextField'
 // To potentially sign in the user after registration
 import { useApiError, useKeyboard, useLoadingState } from '@/lib/hooks'
 import { useFormErrors } from '@/lib/hooks/useFormErrors'
@@ -92,14 +92,12 @@ export default function RegisterScreen() {
   // Loading states for different operations
   const isRegisterLoading = loadingStates.register || false
   const { keyboardVisible } = useKeyboard()
-  const [showPassword, setShowPassword] = useState(false)
   const [registerSuccess, setRegisterSuccess] = useState(false)
 
   // Animated values for smooth transitions
   const logoScale = useSharedValue(1)
   const logoHeight = useSharedValue(200)
   const textScale = useSharedValue(1)
-  const formOpacity = useSharedValue(0.9)
   const formFlex = useSharedValue(1)
 
   // Update animations when keyboard state changes
@@ -108,16 +106,14 @@ export default function RegisterScreen() {
       logoScale.value = withSpring(1, { damping: 15, stiffness: 150 })
       logoHeight.value = withSpring(120, { damping: 15, stiffness: 150 })
       textScale.value = withSpring(1, { damping: 15, stiffness: 150 })
-      formOpacity.value = withSpring(1, { damping: 20, stiffness: 200 })
       formFlex.value = withSpring(0, { damping: 20, stiffness: 200 })
     } else {
       logoScale.value = withSpring(1, { damping: 15, stiffness: 150 })
       logoHeight.value = withSpring(150, { damping: 15, stiffness: 150 })
       textScale.value = withSpring(1, { damping: 15, stiffness: 150 })
-      formOpacity.value = withSpring(0.9, { damping: 20, stiffness: 200 })
       formFlex.value = withSpring(1, { damping: 20, stiffness: 200 })
     }
-  }, [keyboardVisible, logoScale, logoHeight, textScale, formOpacity, formFlex])
+  }, [keyboardVisible, logoScale, logoHeight, textScale, formFlex])
 
   // Animated styles
   const animatedLogoContainerStyle = useAnimatedStyle(() => {
@@ -135,7 +131,6 @@ export default function RegisterScreen() {
 
   const animatedFormStyle = useAnimatedStyle(() => {
     return {
-      opacity: formOpacity.value,
       flex: formFlex.value,
     }
   })
@@ -195,22 +190,6 @@ export default function RegisterScreen() {
     [router, handleApiError, setLoading, isRegisterLoading]
   )
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
-
-  const handlePrivacyPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-privacidad')
-  }
-
-  const handleCookiesPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-cookies')
-  }
-
-  const handleTermsAndConditionsPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/terminos-y-condiciones')
-  }
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -224,7 +203,7 @@ export default function RegisterScreen() {
           colors={['#FFDA63', '#FDFDFD', '#A0D2DB']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1.2, y: 1 }}
-          className="absolute inset-0"
+          style={StyleSheet.absoluteFill}
         />
         {registerSuccess ? (
           <View className="p-4 rounded-md mb-4 flex-1 items-center justify-center">
@@ -250,13 +229,13 @@ export default function RegisterScreen() {
               <Animated.View style={[styles.logoContainer, animatedLogoContainerStyle]}>
                 <Animated.Text
                   style={[animatedTextStyle]}
-                  className="text-4xl font-bold text-primary mb-2 text-center"
+                  className="mb-2 text-center font-quicksand-bold text-[28px] leading-9 text-neutral-dark-gray"
                 >
                   {t('register.title')}
                 </Animated.Text>
                 <Animated.Text
                   style={[animatedTextStyle]}
-                  className="text-neutral-dark-gray text-center"
+                  className="text-center font-nunito text-neutral-dark-gray"
                 >
                   {t('register.description')}
                 </Animated.Text>
@@ -266,9 +245,9 @@ export default function RegisterScreen() {
                 control={control}
                 name="userName"
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
+                  <TextField
                     placeholder={t('register.username_placeholder')}
-                    className={inputClassName(isRegisterLoading)}
+                    error={errors.userName?.message && t(errors.userName.message)}
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
@@ -283,17 +262,14 @@ export default function RegisterScreen() {
                   />
                 )}
               />
-              {errors.userName && (
-                <Text className="text-xs text-accent-coral">{t(errors.userName.message!)}</Text>
-              )}
 
               <Controller
                 control={control}
                 name="email"
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
+                  <TextField
                     placeholder={t('common.email_placeholder')}
-                    className={inputClassName(isRegisterLoading)}
+                    error={errors.email?.message && t(errors.email.message)}
                     keyboardType="email-address"
                     autoCapitalize="none"
                     textContentType="username"
@@ -310,60 +286,41 @@ export default function RegisterScreen() {
                   />
                 )}
               />
-              {errors.email && (
-                <Text className="text-xs text-accent-coral">{t(errors.email.message!)}</Text>
-              )}
 
               <Controller
                 control={control}
                 name="password"
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <View className="relative">
-                    <TextInput
-                      placeholder={t('register.password_placeholder')}
-                      className={inputClassName(isRegisterLoading)}
-                      secureTextEntry={!showPassword}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      textContentType="newPassword"
-                      multiline={false}
-                      autoComplete="password"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      spellCheck={false}
-                      numberOfLines={1}
-                      scrollEnabled={false}
-                      editable={!isRegisterLoading}
-                    />
-                    <TouchableOpacity
-                      testID="toggle-password-visibility"
-                      onPress={togglePasswordVisibility}
-                      className="absolute right-3 top-2 p-1"
-                      style={{ zIndex: 1 }}
-                      disabled={isRegisterLoading}
-                    >
-                      <Ionicons
-                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                        size={20}
-                        color={isRegisterLoading ? '#D1D5DB' : '#9CA3AF'}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                  <PasswordField
+                    placeholder={t('register.password_placeholder')}
+                    error={errors.password?.message && t(errors.password.message)}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    textContentType="newPassword"
+                    multiline={false}
+                    autoComplete="password"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    spellCheck={false}
+                    numberOfLines={1}
+                    scrollEnabled={false}
+                    editable={!isRegisterLoading}
+                  />
                 )}
               />
-              {errors.password && (
-                <Text className="text-xs text-accent-coral">{t(errors.password.message!)}</Text>
-              )}
 
               <View className="mb-6">
                 <Controller
                   control={control}
                   name="passwordConfirmation"
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
+                    <TextField
                       placeholder={t('register.confirm_password_placeholder')}
-                      className={inputClassName(isRegisterLoading)}
+                      error={
+                        errors.passwordConfirmation?.message &&
+                        t(errors.passwordConfirmation.message)
+                      }
                       secureTextEntry
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -372,11 +329,6 @@ export default function RegisterScreen() {
                     />
                   )}
                 />
-                {errors.passwordConfirmation && (
-                  <Text className="text-xs text-accent-coral">
-                    {t(errors.passwordConfirmation.message!)}
-                  </Text>
-                )}
               </View>
 
               <View className="mb-6 flex-row items-center justify-start">
@@ -394,39 +346,19 @@ export default function RegisterScreen() {
                 />
 
                 <View className="ml-1 flex-1">
-                  <Text
-                    className="text-xs text-neutral-dark-gray"
-                    style={errors.acceptedPrivacyPolicy ? { color: '#F87171' } : {}}
-                  >
-                    <Trans
-                      i18nKey="login.disclaimer"
-                      components={{
-                        Bold: (
-                          <Text
-                            className="text-primary font-bold underline"
-                            onPress={handleTermsAndConditionsPress}
-                          />
-                        ),
-                        LinkPrivacy: (
-                          <Text
-                            className="text-primary font-bold underline"
-                            onPress={handlePrivacyPolicyPress}
-                          />
-                        ),
-                        LinkCookies: (
-                          <Text
-                            className="text-primary font-bold underline"
-                            onPress={handleCookiesPolicyPress}
-                          />
-                        ),
-                      }}
-                      t={t}
-                    />
-                  </Text>
+                  <LegalNotice
+                    variant="register"
+                    linkClassName="text-neutral-dark-gray"
+                    className={
+                      errors.acceptedPrivacyPolicy
+                        ? 'text-xs text-accent-coral'
+                        : 'text-xs text-neutral-dark-gray'
+                    }
+                  />
                 </View>
               </View>
               {errors.acceptedPrivacyPolicy && (
-                <Text className="-mt-4 mb-4 text-accent-coral text-xs">
+                <Text className="-mt-4 mb-4 font-nunito text-accent-coral text-xs">
                   {t(errors.acceptedPrivacyPolicy.message!)}
                 </Text>
               )}
@@ -450,7 +382,7 @@ export default function RegisterScreen() {
                 <Link href="/login" asChild>
                   <Pressable disabled={isRegisterLoading}>
                     <Text
-                      className={`text-sm font-semibold mix-blend-difference backdrop-invert ${isRegisterLoading ? 'opacity-50' : ''}`}
+                      className={`font-nunito-semibold text-sm text-neutral-dark-gray ${isRegisterLoading ? 'opacity-50' : ''}`}
                     >
                       {t('register.login_button')}
                     </Text>
@@ -464,9 +396,6 @@ export default function RegisterScreen() {
     </KeyboardAvoidingView>
   )
 }
-
-const inputClassName = (disabled: boolean) =>
-  `border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${disabled ? 'opacity-50' : ''}`
 
 const styles = StyleSheet.create({
   container: {

@@ -94,6 +94,7 @@
     "disclaimer": "By clicking 'Log In', you accept our <Bold>Terms and Conditions</Bold>. Learn more about how we process your data in our <LinkPrivacy>Privacy Policy</LinkPrivacy> and <LinkCookies>Cookie Policy</LinkCookies>.",
     "google_signin": "Sign in with Google",
     "facebook_signin": "Sign in with Facebook",
+    "or": "or",
     "email_placeholder": "Email",
     "password_placeholder": "Password",
     "login_button": "Log in",
@@ -155,7 +156,9 @@
     "ok": "OK",
     "password_required": "Password is required",
     "email_required": "Email is required",
-    "email_placeholder": "Email"
+    "email_placeholder": "Email",
+    "show_password": "Show password",
+    "hide_password": "Hide password"
   },
   "tabs": {
     "home": "Home",

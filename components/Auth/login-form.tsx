@@ -1,24 +1,14 @@
-import { useState } from 'react'
-
-import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'expo-router'
 import { useForm, Controller } from 'react-hook-form'
-import { Trans, useTranslation } from 'react-i18next'
-import {
-  Text,
-  TextInput,
-  View,
-  Pressable,
-  Image,
-  Linking,
-  Keyboard,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native'
+import { useTranslation } from 'react-i18next'
+import { Text, View, Pressable, Image, Keyboard, ActivityIndicator } from 'react-native'
 import * as z from 'zod'
 
+import LegalNotice from '@/components/Auth/LegalNotice'
 import Button from '@/components/Button/Button'
+import PasswordField from '@/components/Form/PasswordField'
+import TextField from '@/components/Form/TextField'
 
 import type { SubmitHandler } from 'react-hook-form'
 
@@ -60,32 +50,12 @@ export const LoginForm = ({
 
   const { t } = useTranslation()
 
-  // State to control password visibility
-  const [showPassword, setShowPassword] = useState(false)
-
   // Enhanced submit handler that handles keyboard dismissal properly
   const handleFormSubmit = (data: FormType) => {
     // Dismiss keyboard immediately without interfering with button press
     Keyboard.dismiss()
     // Execute the submit function
     onSubmit(data)
-  }
-
-  // Toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
-
-  const handlePrivacyPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-privacidad')
-  }
-
-  const handleCookiesPolicyPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/politica-de-cookies')
-  }
-
-  const handleTermsAndConditionsPress = () => {
-    Linking.openURL('https://tu-pagina-web.com/terminos-y-condiciones')
   }
 
   return (
@@ -96,10 +66,10 @@ export const LoginForm = ({
           control={control}
           name="email"
           render={({ field: { onChange, value } }) => (
-            <TextInput
+            <TextField
               testID="email-input"
               placeholder={t('login.email_placeholder')}
-              className={`border-b border-neutral-medium-gray p-3 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
+              error={errors.email?.message && t(errors.email.message)}
               keyboardType="email-address"
               autoCapitalize="none"
               value={value}
@@ -117,50 +87,28 @@ export const LoginForm = ({
             />
           )}
         />
-        {errors.email && (
-          <Text className="text-accent-coral text-xs">{t(errors.email.message!)}</Text>
-        )}
         <Controller
           control={control}
           name="password"
           render={({ field: { onChange, value } }) => (
-            <View className="relative">
-              <TextInput
-                testID="password-input"
-                placeholder={t('login.password_placeholder')}
-                secureTextEntry={!showPassword}
-                className={`border-b border-neutral-medium-gray p-3 pr-12 text-neutral-dark-gray bg-neutral-light-gray/50 rounded-md border max-h-[100px] ${isLoading ? 'opacity-50' : ''}`}
-                value={value}
-                onChangeText={onChange}
-                multiline={false}
-                textContentType="password"
-                autoComplete="password"
-                autoCapitalize="none"
-                autoCorrect={false}
-                spellCheck={false}
-                numberOfLines={1}
-                scrollEnabled={false}
-                editable={!isLoading}
-              />
-              <TouchableOpacity
-                testID="toggle-password-visibility"
-                onPress={togglePasswordVisibility}
-                className="absolute right-3 top-2 p-1"
-                style={{ zIndex: 1 }}
-                disabled={isLoading}
-              >
-                <Ionicons
-                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                  size={20}
-                  color={isLoading ? '#D1D5DB' : '#9CA3AF'}
-                />
-              </TouchableOpacity>
-            </View>
+            <PasswordField
+              testID="password-input"
+              placeholder={t('login.password_placeholder')}
+              error={errors.password?.message && t(errors.password.message)}
+              value={value}
+              onChangeText={onChange}
+              multiline={false}
+              textContentType="password"
+              autoComplete="password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              spellCheck={false}
+              numberOfLines={1}
+              scrollEnabled={false}
+              editable={!isLoading}
+            />
           )}
         />
-        {errors.password && (
-          <Text className="text-accent-coral text-xs">{t(errors.password.message!)}</Text>
-        )}
         <Link href="/(auth)/forgot-password" asChild>
           <Pressable
             className={`mt-2 mb-4 self-end ${isLoading ? 'opacity-50' : ''}`}
@@ -180,39 +128,17 @@ export const LoginForm = ({
           isLoading={isLoading}
           icon={isLoading ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}
         />
-        <Text className="text-xs text-neutral-off-white text-center px-4 mt-4">
-          <Trans
-            i18nKey="login.disclaimer"
-            components={{
-              Bold: (
-                <Text
-                  className="text-primary font-bold underline"
-                  onPress={handleTermsAndConditionsPress}
-                />
-              ),
-              LinkPrivacy: (
-                <Text
-                  className="text-primary font-bold underline"
-                  onPress={handlePrivacyPolicyPress}
-                />
-              ),
-              LinkCookies: (
-                <Text
-                  className="text-primary font-bold underline"
-                  onPress={handleCookiesPolicyPress}
-                />
-              ),
-            }}
-            t={t}
-          />
-        </Text>
+        <LegalNotice
+          variant="login"
+          className="text-xs text-neutral-off-white text-center px-4 mt-4"
+        />
       </View>
       {/* Social Login Section */}
       <View className="gap-y-2 mt-6 ">
         {/* Separator line with OR */}
         <View className="my-4 flex-row items-center justify-center opacity-70">
           <View className="flex-1 border-t border-neutral-light-gray" />
-          <Text className="mx-4 text-xl text-neutral-light-gray">O</Text>
+          <Text className="mx-4 text-xl text-neutral-light-gray uppercase">{t('login.or')}</Text>
           <View className="flex-1 border-t border-neutral-light-gray" />
         </View>
         {/* Social Login Buttons */}
