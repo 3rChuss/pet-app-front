@@ -37,7 +37,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
 
   const goToSlide = (index: number) => slideRef.current?.goToSlide(index)
 
-  const renderItem = ({ item }: { item: OnboardingSlide }) => {
+  const renderItem = ({ item, index }: { item: OnboardingSlide; index: number }) => {
     const isInteractionSlide = ['pet_selection', 'location', 'interests'].includes(item.type)
 
     return (
@@ -101,7 +101,11 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
                   {t('onboarding.location_text')}
                 </Text>
 
-                <LocationSetup onLocationSet={setLocation} location={preferences.location} />
+                <LocationSetup
+                  onLocationSet={setLocation}
+                  onSkip={() => goToSlide(index + 1)}
+                  location={preferences.location}
+                />
               </View>
             )}
 

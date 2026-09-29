@@ -27,7 +27,10 @@
     "location_enable": "Enable location",
     "location_skip": "Set up later",
     "location_permission": "We need access to your location for a better experience",
-    "location_enabled": "Location enabled {{city}}, {{region}}, Thanks!",
+    "location_permission_denied": "We don't have permission to use your location. You can allow it in your device settings or set it up later.",
+    "location_unavailable": "We couldn't get your location. Check that location is turned on in your device settings, or set it up later.",
+    "location_enabled": "Location enabled: {{place}}. Thanks!",
+    "location_enabled_no_place": "Location enabled. Thanks!",
     "location_set_text": "Thanks for sharing your location! Now you can see nearby pets and events.",
     "explore_as_guest": "Explore without an account",
     "pets": {
