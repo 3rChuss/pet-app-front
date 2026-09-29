@@ -26,6 +26,9 @@ export default function InterestSelector({
               key={interest.key}
               style={[styles.interestCard, isSelected && styles.interestCardSelected]}
               onPress={() => onToggle(interest.key)}
+              accessibilityRole="checkbox"
+              aria-checked={isSelected}
+              accessibilityLabel={t(`onboarding.interests.${interest.key}`)}
             >
               <Text style={styles.emoji}>{interest.emoji}</Text>
               <Text

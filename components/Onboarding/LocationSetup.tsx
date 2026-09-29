@@ -100,7 +100,7 @@ export default function LocationSetup({ onLocationSet, location }: LocationSetup
           />
         )}
         {!location?.enabled ? (
-          <Text className="text-center" onPress={handleSkipLocation}>
+          <Text className="text-center" onPress={handleSkipLocation} accessibilityRole="button">
             {t('onboarding.location_skip')}
           </Text>
         ) : (

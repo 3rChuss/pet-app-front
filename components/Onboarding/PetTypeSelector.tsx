@@ -26,6 +26,9 @@ export default function PetTypeSelector({
               key={petType.key}
               style={[styles.petCard, isSelected && styles.petCardSelected]}
               onPress={() => onToggle(petType.key)}
+              accessibilityRole="checkbox"
+              aria-checked={isSelected}
+              accessibilityLabel={t(`onboarding.pets.${petType.key}`)}
             >
               <Text style={styles.emoji}>{petType.emoji}</Text>
               <Text
