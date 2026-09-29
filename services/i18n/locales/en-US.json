@@ -29,6 +29,7 @@
     "location_permission": "We need access to your location for a better experience",
     "location_enabled": "Location enabled {{city}}, {{region}}, Thanks!",
     "location_set_text": "Thanks for sharing your location! Now you can see nearby pets and events.",
+    "explore_as_guest": "Explore without an account",
     "pets": {
       "dogs": "Dogs",
       "cats": "Cats",
