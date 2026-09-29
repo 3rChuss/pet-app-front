@@ -166,6 +166,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
     <AppIntroSlider
       renderItem={renderItem}
       data={slides}
+      extraData={preferences}
       onDone={onDone}
       onSlideChange={onSlideChange}
       doneLabel={t('onboarding.done')}
