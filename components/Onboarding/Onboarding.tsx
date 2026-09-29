@@ -1,12 +1,13 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ImageBackground } from 'expo-image'
 import { useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useTranslation } from 'react-i18next'
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Button from '@/components/Button/Button'
 import InterestSelector from '@/components/Onboarding/InterestSelector'
@@ -24,7 +25,6 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
   const { t } = useTranslation()
   const router = useRouter()
   const slideRef = useRef<AppIntroSlider>(null)
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
   const {
     preferences,
@@ -35,7 +35,9 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
     savePreferences,
   } = useUserPreferences()
 
-  const renderItem = ({ item }: { item: OnboardingSlide }) => {
+  const goToSlide = (index: number) => slideRef.current?.goToSlide(index)
+
+  const renderItem = ({ item, index }: { item: OnboardingSlide; index: number }) => {
     const isInteractionSlide = ['pet_selection', 'location', 'interests'].includes(item.type)
 
     return (
@@ -46,13 +48,13 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
         contentFit="cover"
         key={item.key}
       >
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={styles.overlay}>
           <View style={[styles.contentOverlay]}>
             <StatusBar style="light" />
 
             {!isInteractionSlide && (
               <>
-                <Text style={styles.title} className="font-quicksand text-neutral-off-white">
+                <Text style={styles.title} className="font-quicksand-bold text-neutral-off-white">
                   {t(`onboarding.${item.title}`)}
                 </Text>
 
@@ -66,7 +68,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
               <View style={styles.interactionContainer}>
                 <Text
                   style={styles.interactionTitle}
-                  className="font-quicksand text-neutral-off-white"
+                  className="font-quicksand-bold text-neutral-off-white"
                 >
                   {t(`onboarding.${item.title}`)}
                 </Text>
@@ -88,7 +90,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
               <View style={styles.interactionContainer}>
                 <Text
                   style={styles.interactionTitle}
-                  className="font-quicksand text-neutral-off-white"
+                  className="font-quicksand-bold text-neutral-off-white"
                 >
                   {t(`onboarding.${item.title}`)}
                 </Text>
@@ -99,7 +101,11 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
                   {t('onboarding.location_text')}
                 </Text>
 
-                <LocationSetup onLocationSet={setLocation} location={preferences.location} />
+                <LocationSetup
+                  onLocationSet={setLocation}
+                  onSkip={() => goToSlide(index + 1)}
+                  location={preferences.location}
+                />
               </View>
             )}
 
@@ -107,7 +113,7 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
               <View style={styles.interactionContainer}>
                 <Text
                   style={styles.interactionTitle}
-                  className="font-quicksand text-neutral-off-white"
+                  className="font-quicksand-bold text-neutral-off-white"
                 >
                   {t(`onboarding.${item.title}`)}
                 </Text>
@@ -151,60 +157,58 @@ export default function OnboardingScreen({ onGuestMode }: OnboardingScreenProps)
     }
   }
 
-  const onNext = () => {
-    if (slideRef.current) {
-      slideRef.current.goToSlide(currentSlideIndex + 1)
-      setCurrentSlideIndex(currentSlideIndex + 1)
-    }
-  }
-
-  const onSlideChange = (index: number) => {
-    setCurrentSlideIndex(index)
-  }
+  // Replaces the library's default pagination, which renders the deprecated
+  // react-native SafeAreaView.
+  const renderPagination = (activeIndex: number) => (
+    <SafeAreaView edges={['bottom']} style={styles.pagination}>
+      <View style={styles.paginationDots} aria-hidden>
+        {slides.map((slide, index) => (
+          <View
+            key={slide.key}
+            style={[styles.dot, index === activeIndex ? styles.activeDot : styles.inactiveDot]}
+          />
+        ))}
+      </View>
+      <View style={styles.buttonContainer}>
+        {activeIndex === slides.length - 1 ? (
+          <>
+            <Button
+              variant="primary"
+              textClassName="!text-primary uppercase text-sm !font-nunito-bold"
+              className="bg-neutral-off-white"
+              label={t('onboarding.done')}
+              testID="onboarding-done-button"
+              onPress={onDone}
+              isLoading={preferencesLoading}
+            />
+            {onGuestMode && (
+              <Button
+                variant="tertiary"
+                textClassName="!text-neutral-off-white text-sm"
+                label={t('onboarding.explore_as_guest')}
+                onPress={onGuestMode}
+              />
+            )}
+          </>
+        ) : (
+          <Button
+            textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
+            className="bg-primary"
+            label={t('onboarding.next')}
+            variant="primary"
+            onPress={() => goToSlide(activeIndex + 1)}
+          />
+        )}
+      </View>
+    </SafeAreaView>
+  )
 
   return (
     <AppIntroSlider
       renderItem={renderItem}
       data={slides}
-      onDone={onDone}
-      onSlideChange={onSlideChange}
-      doneLabel={t('onboarding.done')}
-      nextLabel={t('onboarding.next')}
-      prevLabel={t('onboarding.back')}
-      skipLabel={t('onboarding.skip')}
-      bottomButton
-      renderNextButton={() => (
-        <View style={styles.buttonContainer}>
-          <Button
-            textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
-            className="bg-primary"
-            label={t('onboarding.next')}
-            variant="primary"
-            onPress={onNext}
-          />
-        </View>
-      )}
-      renderDoneButton={() => (
-        <View style={styles.buttonContainer}>
-          <Button
-            variant="primary"
-            textClassName="!text-primary uppercase text-sm !font-bold"
-            className="bg-neutral-off-white"
-            label={t('onboarding.done')}
-            testID="onboarding-done-button"
-            onPress={onDone}
-            isLoading={preferencesLoading}
-          />
-          {onGuestMode && (
-            <Button
-              variant="tertiary"
-              textClassName="!text-neutral-off-white text-sm"
-              label="Explorar sin cuenta"
-              onPress={onGuestMode}
-            />
-          )}
-        </View>
-      )}
+      extraData={preferences}
+      renderPagination={renderPagination}
       ref={slideRef}
     />
   )
@@ -214,15 +218,18 @@ const styles = StyleSheet.create({
   slide: {
     flex: 1,
   },
+  // The safe area view carries the overlay so it also darkens the system bar insets.
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
   title: {
     fontSize: 32,
     textAlign: 'center',
-    fontWeight: 'bold',
     marginTop: 60,
   },
   contentOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 24,
@@ -246,10 +253,35 @@ const styles = StyleSheet.create({
   },
   interactionTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
     marginTop: 40,
+  },
+  // Pagination values mirror the library defaults so the layout does not change.
+  pagination: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    right: 16,
+  },
+  paginationDots: {
+    height: 16,
+    margin: 16,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+  },
+  inactiveDot: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
   },
   buttonContainer: {
     marginBottom: 30,

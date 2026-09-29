@@ -169,7 +169,7 @@ export default function ErrorScreen({
                 onPress={action.action}
                 variant={action.isPrimary ? 'primary' : 'secondary'}
                 className={`${action.isPrimary ? 'bg-primary' : 'bg-gray-200'} ${index > 0 ? 'mt-3' : 'mt-8'}`}
-                textClassName={`${action.isPrimary ? '!text-neutral-off-white' : '!text-gray-700'} uppercase text-sm !font-bold`}
+                textClassName={`${action.isPrimary ? '!text-neutral-off-white' : '!text-gray-700'} uppercase text-sm !font-nunito-bold`}
               />
             ))}
 
@@ -184,7 +184,7 @@ export default function ErrorScreen({
                     onPress={handleRetry}
                     variant="primary"
                     className="!mt-8 bg-primary"
-                    textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+                    textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
                   />
                 )}
 
@@ -194,7 +194,7 @@ export default function ErrorScreen({
                     onPress={handleGuestMode}
                     variant="primary"
                     className="!mt-8 bg-primary"
-                    textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+                    textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
                   />
                 )}
 
@@ -205,7 +205,7 @@ export default function ErrorScreen({
                     onPress={handleFallback}
                     variant="secondary"
                     className="!mt-3 bg-gray-200"
-                    textClassName="!text-gray-700 uppercase text-sm !font-bold"
+                    textClassName="!text-gray-700 uppercase text-sm !font-nunito-bold"
                   />
                 )}
 
@@ -233,7 +233,7 @@ export default function ErrorScreen({
               onPress={handleToggleTechnicalDetails}
               variant="secondary"
               className="!mt-4 bg-transparent border border-gray-300"
-              textClassName="!text-gray-600 text-xs !font-medium"
+              textClassName="!text-gray-600 text-xs !font-nunito-medium"
             />
 
             {showTechnicalDetails && (
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 16,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#666666', // neutral-dark-gray
     textAlign: 'center',
     lineHeight: 24,
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   },
   errorContext: {
     fontSize: 10,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#999999',
     textAlign: 'center',
     marginTop: 4,
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   },
   manualInstructions: {
     fontSize: 14,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#666666',
     textAlign: 'center',
     marginTop: 24,
@@ -350,12 +350,11 @@ const styles = StyleSheet.create({
   },
   reloadInstructions: {
     fontSize: 14,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Bold',
     color: '#A0D2DB',
     textAlign: 'center',
     marginTop: 24,
     lineHeight: 20,
-    fontWeight: 'bold',
   },
   technicalSection: {
     width: '100%',
@@ -370,13 +369,13 @@ const styles = StyleSheet.create({
   },
   technicalText: {
     fontSize: 10,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#ECF0F1',
     lineHeight: 14,
   },
   supportText: {
     fontSize: 14,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#999999',
     textAlign: 'center',
     marginTop: 24,

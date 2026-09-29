@@ -41,7 +41,10 @@
             "./assets/fonts/Quicksand-Medium.ttf",
             "./assets/fonts/Quicksand-Bold.ttf",
             "./assets/fonts/Quicksand-SemiBold.ttf",
-            "./assets/fonts/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf"
+            "./assets/fonts/NunitoSans-Regular.ttf",
+            "./assets/fonts/NunitoSans-Medium.ttf",
+            "./assets/fonts/NunitoSans-SemiBold.ttf",
+            "./assets/fonts/NunitoSans-Bold.ttf"
           ]
         }
       ],

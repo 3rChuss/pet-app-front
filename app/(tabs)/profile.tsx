@@ -52,7 +52,7 @@ export default function ProfileScreen() {
                 style={{ width: 100, height: 100, borderRadius: 50 }}
                 className="mb-4"
               />
-              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+              <Text className="text-2xl text-neutral-dark-gray font-quicksand-bold">
                 {guestProfile.name}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito text-center mb-2">
@@ -66,19 +66,19 @@ export default function ProfileScreen() {
             {/* Stats */}
             <View className="flex-row justify-around bg-white p-4 rounded-xl mb-6">
               <View className="items-center">
-                <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
+                <Text className="text-xl text-neutral-dark-gray font-quicksand-bold">
                   {guestProfile.stats.posts}
                 </Text>
                 <Text className="text-neutral-medium-gray font-nunito">Publicaciones</Text>
               </View>
               <View className="items-center">
-                <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
+                <Text className="text-xl text-neutral-dark-gray font-quicksand-bold">
                   {guestProfile.stats.followers}
                 </Text>
                 <Text className="text-neutral-medium-gray font-nunito">Seguidores</Text>
               </View>
               <View className="items-center">
-                <Text className="text-xl font-bold text-neutral-dark-gray font-quicksand">
+                <Text className="text-xl text-neutral-dark-gray font-quicksand-bold">
                   {guestProfile.stats.following}
                 </Text>
                 <Text className="text-neutral-medium-gray font-nunito">Siguiendo</Text>
@@ -87,7 +87,7 @@ export default function ProfileScreen() {
 
             {/* Pets Section */}
             <View className="mb-6">
-              <Text className="text-lg font-semibold text-neutral-dark-gray font-quicksand mb-3">
+              <Text className="text-lg text-neutral-dark-gray font-quicksand-semibold mb-3">
                 Sus mascotas 🐾
               </Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -98,7 +98,7 @@ export default function ProfileScreen() {
                       style={{ width: 80, height: 80, borderRadius: 40 }}
                       className="mb-2"
                     />
-                    <Text className="text-sm font-medium text-neutral-dark-gray font-nunito">
+                    <Text className="text-sm text-neutral-dark-gray font-nunito-medium">
                       {pet.name}
                     </Text>
                     <Text className="text-xs text-neutral-medium-gray font-nunito">
@@ -111,7 +111,7 @@ export default function ProfileScreen() {
 
             {/* CTA to Register */}
             <View className="bg-primary/10 p-6 rounded-xl mb-6">
-              <Text className="text-lg font-semibold text-neutral-dark-gray font-quicksand mb-2 text-center">
+              <Text className="text-lg text-neutral-dark-gray font-quicksand-semibold mb-2 text-center">
                 ¡Crea tu perfil ahora! 🎉
               </Text>
               <Text className="text-neutral-medium-gray font-nunito text-center mb-4">
@@ -147,7 +147,7 @@ export default function ProfileScreen() {
               </Pressable>
             </View>
 
-            <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand mb-2">
+            <Text className="text-2xl text-neutral-dark-gray font-quicksand-bold mb-2">
               Usuario de Petopia
             </Text>
             <Text className="text-neutral-medium-gray font-nunito text-center">
@@ -158,19 +158,19 @@ export default function ProfileScreen() {
           {/* Stats */}
           <View className="flex-row justify-around bg-neutral-light-gray rounded-xl p-4 mb-6">
             <View className="items-center">
-              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+              <Text className="text-2xl text-neutral-dark-gray font-quicksand-bold">
                 {userStats.posts}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">Publicaciones</Text>
             </View>
             <View className="items-center">
-              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+              <Text className="text-2xl text-neutral-dark-gray font-quicksand-bold">
                 {userStats.followers}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">Seguidores</Text>
             </View>
             <View className="items-center">
-              <Text className="text-2xl font-bold text-neutral-dark-gray font-quicksand">
+              <Text className="text-2xl text-neutral-dark-gray font-quicksand-bold">
                 {userStats.following}
               </Text>
               <Text className="text-neutral-medium-gray font-nunito">Siguiendo</Text>
@@ -201,7 +201,7 @@ export default function ProfileScreen() {
                 <View className="mr-4">
                   <Ionicons name={item.icon as any} size={24} color={item.color} />
                 </View>
-                <Text className="flex-1 text-neutral-dark-gray font-nunito font-medium">
+                <Text className="flex-1 text-neutral-dark-gray font-nunito-medium">
                   {item.title}
                 </Text>
                 <Ionicons name="chevron-forward" size={20} color="#BDBDBD" />

@@ -27,8 +27,12 @@
     "location_enable": "Activar ubicación",
     "location_skip": "Configurar después",
     "location_permission": "Necesitamos acceso a tu ubicación para una mejor experiencia",
-    "location_enabled": "Ubicación activada {{city}}, {{region}}, ¡Gracias!",
+    "location_permission_denied": "No tenemos permiso para usar tu ubicación. Puedes darlo en los ajustes del dispositivo o configurarlo más tarde.",
+    "location_unavailable": "No pudimos obtener tu ubicación. Comprueba que la ubicación está activada en los ajustes del dispositivo o configúrala más tarde.",
+    "location_enabled": "Ubicación activada: {{place}}. ¡Gracias!",
+    "location_enabled_no_place": "Ubicación activada. ¡Gracias!",
     "location_set_text": "¡Gracias por compartir tu ubicación! Ahora podrás ver mascotas y eventos cercanos.",
+    "explore_as_guest": "Explorar sin cuenta",
     "pets": {
       "dogs": "Perros",
       "cats": "Gatos",

@@ -1,4 +1,24 @@
+import {
+  Baby,
+  Bird,
+  Bone,
+  Cat,
+  Dog,
+  GraduationCap,
+  HandHeart,
+  HeartHandshake,
+  Link as LinkIcon,
+  PawPrint,
+  Rabbit,
+  Scissors,
+  Stethoscope,
+  Turtle,
+  Users,
+} from 'lucide-react-native'
+
 import { OnboardingSlide, PetType, Interest } from '@/lib/types/onboarding'
+
+import type { LucideIcon } from 'lucide-react-native'
 
 export const slides: OnboardingSlide[] = [
   {
@@ -48,25 +68,25 @@ export const slides: OnboardingSlide[] = [
   },
 ]
 
-export const PET_TYPES: { key: PetType; label: string; emoji: string }[] = [
-  { key: 'dogs', label: 'Dogs', emoji: '🐕' },
-  { key: 'cats', label: 'Cats', emoji: '🐱' },
-  { key: 'birds', label: 'Birds', emoji: '🦜' },
-  { key: 'rabbits', label: 'Rabbits', emoji: '🐰' },
-  { key: 'reptiles', label: 'Reptiles', emoji: '🐍' },
-  { key: 'other', label: 'Other', emoji: '🐾' },
+export const PET_TYPES: { key: PetType; label: string; icon: LucideIcon }[] = [
+  { key: 'dogs', label: 'Dogs', icon: Dog },
+  { key: 'cats', label: 'Cats', icon: Cat },
+  { key: 'birds', label: 'Birds', icon: Bird },
+  { key: 'rabbits', label: 'Rabbits', icon: Rabbit },
+  { key: 'reptiles', label: 'Reptiles', icon: Turtle },
+  { key: 'other', label: 'Other', icon: PawPrint },
 ]
 
-export const INTERESTS: { key: Interest; label: string; emoji: string }[] = [
-  { key: 'adoption', label: 'Adoption', emoji: '🏠' },
-  { key: 'breeding', label: 'Breeding', emoji: '👶' },
-  { key: 'training', label: 'Training', emoji: '🎓' },
-  { key: 'playdates', label: 'Playdates', emoji: '🎾' },
-  { key: 'pet_care', label: 'Pet Care', emoji: '🧴' },
-  { key: 'veterinary', label: 'Veterinary', emoji: '🏥' },
-  { key: 'grooming', label: 'Grooming', emoji: '✂️' },
-  { key: 'matching', label: 'Matching', emoji: '🔗' },
-  { key: 'community', label: 'Community', emoji: '👥' },
+export const INTERESTS: { key: Interest; label: string; icon: LucideIcon }[] = [
+  { key: 'adoption', label: 'Adoption', icon: HeartHandshake },
+  { key: 'breeding', label: 'Breeding', icon: Baby },
+  { key: 'training', label: 'Training', icon: GraduationCap },
+  { key: 'playdates', label: 'Playdates', icon: Bone },
+  { key: 'pet_care', label: 'Pet Care', icon: HandHeart },
+  { key: 'veterinary', label: 'Veterinary', icon: Stethoscope },
+  { key: 'grooming', label: 'Grooming', icon: Scissors },
+  { key: 'matching', label: 'Matching', icon: LinkIcon },
+  { key: 'community', label: 'Community', icon: Users },
 ]
 
 export const ONBOARDING_KEY = '@petopia_onboarding_completed'

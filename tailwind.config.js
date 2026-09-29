@@ -20,9 +20,19 @@ module.exports = {
       colors: {
         ...generateThemeColors(activeTheme),
       },
+      // Family names must match the keys registered with useFonts in useAppInitialization.
+      // Each weight is a separate font file, so pick the weight through the family class
+      // (font-quicksand-bold, font-nunito-semibold) instead of combining it with font-bold:
+      // on Android a custom font plus fontWeight does not select the right file.
       fontFamily: {
-        quicksand: ['Quicksand', 'sans-serif'],
-        nunito: ['Nunito Sans', 'sans-serif'],
+        quicksand: ['Quicksand-SemiBold', 'sans-serif'],
+        'quicksand-medium': ['Quicksand-Medium', 'sans-serif'],
+        'quicksand-semibold': ['Quicksand-SemiBold', 'sans-serif'],
+        'quicksand-bold': ['Quicksand-Bold', 'sans-serif'],
+        nunito: ['NunitoSans-Regular', 'sans-serif'],
+        'nunito-medium': ['NunitoSans-Medium', 'sans-serif'],
+        'nunito-semibold': ['NunitoSans-SemiBold', 'sans-serif'],
+        'nunito-bold': ['NunitoSans-Bold', 'sans-serif'],
       },
     },
   },

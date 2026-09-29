@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   taglineText: {
     fontSize: 16,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#666666', // neutral-dark-gray
     textAlign: 'center',
     maxWidth: 250,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 14,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#666666',
   },
 })

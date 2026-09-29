@@ -15,7 +15,7 @@ export default function MapScreen() {
         <View className="flex-row items-center justify-between py-4 border-b border-neutral-light-gray">
           <View className="flex-row items-center">
             <Ionicons name="map" size={24} color="#A0D2DB" />
-            <Text className="ml-2 text-xl font-bold font-quicksand text-neutral-dark-gray">
+            <Text className="ml-2 text-xl font-quicksand-bold text-neutral-dark-gray">
               {t('map.title', { defaultValue: 'Mapa' })}
             </Text>
           </View>
@@ -27,7 +27,7 @@ export default function MapScreen() {
             <View className="w-16 h-16 bg-primary rounded-full items-center justify-center">
               <Ionicons name="location" size={32} color="#FDFDFD" />
             </View>
-            <Text className="text-lg font-bold font-quicksand text-neutral-dark-gray text-center">
+            <Text className="text-lg font-quicksand-bold text-neutral-dark-gray text-center">
               {t('map.coming_soon', { defaultValue: 'Próximamente' })}
             </Text>
             <Text className="text-sm font-nunito text-neutral-medium-gray text-center max-w-xs">
@@ -41,7 +41,7 @@ export default function MapScreen() {
 
         {/* Features Coming Soon */}
         <View className="space-y-4 pb-8">
-          <Text className="text-lg font-bold font-quicksand text-neutral-dark-gray">
+          <Text className="text-lg font-quicksand-bold text-neutral-dark-gray">
             {t('map.features', { defaultValue: 'Funcionalidades' })}
           </Text>
 

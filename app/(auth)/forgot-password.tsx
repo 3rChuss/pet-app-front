@@ -219,7 +219,7 @@ export default function ForgotPasswordScreen() {
                 onPress={handleSubmit(onSubmit)}
                 variant="primary"
                 className="!mb-6 bg-primary"
-                textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+                textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
                 disabled={isSubmitting}
                 isLoading={isSubmitting}
                 icon={isSubmitting ? <ActivityIndicator color="#FFFFFF" className="mr-2" /> : null}

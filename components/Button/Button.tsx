@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     let containerStyle =
       'p-3 flex justify-center align-center rounded-full ' +
       (icon ? ' flex-row gap-4 items-center' : ' flex-col')
-    let textStyle = 'font-nunito font-semibold text-sm' // Nunito Sans SemiBold as per typography guidelines
+    let textStyle = 'font-nunito-semibold text-sm' // Nunito Sans SemiBold as per typography guidelines
 
     switch (variant) {
       case 'primary':
@@ -72,6 +72,10 @@ const Button: React.FC<ButtonProps> = ({
       onPress={onPress}
       className={`${className} ${classNames.containerStyle}`}
       disabled={disabled || isLoading}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      aria-disabled={disabled || isLoading}
+      aria-busy={isLoading}
       style={{ opacity: isLoading ? 0.5 : 1 }} // Optional loading state
       activeOpacity={0.7}
       testID={testID}

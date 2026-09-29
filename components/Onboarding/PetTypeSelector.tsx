@@ -3,8 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 import { PetType } from '@/lib/types/onboarding'
 
+import type { LucideIcon } from 'lucide-react-native'
+
+// Icon colors match the label colors; the soft fill marks the active state (Branding guide 3.4)
+const IDLE_COLOR = 'rgba(255, 255, 255, 0.9)'
+const SELECTED_COLOR = '#fff'
+const SELECTED_FILL = 'rgba(255, 255, 255, 0.25)'
+
 interface PetTypeSelectorProps {
-  petTypes: { key: PetType; label: string; emoji: string }[]
+  petTypes: { key: PetType; label: string; icon: LucideIcon }[]
   selectedTypes: PetType[]
   onToggle: (type: PetType) => void
 }
@@ -21,16 +28,26 @@ export default function PetTypeSelector({
       <View style={styles.grid}>
         {petTypes.map(petType => {
           const isSelected = selectedTypes.includes(petType.key)
+          const Icon = petType.icon
           return (
             <TouchableOpacity
               key={petType.key}
               style={[styles.petCard, isSelected && styles.petCardSelected]}
               onPress={() => onToggle(petType.key)}
+              accessibilityRole="checkbox"
+              aria-checked={isSelected}
+              accessibilityLabel={t(`onboarding.pets.${petType.key}`)}
             >
-              <Text style={styles.emoji}>{petType.emoji}</Text>
+              <Icon
+                size={32}
+                strokeWidth={2}
+                color={isSelected ? SELECTED_COLOR : IDLE_COLOR}
+                fill={isSelected ? SELECTED_FILL : 'none'}
+                style={styles.icon}
+              />
               <Text
                 style={[styles.petLabel, isSelected && styles.petLabelSelected]}
-                className="font-quicksand"
+                className={isSelected ? 'font-quicksand-bold' : 'font-quicksand-semibold'}
               >
                 {t(`onboarding.pets.${petType.key}`)}
               </Text>
@@ -70,18 +87,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
     borderColor: 'rgba(255, 255, 255, 0.8)',
   },
-  emoji: {
-    fontSize: 32,
+  icon: {
     marginBottom: 8,
   },
   petLabel: {
     fontSize: 16,
-    fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
   },
   petLabelSelected: {
     color: '#fff',
-    fontWeight: 'bold',
   },
 })

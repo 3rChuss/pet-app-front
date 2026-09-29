@@ -389,7 +389,7 @@ export default function RegisterScreenExample() {
               onPress={handleSubmit(onSubmit)}
               variant="primary"
               className=" bg-primary"
-              textClassName="!text-neutral-off-white uppercase text-sm !font-bold"
+              textClassName="!text-neutral-off-white uppercase text-sm !font-nunito-bold"
               disabled={isSubmitting}
               isLoading={isSubmitting}
             />

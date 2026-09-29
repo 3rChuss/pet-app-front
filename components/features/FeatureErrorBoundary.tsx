@@ -84,7 +84,7 @@ export default function FeatureErrorBoundary({
                   onPress={action.action}
                   variant={action.isPrimary ? 'primary' : 'secondary'}
                   className={`${action.isPrimary ? 'bg-primary' : 'bg-gray-200'} !px-3 !py-2 ${index > 0 ? 'ml-2' : ''}`}
-                  textClassName={`${action.isPrimary ? '!text-white' : '!text-gray-700'} text-xs !font-medium`}
+                  textClassName={`${action.isPrimary ? '!text-white' : '!text-gray-700'} text-xs !font-nunito-medium`}
                 />
               ))}
 
@@ -97,7 +97,7 @@ export default function FeatureErrorBoundary({
                       onPress={handleRetry}
                       variant="primary"
                       className="bg-primary !px-3 !py-2"
-                      textClassName="!text-white text-xs !font-medium"
+                      textClassName="!text-white text-xs !font-nunito-medium"
                     />
                   )}
 
@@ -108,7 +108,7 @@ export default function FeatureErrorBoundary({
                       onPress={handleFallback}
                       variant="secondary"
                       className="bg-gray-200 !px-3 !py-2 ml-2"
-                      textClassName="!text-gray-700 text-xs !font-medium"
+                      textClassName="!text-gray-700 text-xs !font-nunito-medium"
                     />
                   )}
                 </>
@@ -142,7 +142,7 @@ export default function FeatureErrorBoundary({
                 onPress={action.action}
                 variant={action.isPrimary ? 'primary' : 'secondary'}
                 className={`${action.isPrimary ? 'bg-primary' : 'bg-gray-200'} ${index > 0 ? 'mt-3' : 'mt-6'}`}
-                textClassName={`${action.isPrimary ? '!text-white' : '!text-gray-700'} uppercase text-sm !font-bold`}
+                textClassName={`${action.isPrimary ? '!text-white' : '!text-gray-700'} uppercase text-sm !font-nunito-bold`}
               />
             ))}
 
@@ -152,7 +152,7 @@ export default function FeatureErrorBoundary({
                 onPress={handleRetry}
                 variant="primary"
                 className="bg-primary mt-6"
-                textClassName="!text-white uppercase text-sm !font-bold"
+                textClassName="!text-white uppercase text-sm !font-nunito-bold"
               />
             )}
           </View>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontSize: 12,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#B7950B',
     lineHeight: 16,
   },
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
   fullErrorMessage: {
     fontSize: 16,
-    fontFamily: 'NunitoSans-Variable',
+    fontFamily: 'NunitoSans-Regular',
     color: '#666666',
     textAlign: 'center',
     lineHeight: 24,
